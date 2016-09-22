@@ -2,7 +2,7 @@
 % Please edit documentation in R/course-data.R
 \name{get_course_list}
 \alias{get_course_list}
-\title{List all courses}
+\title{Function to list all courses.}
 \usage{
 get_course_list(user_id = NULL)
 }
@@ -13,7 +13,7 @@ get_course_list(user_id = NULL)
 data.frame
 }
 \description{
-List all courses
+Function to list all courses.
 }
 \examples{
 #' get_course_list()

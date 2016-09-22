@@ -2,7 +2,7 @@
 % Please edit documentation in R/course-data.R
 \name{get_course_members}
 \alias{get_course_members}
-\title{Get course users}
+\title{Function to return course members.}
 \usage{
 get_course_members(course_id, type = "students")
 }
@@ -15,7 +15,7 @@ get_course_members(course_id, type = "students")
 data.frame
 }
 \description{
-Get course users
+Function to return course members.
 }
 \examples{
 #' get_course_members(course_id = 20)

@@ -2,20 +2,22 @@
 % Please edit documentation in R/course-data.R
 \name{get_course_items}
 \alias{get_course_items}
-\title{Get course items}
+\title{Function to return various course items. See "item" argument below. Omitting the "item argument
+returns a course object.}
 \usage{
-get_course_items(course_id, item = NULL)
+get_course_items(course_id, item)
 }
 \arguments{
 \item{course_id}{valid Canvas course id}
 
-\item{item}{one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes"}
+\item{item}{Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes"}
 }
 \value{
 data.frame
 }
 \description{
-Get course items
+Function to return various course items. See "item" argument below. Omitting the "item argument
+returns a course object.
 }
 \examples{
 #' get_course_items(course_id = 20, item = "settings")

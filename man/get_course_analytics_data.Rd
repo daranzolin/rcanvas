@@ -2,7 +2,8 @@
 % Please edit documentation in R/course-data.R
 \name{get_course_analytics_data}
 \alias{get_course_analytics_data}
-\title{Get course analytics data by type}
+\title{Function to return course analytics data. Note: if an individual's user_id is specified,
+the function will return a list.}
 \usage{
 get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
 }
@@ -17,7 +18,8 @@ get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
 data.frame or list if user_id is specified
 }
 \description{
-Get course analytics data by type
+Function to return course analytics data. Note: if an individual's user_id is specified,
+the function will return a list.
 }
 \examples{
 #' get_course_analytics_data(course_id = 20)
