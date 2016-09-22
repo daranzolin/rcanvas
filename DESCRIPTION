@@ -4,7 +4,7 @@ Version: 0.0.0.9000
 Authors@R: person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre"))
 Description: A client for any individual instance of the Canvas API
 Depends:
-    R (>= 3.3.1)
+    R (>= 3.3.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
