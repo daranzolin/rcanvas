@@ -1,4 +1,4 @@
-#' List all courses
+#' Function to list all courses.
 #'
 #' @param user_id Optional argument to specify courses for specific user id
 #'
@@ -17,7 +17,8 @@ get_course_list <- function(user_id = NULL) {
   canvas_query(url)
 }
 
-#' Get course analytics data by type
+#' Function to return course analytics data. Note: if an individual's user_id is specified,
+#' the function will return a list.
 #'
 #' @param course_id a valid Canvas course id
 #' @param type one of "assignments", "users", "activity", or "student_summaries"
@@ -42,7 +43,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   canvas_query(url)
 }
 
-#' Get course users
+#' Function to return course members.
 #'
 #' @param course_id valid Canvas course id
 #' @param type one of "students" or "users"
@@ -58,10 +59,11 @@ get_course_members <- function(course_id, type = "students") {
   canvas_query(url)
 }
 
-#' Get course items
+#' Function to return various course items. See "item" argument below. Omitting the "item argument
+#' returns a course object.
 #'
 #' @param course_id valid Canvas course id
-#' @param item one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes"
+#' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes"
 #'
 #' @return data.frame
 #' @export
@@ -69,12 +71,23 @@ get_course_members <- function(course_id, type = "students") {
 #' @examples
 #' #' get_course_items(course_id = 20, item = "settings")
 #' #' get_course_items(course_id = 20, item = "enrollments")
-get_course_items <- function(course_id, item = NULL) {
-  if (!is.null(item)) {
+get_course_items <- function(course_id, item) {
+  valid_items <- c("settings", "discussion_topics", "todo", "enrollments",
+                   "features", "files", "modules", "front_page", "pages", "quizzes")
+  if (!missing(item) && !item %in% valid_items) {
+    stop("item argument must be one of 'settings', 'discussion_topics', 'todo', 'enrollments', 'features', 'files', 'modules', 'front_page', 'pages', 'quizzes'")
+  }
+  if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
     canvas_query(url)
   } else {
     url <- paste0(canvas_url(), paste("courses", course_id, sep = "/"))
   }
-  canvas_query(url)
+  dat <- canvas_query(url)
+  if (class(dat) == "list") {
+    dat <- data.frame(unlist(dat))
+    dat$course_id <- course_id
+    names(dat)[1] <- "item"
+  }
+  dat
 }
