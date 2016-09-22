@@ -19,7 +19,7 @@ canvas_query <- function(url) {
                                  per_page = 500))
   httr::stop_for_status(resp)
   json <- httr::content(resp, "text")
-  dat <- jsonlite::fromJSON(json, flatten = TRUE)
-  return(dat)
+  if (json == "[]") stop("Nothing available for this course.")
+  jsonlite::fromJSON(json, flatten = TRUE)
 }
 
