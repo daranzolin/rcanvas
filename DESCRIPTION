@@ -13,3 +13,4 @@ Imports: httr,
     jsonlite
 URL: https://github.com/daranzolin/rcanvas
 BugReports: https://github.com/daranzolin/rcanvas/issues
+Suggests: testthat
