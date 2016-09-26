@@ -12,14 +12,26 @@ check_token <- function() {
 
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
-canvas_query <- function(url) {
+canvas_query <- function(url, args) {
   resp <- httr::GET(url,
                     httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-                    query = list(access_token = Sys.getenv("CANVAS_API_TOKEN"),
-                                 per_page = 500))
+                    query = args)
   httr::stop_for_status(resp)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
   jsonlite::fromJSON(json, flatten = TRUE)
+}
+
+iter_args_list <- function(x, label) {
+  ln <- list()
+  for (i in seq_along(x)) {
+    ln[[i]] <- x[i]
+    names(ln)[[i]] <- label
+  }
+  ln
+}
+
+sc <- function(x) {
+  Filter(Negate(is.null), x)
 }
 

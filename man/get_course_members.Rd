@@ -4,7 +4,7 @@
 \alias{get_course_members}
 \title{Function to return course members.}
 \usage{
-get_course_members(course_id, type = "students")
+get_course_members(course_id, type = "students", include = NULL)
 }
 \arguments{
 \item{course_id}{valid Canvas course id}

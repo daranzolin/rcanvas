@@ -14,7 +14,11 @@ get_course_list <- function(user_id = NULL) {
   } else {
     url <- paste0(canvas_url(), "courses")
   }
-  canvas_query(url)
+  args <- list(access_token = check_token(),
+               per_page = 500,
+               user_id = user_id)
+  args <- sc(args)
+  canvas_query(url, args)
 }
 
 #' Function to return course analytics data. Note: if an individual's user_id is specified,
@@ -40,7 +44,11 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   if (type == "communication" & is.null(user_id)) {
     stop("user_id must be specified for communication data")
   }
-  canvas_query(url)
+  args <- list(access_token = check_token(),
+               per_page = 500,
+               user_id = user_id)
+  args <- sc(args)
+  canvas_query(url, args)
 }
 
 #' Function to return course members.
@@ -54,9 +62,15 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' @examples
 #' #' get_course_members(course_id = 20)
 #' #' get_course_members(course_id = 20, type = "users")
-get_course_members <- function(course_id, type = "students") {
+get_course_members <- function(course_id, type = "students", include = NULL) {
   url <- paste0(canvas_url(), paste("courses", course_id, type, sep = "/"))
-  canvas_query(url)
+  args <- list(access_token = check_token(),
+               per_page = 500)
+  include <- iter_args_list(include, "include[]")
+  args <- sc(
+    c(args, include)
+  )
+  canvas_query(url, args)
 }
 
 #' Function to return various course items. See "item" argument below. Omitting the "item argument
@@ -64,26 +78,32 @@ get_course_members <- function(course_id, type = "students") {
 #'
 #' @param course_id valid Canvas course id
 #' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes"
-#'
+#' @param include optional additions to the query string
 #' @return data.frame
 #' @export
 #'
 #' @examples
 #' #' get_course_items(course_id = 20, item = "settings")
 #' #' get_course_items(course_id = 20, item = "enrollments")
-get_course_items <- function(course_id, item) {
-  valid_items <- c("settings", "discussion_topics", "todo", "enrollments",
+get_course_items <- function(course_id, item, include = NULL) {
+  valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users",
                    "features", "files", "modules", "front_page", "pages", "quizzes")
   if (!missing(item) && !item %in% valid_items) {
-    stop("item argument must be one of 'settings', 'discussion_topics', 'todo', 'enrollments', 'features', 'files', 'modules', 'front_page', 'pages', 'quizzes'")
+    stop("item argument must be one of 'settings', 'users', 'discussion_topics', 'todo', 'enrollments', 'features', 'files', 'modules', 'front_page', 'pages', 'quizzes'")
   }
   if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
-    canvas_query(url)
   } else {
+    #Omitting the item argument will return general information about the course
     url <- paste0(canvas_url(), paste("courses", course_id, sep = "/"))
   }
-  dat <- canvas_query(url)
+  args <- list(access_token = check_token(),
+               per_page = 500)
+  include <- iter_args_list(include, "include[]")
+  args <- sc(
+    c(args, include)
+  )
+  dat <- canvas_query(url, args)
   if (class(dat) == "list") {
     dat <- data.frame(unlist(dat))
     dat$course_id <- course_id
