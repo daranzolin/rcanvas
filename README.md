@@ -20,7 +20,7 @@ library(rcanvas)
 Setup
 =====
 
-Some prep work is required before use. You must first stash two items in your `.Renviron` file: (1) your third-party access token, available through your Canvas LMS account settings; and (2) your institution's particular domain. (e.g. `"https://<domain>.instructure/"`) Name your token `CANVAS_API_TOKEN`, and your domain `CANVAS_DOMAIN`. For help on setting up your `.Renviron` (and all things R) see Jenny Bryan's [Stat545 page.](http://stat545.com/bit003_api-key-env-var.html)
+Some prep work is required before use. You must first stash two items in your `.Renviron` file: (1) your third-party access token, available through your Canvas LMS account settings; and (2) your institution's particular domain. (e.g. `"https://<your_domain>.instructure.com/"`) Name your token `CANVAS_API_TOKEN`, and your domain `CANVAS_DOMAIN`. For help on setting up your `.Renviron` (and all things R) see Jenny Bryan's [Stat545 page.](http://stat545.com/bit003_api-key-env-var.html)
 
 Usage
 =====
@@ -38,7 +38,7 @@ get_course_analytics_data(course_id = 20, type = "activity")
 get_course_members(courses_id = 20, type = "students")
 
 ###Get course items:
-get_course_items(course_id = 20, item = "discussion_topics")
+get_course_items(course_id = 20, item = "users", include = "email")
 ```
 
 ------------------------------------------------------------------------
@@ -48,4 +48,5 @@ Future Work
 
 -   Additional functions
 -   More precise querying
--   Tests
+-   More tests
+-   Vignette

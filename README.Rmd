@@ -55,4 +55,6 @@ get_course_items(course_id = 20, item = "users", include = "email")
 # Future Work
 * Additional functions
 * More precise querying
-* Tests
+* More tests
+* Vignette
+
