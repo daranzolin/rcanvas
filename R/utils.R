@@ -1,5 +1,7 @@
-#' @importFrom httr GET user_agent content stop_for_status
+#' @importFrom httr GET user_agent stop_for_status headers
 #' @importFrom jsonlite fromJSON
+#' @importFrom purrr map_chr
+#' @importFrom stringr str_split str_extract
 
 check_token <- function() {
   token <- Sys.getenv("CANVAS_API_TOKEN")
@@ -16,10 +18,7 @@ canvas_query <- function(url, args) {
   resp <- httr::GET(url,
                     httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
                     query = args)
-  httr::stop_for_status(resp)
-  json <- httr::content(resp, "text")
-  if (json == "[]") stop("Nothing available for this course.")
-  jsonlite::fromJSON(json, flatten = TRUE)
+  return(resp)
 }
 
 iter_args_list <- function(x, label) {
@@ -35,3 +34,10 @@ sc <- function(x) {
   Filter(Negate(is.null), x)
 }
 
+get_pages <- function(x) {
+  pages <- httr::headers(x)$link
+  pages <- stringr::str_split(pages, ";")[[1]]
+  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+  pages <- purrr::map_chr(pages, stringr::str_extract, url_pattern)
+  unique(pages[!is.na(pages)])
+}
