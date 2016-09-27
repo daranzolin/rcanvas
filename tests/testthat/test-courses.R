@@ -11,7 +11,7 @@ test_that("returns the correct", {
   e <- get_course_analytics_data(course_id = 20)
   f <- get_course_analytics_data(course_id = 20, type = "activity")
   g <- get_course_analytics_data(course_id = 20, type = "activity", user_id = 366)
-  h <- get_course_members(course_id = 20)
+  h <- get_course_list(include = c("teachers", "total_students"))
 
   # classes
   expect_is(a, "data.frame")
@@ -21,11 +21,13 @@ test_that("returns the correct", {
   expect_is(e, "data.frame")
   expect_is(f, "data.frame")
   expect_is(g, "list")
-  expect_is(h, "data.frame")
   expect_is(e, "data.frame")
 
-  # values
-  expect_equal(a$name[1], "Welcome to Canvas")
-  expect_equal(unique(d$course_id), 20)
+})
+
+test_that("vectorization works:", {
+
+  expect_true("teachers" %in% names(h))
+  expect_true("total_students" %in% names(h))
 
 })
