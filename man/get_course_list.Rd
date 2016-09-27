@@ -4,19 +4,19 @@
 \alias{get_course_list}
 \title{Function to list all courses.}
 \usage{
-get_course_list(user_id = NULL)
+get_course_list(user_id = NULL, include = NULL)
 }
 \arguments{
 \item{user_id}{Optional argument to specify courses for specific user id}
+
+\item{include}{Optional argument to specify additional information such as "teachers", "total_students", etc.}
 }
 \value{
 data.frame
 }
-\description{
-Function to list all courses.
-}
 \examples{
 #' get_course_list()
 #' get_course_list(user_id = 366)
+#' get_course_list(include = c("teachers", "total_students"))
 }
 

@@ -2,8 +2,7 @@
 % Please edit documentation in R/course-data.R
 \name{get_course_analytics_data}
 \alias{get_course_analytics_data}
-\title{Function to return course analytics data. Note: if an individual's user_id is specified,
-the function will return a list.}
+\title{Function to return course analytics data.}
 \usage{
 get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
 }
@@ -12,13 +11,13 @@ get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
 
 \item{type}{one of "assignments", "users", "activity", or "student_summaries"}
 
-\item{user_id}{optional argument to specify type analytics for individual user id}
+\item{user_id}{Optional argument to specify type analytics for individual user id}
 }
 \value{
 data.frame or list if user_id is specified
 }
 \description{
-Function to return course analytics data. Note: if an individual's user_id is specified,
+Returns a data.frame of course analytics data. Note: if an individual's user_id is specified,
 the function will return a list.
 }
 \examples{
