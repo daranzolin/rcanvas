@@ -10,7 +10,10 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1
 Imports: httr,
-    jsonlite
+    jsonlite,
+    purrr,
+    stringr,
+    magrittr
 URL: https://github.com/daranzolin/rcanvas
 BugReports: https://github.com/daranzolin/rcanvas/issues
 Suggests: testthat
