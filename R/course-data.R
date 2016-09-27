@@ -112,7 +112,7 @@ get_course_items <- function(course_id, item, include = NULL) {
     url <- paste0(canvas_url(), paste("courses", course_id, sep = "/"))
   }
   args <- list(access_token = check_token(),
-               per_page = 500)
+               per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- sc(
     c(args, include)

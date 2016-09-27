@@ -31,11 +31,10 @@ Each function returns a `data.frame` with course information.
 ###Get all courses:
 get_course_list()
 
+get_course_list(include = c("teachers", "total_students"))
+
 ###Get course analytics data:
 get_course_analytics_data(course_id = 20, type = "activity")
-
-###Get course member data:
-get_course_members(courses_id = 20, type = "students")
 
 ###Get course items:
 get_course_items(course_id = 20, item = "users", include = "email")
