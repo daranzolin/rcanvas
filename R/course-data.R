@@ -101,7 +101,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' #' get_course_items(20, item = "users", include = "email")
 get_course_items <- function(course_id, item, include = NULL) {
   valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users", "students",
-                   "features", "files", "modules", "front_page", "pages", "quizzes")
+                   "features", "assignments", "files", "modules", "front_page", "pages", "quizzes")
   if (!missing(item) && !item %in% valid_items) {
     stop("item argument must be one of 'settings', 'users', 'discussion_topics', 'todo', 'enrollments', 'features', 'files', 'modules', 'front_page', 'pages', 'quizzes'")
   }
@@ -121,6 +121,14 @@ get_course_items <- function(course_id, item, include = NULL) {
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
   dat <- jsonlite::fromJSON(json, flatten = TRUE)
+  other_pages <- get_pages(resp)[-1]
+  if (length(other_pages) != 0) {
+    dat_list <- other_pages %>%
+      purrr::map(canvas_query, args) %>%
+      purrr::map(httr::content, "text") %>%
+      purrr::map(jsonlite::fromJSON, flatten = TRUE)
+    dat <- dplyr::bind_rows(dat_list)
+  }
   if (class(dat) == "list") {
     dat <- data.frame(unlist(dat))
     dat$course_id <- course_id
