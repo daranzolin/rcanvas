@@ -1,0 +1,74 @@
+---
+title: "rcanvas Vignette"
+author: "David Ranzolin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The goal of rcanvas is to get student and course data as simply as possible. Towards that end,
+there are three core functions: (1) `get_course_list()`; (2) `get_course_items()`; and (3) `get_course_analytics_data()`.
+
+### Getting your courses
+
+You can obtain a complete listing of your courses with a simple call to `get_course_list()`:
+
+```{r}
+library(rcanvas)
+courses <- get_course_list()
+names(courses)
+```
+If you want the courses for a specific student, specify the user's id with the optional `user_id` argument:
+
+```{r eval = FALSE}
+get_course_list(user_id = 344)
+```
+
+### Getting data for a specific course
+
+If you know the id number of a particular course, you can get a variety of data with calls to `get_course_items()`:
+
+```{r}
+course <- get_course_items(course_id = 20, item = "enrollments")
+names(course)
+```
+Other items include "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.
+
+### Getting course analytics data
+
+You can get course analytics data on four "types": "assignments", "users", "activity", or "student_summaries":
+
+```{r}
+x <- get_course_analytics_data(20, "activity")
+names(x)
+```
+
+### Putting it all together
+
+Here's an example that interested us: the relationship between student activity and grades in a cohort of our Core Premium students:
+
+```{r}
+library(dplyr)
+library(purrr)
+library(ggplot2)
+
+premium_course_ids <- get_course_list() %>%
+  mutate(premium = if_else(grepl("Premium", name), "premium", "not premium")) %>%
+  filter(premium == "premium") %>%
+  .$id
+
+student_data <- premium_course_ids %>%
+  map(get_course_items, "enrollments") %>%
+  map(filter, role == "StudentEnrollment") %>%
+  map(select, dplyr::contains("current_score"), dplyr::contains("total_activity_time")) %>%
+  map_df(bind_rows)
+
+ggplot(student_data, aes(grades.current_score, log(total_activity_time))) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+

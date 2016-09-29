@@ -16,4 +16,7 @@ Imports: httr,
     magrittr
 URL: https://github.com/daranzolin/rcanvas
 BugReports: https://github.com/daranzolin/rcanvas/issues
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
