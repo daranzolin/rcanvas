@@ -127,7 +127,7 @@ get_course_items <- function(course_id, item, include = NULL) {
       purrr::map(canvas_query, args) %>%
       purrr::map(httr::content, "text") %>%
       purrr::map(jsonlite::fromJSON, flatten = TRUE)
-    dat <- dplyr::bind_rows(dat_list)
+    dat <- dplyr::bind_rows(dat, dat_list)
   }
   if (class(dat) == "list") {
     dat <- data.frame(unlist(dat))
