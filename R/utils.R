@@ -18,6 +18,7 @@ canvas_query <- function(url, args) {
   resp <- httr::GET(url,
                     httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
                     query = args)
+  stop_for_status(resp)
   return(resp)
 }
 
