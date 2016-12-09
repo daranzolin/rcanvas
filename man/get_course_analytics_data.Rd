@@ -7,14 +7,14 @@
 get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
 }
 \arguments{
-\item{course_id}{a valid Canvas course id}
+\item{course_id}{A valid Canvas course id}
 
-\item{type}{one of "assignments", "users", "activity", or "student_summaries"}
+\item{type}{One of "assignments", "activity", or "student_summaries"}
 
 \item{user_id}{Optional argument to specify type analytics for individual user id}
 }
 \value{
-data.frame or list if user_id is specified
+data frame or list if user_id is specified
 }
 \description{
 Returns a data.frame of course analytics data. Note: if an individual's user_id is specified,
