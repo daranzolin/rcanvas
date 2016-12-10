@@ -12,7 +12,7 @@ get_course_list(user_id = NULL, include = NULL)
 \item{include}{Optional argument to specify additional information such as "teachers", "total_students", etc.}
 }
 \value{
-data.frame
+data frame
 }
 \examples{
 #' get_course_list()

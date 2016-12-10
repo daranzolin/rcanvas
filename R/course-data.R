@@ -9,7 +9,7 @@
 #' @param user_id Optional argument to specify courses for specific user id
 #' @param include Optional argument to specify additional information such as "teachers", "total_students", etc.
 #'
-#' @return data.frame
+#' @return data frame
 #' @export
 #'
 #' @examples
@@ -54,11 +54,11 @@ get_course_list <- function(user_id = NULL, include = NULL) {
 #' @description Returns a data.frame of course analytics data. Note: if an individual's user_id is specified,
 #' the function will return a list.
 #'
-#' @param course_id a valid Canvas course id
-#' @param type one of "assignments", "users", "activity", or "student_summaries"
+#' @param course_id A valid Canvas course id
+#' @param type One of "assignments", "activity", or "student_summaries"
 #' @param user_id Optional argument to specify type analytics for individual user id
 #'
-#' @return data.frame or list if user_id is specified
+#' @return data frame or list if user_id is specified
 #' @export
 #'
 #' @examples
@@ -89,10 +89,10 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' @description Returns a data.frame of various course items. See "item" argument below. Omitting the "item argument
 #' returns a course object.
 #'
-#' @param course_id valid Canvas course id
+#' @param course_id A valid Canvas course id
 #' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.
-#' @param include optional additions to the query string
-#' @return data.frame
+#' @param include Optional additions to the query string
+#' @return data frame
 #' @export
 #'
 #' @examples

@@ -6,12 +6,11 @@ test_that("returns the correct", {
 
   a <- get_course_list()
   b <- get_course_list(user_id = 366)
-  c <- get_course_items(course_id = 20)
-  d <- get_course_items(course_id = 20, item = "settings")
-  e <- get_course_analytics_data(course_id = 20)
-  f <- get_course_analytics_data(course_id = 20, type = "activity")
-  g <- get_course_analytics_data(course_id = 20, type = "activity", user_id = 366)
-  h <- get_course_list(include = c("teachers", "total_students"))
+  c <- get_course_items(course_id = 20, item = "settings")
+  d <- get_course_analytics_data(course_id = 20)
+  e <- get_course_analytics_data(course_id = 20, type = "activity")
+  f <- get_course_analytics_data(course_id = 20, type = "activity", user_id = 366)
+  g <- get_course_list(include = c("teachers", "total_students"))
 
   # classes
   expect_is(a, "data.frame")
@@ -19,15 +18,17 @@ test_that("returns the correct", {
   expect_is(c, "data.frame")
   expect_is(d, "data.frame")
   expect_is(e, "data.frame")
-  expect_is(f, "data.frame")
-  expect_is(g, "list")
+  expect_is(f, "list")
+  expect_is(g, "data.frame")
   expect_is(e, "data.frame")
 
 })
 
 test_that("vectorization works:", {
 
-  expect_true("teachers" %in% names(h))
-  expect_true("total_students" %in% names(h))
+  a <- get_course_list(include = c("teachers", "total_students"))
+
+  expect_true("teachers" %in% names(a))
+  expect_true("total_students" %in% names(a))
 
 })

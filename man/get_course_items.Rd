@@ -7,14 +7,14 @@
 get_course_items(course_id, item, include = NULL)
 }
 \arguments{
-\item{course_id}{valid Canvas course id}
+\item{course_id}{A valid Canvas course id}
 
 \item{item}{Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.}
 
-\item{include}{optional additions to the query string}
+\item{include}{Optional additions to the query string}
 }
 \value{
-data.frame
+data frame
 }
 \description{
 Returns a data.frame of various course items. See "item" argument below. Omitting the "item argument
