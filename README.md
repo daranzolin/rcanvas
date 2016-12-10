@@ -22,6 +22,13 @@ Setup
 
 Some prep work is required before use. You must first stash two items in your `.Renviron` file: (1) your third-party access token, available through your Canvas LMS account settings; and (2) your institution's particular domain. (e.g. `"https://<your_domain>.instructure.com/"`) Name your token `CANVAS_API_TOKEN`, and your domain `CANVAS_DOMAIN`. For help on setting up your `.Renviron` (and all things R) see Jenny Bryan's [Stat545 page.](http://stat545.com/bit003_api-key-env-var.html)
 
+We provide two helper functions to make this process easier.
+
+``` r
+set_canvas_token("YOUR_TOKEN_HERE")
+set_canvas_domain("https://canvas.yourdomain.edu")
+```
+
 Usage
 =====
 
