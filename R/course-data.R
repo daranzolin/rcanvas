@@ -103,7 +103,7 @@ get_course_items <- function(course_id, item, include = NULL) {
   valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users", "students",
                    "features", "assignments", "files", "modules", "front_page", "pages", "quizzes")
   if (!missing(item) && !item %in% valid_items) {
-    stop("item argument must be one of 'settings', 'users', 'discussion_topics', 'todo', 'enrollments', 'features', 'files', 'modules', 'front_page', 'pages', 'quizzes'")
+    stop(paste("item argument must be one of", valid_items))
   }
   if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
@@ -136,3 +136,36 @@ get_course_items <- function(course_id, item, include = NULL) {
   }
   dat
 }
+
+#' @title Function to set Canvas API token
+#'
+#' @description Given a Canvas token string, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param token your API token
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_token("abc123")
+set_canvas_token <- function(token) {
+  Sys.setenv(CANVAS_API_TOKEN = token)
+}
+
+#' @title Function to set Canvas domain url
+#'
+#' @description Given a Canvas domain url, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param domain Canvas domain
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_domain("https://canvas.upenn.edu")
+set_canvas_domain <- function(domain) {
+  Sys.setenv(CANVAS_DOMAIN = domain)
+}
+
