@@ -1,8 +1,4 @@
-#' @importFrom httr content
-#' @importFrom jsonlite fromJSON
-#' @importFrom purrr map
 #' @importFrom magrittr %>%
-#' @importFrom dplyr bind_rows
 #'
 #' @title Function to list all courses.
 #'
