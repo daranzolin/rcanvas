@@ -13,7 +13,8 @@ Imports: httr,
     jsonlite,
     purrr,
     stringr,
-    magrittr
+    magrittr,
+    dplyr
 URL: https://github.com/daranzolin/rcanvas
 BugReports: https://github.com/daranzolin/rcanvas/issues
 Suggests: testthat,
