@@ -1,8 +1,3 @@
-#' @importFrom httr GET user_agent stop_for_status headers
-#' @importFrom jsonlite fromJSON
-#' @importFrom purrr map_chr
-#' @importFrom stringr str_split str_extract
-
 check_token <- function() {
   token <- Sys.getenv("CANVAS_API_TOKEN")
   if (identical(token, "")) {
