@@ -14,7 +14,7 @@ get_course_gradebook <- function(course_id) {
   course_ids <- rep(course_id, length(course_assignment_ids)) %>% as.list()
 
   get_assignment_submissions <- function(course_id, assignment_id) {
-    url <- sprintf("https://ucscout.instructure.com/api/v1/courses/%s/assignments/%s/submissions", course_id, assignment_id)
+    url <- sprintf("%s/api/v1/courses/%s/assignments/%s/submissions", canvas_url(), course_id, assignment_id)
     httr::GET(url, query = list(access_token = check_token())) %>%
       httr::content("text") %>%
       jsonlite::fromJSON(flatten = TRUE)
