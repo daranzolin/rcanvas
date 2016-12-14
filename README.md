@@ -32,7 +32,10 @@ set_canvas_domain("https://canvas.yourdomain.edu")
 Usage
 =====
 
-Each function returns a `data.frame` with course information.
+Each function returns a data frame with various information.
+
+Course Data
+-----------
 
 ``` r
 ###Get all courses:
@@ -48,6 +51,25 @@ get_course_items(course_id = 20, item = "users", include = "email")
 ```
 
 ------------------------------------------------------------------------
+
+User Data
+---------
+
+``` r
+get_user_items(365, "details")
+get_user_items(365, "missing_submissions")
+```
+
+------------------------------------------------------------------------
+
+Gradebooks
+----------
+
+Special thanks to [Garth Egbert for the inspiration.](https://community.canvaslms.com/groups/canvas-developers/blog/2016/07/09/gradebook-analysis-error-checking-the-gradebook)
+
+``` r
+get_course_gradebook(20)
+```
 
 Future Work
 ===========
