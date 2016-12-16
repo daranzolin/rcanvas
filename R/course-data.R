@@ -90,7 +90,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' returns a course object.
 #'
 #' @param course_id A valid Canvas course id
-#' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.
+#' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", "folders".
 #' @param include Optional additions to the query string
 #' @return data frame
 #' @export
@@ -101,9 +101,10 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' #' get_course_items(20, item = "users", include = "email")
 get_course_items <- function(course_id, item, include = NULL) {
   valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users", "students",
-                   "features", "assignments", "files", "modules", "front_page", "pages", "quizzes")
+                   "features", "assignments", "files", "modules", "front_page", "pages", "quizzes",
+                   "folders")
   if (!missing(item) && !item %in% valid_items) {
-    stop(paste("item argument must be one of", valid_items))
+    stop(paste("item argument must be one of:", paste(valid_items, collapse=", ")))
   }
   if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
