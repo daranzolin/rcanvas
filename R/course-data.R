@@ -26,9 +26,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
                per_page = 100,
                user_id = user_id)
   include <- iter_args_list(include, "include[]")
-  args <- sc(
-    c(args, include)
-  )
+  args <- c(args, include)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -77,7 +75,6 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   args <- list(access_token = check_token(),
                per_page = 500,
                user_id = user_id)
-  args <- sc(args)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -115,9 +112,7 @@ get_course_items <- function(course_id, item, include = NULL) {
   args <- list(access_token = check_token(),
                per_page = 100)
   include <- iter_args_list(include, "include[]")
-  args <- sc(
-    c(args, include)
-  )
+  args <- c(args, include)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")

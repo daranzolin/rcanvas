@@ -15,6 +15,7 @@ check_token <- function() {
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
 canvas_query <- function(url, args) {
+  args <- sc(args)
   resp <- httr::GET(url,
                     httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
                     query = args)
