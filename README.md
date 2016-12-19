@@ -56,7 +56,7 @@ User Data
 ---------
 
 ``` r
-get_user_items(365, "details")
+get_user_items(user_id = 365, item = "details")
 get_user_items(365, "missing_submissions")
 ```
 
@@ -68,7 +68,7 @@ Gradebooks
 This function is fickle, but special thanks to [Garth Egbert for the inspiration.](https://community.canvaslms.com/groups/canvas-developers/blog/2016/07/09/gradebook-analysis-error-checking-the-gradebook)
 
 ``` r
-get_course_gradebook(20)
+get_course_gradebook(course_id = 20)
 ```
 
 ------------------------------------------------------------------------
@@ -79,7 +79,7 @@ Submissions
 Submissions are available for both quizzes and assignments, e.g.:
 
 ``` r
-get_submissions(27, "assignments", 2248)
+get_submissions(course_id = 27, type = "assignments", type_id = 2248)
 get_submissions(27, "quizzes", 168)
 ```
 
