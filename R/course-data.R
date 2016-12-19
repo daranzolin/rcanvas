@@ -22,9 +22,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
                per_page = 100,
                user_id = user_id)
   include <- iter_args_list(include, "include[]")
-  args <- sc(
-    c(args, include)
-  )
+  args <- c(args, include)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -73,7 +71,6 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   args <- list(access_token = check_token(),
                per_page = 500,
                user_id = user_id)
-  args <- sc(args)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -86,7 +83,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' returns a course object.
 #'
 #' @param course_id A valid Canvas course id
-#' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.
+#' @param item Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", "folders".
 #' @param include Optional additions to the query string
 #' @return data frame
 #' @export
@@ -97,9 +94,10 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 #' #' get_course_items(20, item = "users", include = "email")
 get_course_items <- function(course_id, item, include = NULL) {
   valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users", "students",
-                   "features", "assignments", "files", "modules", "front_page", "pages", "quizzes")
+                   "features", "assignments", "files", "modules", "front_page", "pages", "quizzes",
+                   "folders")
   if (!missing(item) && !item %in% valid_items) {
-    stop(paste("item argument must be one of", valid_items))
+    stop(paste("item argument must be one of:", paste(valid_items, collapse=", ")))
   }
   if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
@@ -110,9 +108,7 @@ get_course_items <- function(course_id, item, include = NULL) {
   args <- list(access_token = check_token(),
                per_page = 100)
   include <- iter_args_list(include, "include[]")
-  args <- sc(
-    c(args, include)
-  )
+  args <- c(args, include)
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")

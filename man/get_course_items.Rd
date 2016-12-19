@@ -9,7 +9,7 @@ get_course_items(course_id, item, include = NULL)
 \arguments{
 \item{course_id}{A valid Canvas course id}
 
-\item{item}{Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", etc.}
+\item{item}{Optional -- one of "settings", "discussion_topics", "todo", "enrollments", "features", "files", "modules", "front_page", "pages", "quizzes", "folders".}
 
 \item{include}{Optional additions to the query string}
 }
