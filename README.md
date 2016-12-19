@@ -65,10 +65,22 @@ get_user_items(365, "missing_submissions")
 Gradebooks
 ----------
 
-Special thanks to [Garth Egbert for the inspiration.](https://community.canvaslms.com/groups/canvas-developers/blog/2016/07/09/gradebook-analysis-error-checking-the-gradebook)
+This function is fickle, but special thanks to [Garth Egbert for the inspiration.](https://community.canvaslms.com/groups/canvas-developers/blog/2016/07/09/gradebook-analysis-error-checking-the-gradebook)
 
 ``` r
 get_course_gradebook(20)
+```
+
+------------------------------------------------------------------------
+
+Submissions
+-----------
+
+Submissions are available for both quizzes and assignments, e.g.:
+
+``` r
+get_submissions(27, "assignments", 2248)
+get_submissions(27, "quizzes", 168)
 ```
 
 Future Work
