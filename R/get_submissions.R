@@ -21,7 +21,7 @@ get_submissions <- function(course_id, type, type_id) {
   json <- httr::content(resp, "text")
   if (json == "[]") stop("No submissions available.")
   dat <- jsonlite::fromJSON(json, flatten = TRUE)
-  other_pages <- get_pages(resp)
+  other_pages <- get_pages(resp)[-1]
   if (length(other_pages) != 0) {
     dat_list <- other_pages %>%
       purrr::map(canvas_query, args) %>%
