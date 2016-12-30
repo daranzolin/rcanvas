@@ -1,3 +1,35 @@
+#' @title Function to set Canvas API token
+#'
+#' @description Given a Canvas token string, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param token your API token
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_token("abc123")
+set_canvas_token <- function(token) {
+  Sys.setenv(CANVAS_API_TOKEN = token)
+}
+
+#' @title Function to set Canvas domain url
+#'
+#' @description Given a Canvas domain url, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param domain Canvas domain
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_domain("https://canvas.upenn.edu")
+set_canvas_domain <- function(domain) {
+  Sys.setenv(CANVAS_DOMAIN = domain)
+}
+
 check_token <- function() {
   token <- Sys.getenv("CANVAS_API_TOKEN")
   if (identical(token, "")) {
@@ -9,11 +41,12 @@ check_token <- function() {
 
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
-canvas_query <- function(url, args) {
+canvas_query <- function(url, args, type = "GET") {
+  fun <- getFromNamespace(type, "httr")
   args <- sc(args)
-  resp <- httr::GET(url,
-                    httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-                    query = args)
+  resp <- fun(url,
+              httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+              query = args)
   httr::stop_for_status(resp)
   return(resp)
 }
@@ -29,58 +62,4 @@ iter_args_list <- function(x, label) {
 
 sc <- function(x) {
   Filter(Negate(is.null), x)
-}
-
-get_pages <- function(x) {
-  pages <- httr::headers(x)$link
-  stopifnot(!is.null(pages))
-  pages <- stringr::str_split(pages, ";")[[1]]
-  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-  pages <- purrr::map_chr(pages, stringr::str_extract, url_pattern)
-  pages <- stringr::str_replace_all(pages, "[<>]", "")
-  pages <- unique(pages[!is.na(pages)])
-  base_url <- pages[1]
-  n_pages <- 1
-  should_continue = TRUE
-  if(has_last(pages)) {
-    n_pages <- readr::parse_number(stringr::str_extract(pages[length(pages)], "page=[0-9]{1,}"))
-  } else {
-    while(should_continue) {
-      page_temp <- stringr::str_replace(base_url, "page=[0-9]{1,}", sprintf("page=%s", n_pages))
-      links_temp <- httr::HEAD(page_temp, query = list(access_token = check_token()))
-      if(has_next(httr::headers(links_temp)$link)) {
-        n_pages = n_pages + 1
-      } else {
-        should_continue = FALSE
-      }
-    }
-  }
-  pages <- stringr::str_replace(base_url, "page=[0-9]{1,}", sprintf("page=%s", 1:n_pages))
-  return(pages)
-}
-
-has_last <- function(x) {
-  any(grepl("rel=\"last\"", x))
-}
-
-has_next <- function(x) {
-  any(grepl("rel=\"next\"", x))
-}
-
-get_next_page <- function(resp) {
-  pages <- httr::headers(resp)$link
-  if (is.null(pages)) {
-    return(FALSE)
-  }
-  next_page_exists <- stringr::str_detect(pages, "next")
-  if (next_page_exists) {
-    pages <- stringr::str_split(pages, ",")[[1]]
-    url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))*"
-    next_page <- stringr::str_subset(pages, "next")
-    next_page <- stringr::str_extract(next_page, url_pattern)
-    next_page <- stringr::str_sub(next_page, end = -3L)
-  } else {
-    return(FALSE)
-  }
-  next_page
 }

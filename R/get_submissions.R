@@ -17,11 +17,5 @@ get_submissions <- function(course_id, type, type_id) {
   url <- sprintf("%scourses/%s/%s/%s/submissions", canvas_url(), course_id, type, type_id)
   args <- list(access_token = check_token(),
                per_page = 100)
-  resp <- canvas_query(url, args)
-  dat_list <- get_pages(resp)
-  dat_list %>%
-    purrr::map(canvas_query, args) %>%
-    purrr::map(httr::content, "text") %>%
-    purrr::map(jsonlite::fromJSON, flatten = TRUE) %>%
-    dplyr::bind_rows()
+  process_response(url, args)
 }
