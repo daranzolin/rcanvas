@@ -63,19 +63,3 @@ iter_args_list <- function(x, label) {
 sc <- function(x) {
   Filter(Negate(is.null), x)
 }
-<<<<<<< HEAD
-
-get_pages <- function(x) {
-  pages <- httr::headers(x)$link
-  stopifnot(!is.null(pages))
-  pages <- stringr::str_split(pages, ";")[[1]]
-  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-  pages <- purrr::map_chr(pages, stringr::str_extract, url_pattern)
-  pages <- unique(pages[!is.na(pages)])
-  base_url <- pages[1]
-  n_pages <- readr::parse_number(stringr::str_extract(pages[length(pages)], "page=[0-9]{1,}"))
-  pages <- stringr::str_replace(base_url, "page=[0-9]{1,}", sprintf("page=%s", 1:n_pages))
-  return(pages)
-}
-=======
->>>>>>> a8e03d04f6dd8ec2ac65791646a219af9100c1a3
