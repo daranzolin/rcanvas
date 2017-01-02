@@ -23,18 +23,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
                user_id = user_id)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
-  resp <- canvas_query(url, args)
-  json <- httr::content(resp, "text")
-  if (json == "[]") stop("Nothing available for this course.")
-  dat <- jsonlite::fromJSON(json, flatten = TRUE)
-  other_pages <- get_pages(resp)[-1]
-  if (length(other_pages) != 0) {
-    dat_list <- other_pages %>%
-      purrr::map(canvas_query, args) %>%
-      purrr::map(httr::content, "text") %>%
-      purrr::map(jsonlite::fromJSON, flatten = TRUE)
-    dat <- dplyr::bind_rows(dat, dat_list)
-  }
+  dat <- process_response(url, args)
   if (class(dat) == "list") {
     dat <- data.frame(unlist(dat))
     dat$course_id <- course_id
@@ -97,7 +86,7 @@ get_course_items <- function(course_id, item, include = NULL) {
                    "features", "assignments", "files", "modules", "front_page", "pages", "quizzes",
                    "folders")
   if (!missing(item) && !item %in% valid_items) {
-    stop(paste("item argument must be one of:", paste(valid_items, collapse=", ")))
+    stop(paste("item argument must be one of:", paste(valid_items, collapse = ", ")))
   }
   if (!missing(item)) {
     url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
@@ -109,18 +98,7 @@ get_course_items <- function(course_id, item, include = NULL) {
                per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
-  resp <- canvas_query(url, args)
-  json <- httr::content(resp, "text")
-  if (json == "[]") stop("Nothing available for this course.")
-  dat <- jsonlite::fromJSON(json, flatten = TRUE)
-  other_pages <- get_pages(resp)[-1]
-  if (length(other_pages) != 0) {
-    dat_list <- other_pages %>%
-      purrr::map(canvas_query, args) %>%
-      purrr::map(httr::content, "text") %>%
-      purrr::map(jsonlite::fromJSON, flatten = TRUE)
-    dat <- dplyr::bind_rows(dat, dat_list)
-  }
+  dat <- process_response(url, args)
   if (class(dat) == "list") {
     dat <- data.frame(unlist(dat))
     dat$course_id <- course_id
@@ -128,36 +106,3 @@ get_course_items <- function(course_id, item, include = NULL) {
   }
   dat
 }
-
-#' @title Function to set Canvas API token
-#'
-#' @description Given a Canvas token string, this function adds it to R's
-#' environment variables so it can be found by rcanvas.
-#'
-#' @param token your API token
-#'
-#' @return nothing
-#' @export
-#'
-#' @examples
-#' set_canvas_token("abc123")
-set_canvas_token <- function(token) {
-  Sys.setenv(CANVAS_API_TOKEN = token)
-}
-
-#' @title Function to set Canvas domain url
-#'
-#' @description Given a Canvas domain url, this function adds it to R's
-#' environment variables so it can be found by rcanvas.
-#'
-#' @param domain Canvas domain
-#'
-#' @return nothing
-#' @export
-#'
-#' @examples
-#' set_canvas_domain("https://canvas.upenn.edu")
-set_canvas_domain <- function(domain) {
-  Sys.setenv(CANVAS_DOMAIN = domain)
-}
-

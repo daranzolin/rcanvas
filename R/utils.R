@@ -1,3 +1,35 @@
+#' @title Function to set Canvas API token
+#'
+#' @description Given a Canvas token string, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param token your API token
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_token("abc123")
+set_canvas_token <- function(token) {
+  Sys.setenv(CANVAS_API_TOKEN = token)
+}
+
+#' @title Function to set Canvas domain url
+#'
+#' @description Given a Canvas domain url, this function adds it to R's
+#' environment variables so it can be found by rcanvas.
+#'
+#' @param domain Canvas domain
+#'
+#' @return nothing
+#' @export
+#'
+#' @examples
+#' set_canvas_domain("https://canvas.upenn.edu")
+set_canvas_domain <- function(domain) {
+  Sys.setenv(CANVAS_DOMAIN = domain)
+}
+
 check_token <- function() {
   token <- Sys.getenv("CANVAS_API_TOKEN")
   if (identical(token, "")) {
@@ -9,11 +41,12 @@ check_token <- function() {
 
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
-canvas_query <- function(url, args) {
+canvas_query <- function(url, args, type = "GET") {
+  fun <- getFromNamespace(type, "httr")
   args <- sc(args)
-  resp <- httr::GET(url,
-                    httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-                    query = args)
+  resp <- fun(url,
+              httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+              query = args)
   httr::stop_for_status(resp)
   return(resp)
 }
@@ -29,15 +62,4 @@ iter_args_list <- function(x, label) {
 
 sc <- function(x) {
   Filter(Negate(is.null), x)
-}
-
-get_pages <- function(x) {
-  pages <- httr::headers(x)$link
-  if (!is.null(pages)) {
-    pages <- stringr::str_split(pages, ";")[[1]]
-    url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-    pages <- purrr::map_chr(pages, stringr::str_extract, url_pattern)
-    pages <- unique(pages[!is.na(pages)])
-    return(pages)
-  }
 }

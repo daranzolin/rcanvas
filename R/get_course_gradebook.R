@@ -1,4 +1,5 @@
 #' @importFrom magrittr %>%
+#' @importFrom magrittr %$%
 #'
 #' @title Get a course gradebook
 #'
@@ -10,11 +11,14 @@
 #' @examples
 #' get_course_gradebook(20)
 get_course_gradebook <- function(course_id) {
-  course_assignment_ids <- get_course_items(course_id, "assignments") %>% .$id %>% as.list()
+  course_assignment_ids <- get_course_items(course_id, "assignments") %$%
+    id %>% as.list()
   course_ids <- rep(course_id, length(course_assignment_ids)) %>% as.list()
 
   get_assignment_submissions <- function(course_id, assignment_id) {
-    url <- sprintf("%s/api/v1/courses/%s/assignments/%s/submissions", canvas_url(), course_id, assignment_id)
+    url <- sprintf("%s/courses/%s/assignments/%s/submissions",
+                   canvas_url(), course_id, assignment_id)
+    # process_response(url, args = list(access_token = check_token()))
     httr::GET(url, query = list(access_token = check_token())) %>%
       httr::content("text") %>%
       jsonlite::fromJSON(flatten = TRUE)
