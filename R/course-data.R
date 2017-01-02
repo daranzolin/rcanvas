@@ -24,12 +24,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
-  if (class(dat) == "list") {
-    dat <- data.frame(unlist(dat))
-    dat$course_id <- course_id
-    names(dat)[1] <- "item"
-  }
-  dat
+  return(dat)
 }
 
 #' @title Function to return course analytics data.
@@ -99,10 +94,5 @@ get_course_items <- function(course_id, item, include = NULL) {
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
-  if (class(dat) == "list") {
-    dat <- data.frame(unlist(dat))
-    dat$course_id <- course_id
-    names(dat)[1] <- "item"
-  }
   dat
 }
