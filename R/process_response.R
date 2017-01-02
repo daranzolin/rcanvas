@@ -28,7 +28,7 @@ process_response <- function(url, args) {
   return(df)
 }
 
-#' @title Get pages from Canvas API response
+#' @title Get responses from Canvas API pages
 #'
 #' @description The Canvas headers include a link object (usually), in form:
 #' \code{Link:
@@ -43,7 +43,7 @@ process_response <- function(url, args) {
 #'
 #' @param x a httr response object
 #'
-#' @return pages to download
+#' @return unparsed responses
 #'
 #' @examples
 #' \dontrun{resp <- canvas_query(url, args, "HEAD")
@@ -55,7 +55,7 @@ paginate <- function(x) {
   if (is.null(pages)) return(first_response)
   should_continue <- TRUE
   inc <- 2
-  if (has_rel(httr::headers(x)$link, "last")) {
+  if (has_rel(pages, "last")) {
     last_page <- get_page(x, "last")
     n_pages <- readr::parse_number(stringr::str_extract(last_page, "page=[0-9]{1,}"))
     if (n_pages == 1) return(first_response)
@@ -73,7 +73,7 @@ paginate <- function(x) {
       pages[[inc]] <- page_temp
       x <- canvas_query(page_temp,
                         args = list(access_token = check_token()),
-                        type = "GET")
+                        type = "HEAD")
       if (!has_rel(httr::headers(x)$link, "next")) {
         should_continue <- FALSE
       } else {
