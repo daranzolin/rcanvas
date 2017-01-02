@@ -24,12 +24,5 @@ get_user_items <- function(user_id, item) {
                per_page = 100)
 
   dat <- process_response(url, args)
-
-  if (class(dat) == "list") {
-    dat <- data.frame(unlist(dat))
-    names(dat)[1] <- "value"
-    dat$item <- row.names(dat)
-    row.names(dat) <- c()
-  }
-  dat
+  return(dat)
 }
