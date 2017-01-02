@@ -15,11 +15,14 @@
 #' @examples
 process_response <- function(url, args) {
   resp <- canvas_query(url, args, "HEAD")
-  get_pages(resp) %>%
+  df <- get_pages(resp) %>%
     purrr::map(canvas_query, args) %>%
     purrr::map(httr::content, "text") %>%
-    purrr::map(jsonlite::fromJSON, flatten = TRUE) %>%
-    dplyr::bind_rows()
+    purrr::map(jsonlite::fromJSON, flatten = TRUE)
+  if(length(df) > 1) {
+    df <- df %>% dplyr::bind_rows()
+  }
+  df
 }
 
 #' @title Get pages from Canvas API response
@@ -47,7 +50,7 @@ get_pages <- function(x) {
   stopifnot(httr::status_code(x) == 200) # OK status
   pages <- resp_headers$link
   # edge case of only 1 page
-  if(is.null(pages)) return(x$url)
+  if (is.null(pages)) return(x$url)
   # parse url's from link header
   url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
   pages <- stringr::str_split(pages, ";")[[1]]
@@ -84,7 +87,8 @@ get_pages <- function(x) {
 }
 
 increment_pages <- function(base_url, n_pages) {
-  stringr::str_replace(base_url, "([\\?&])(page=[0-9]{1,})",
+  # odd regex but necessary, see http://regexr.com/3evr4
+  stringr::str_replace(base_url, "([\\?&])(page=[0-9a-zA-Z]{1,})",
                        sprintf("\\1page=%s", n_pages))
 }
 
