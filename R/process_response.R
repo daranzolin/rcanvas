@@ -14,15 +14,18 @@
 #'
 #' @examples
 process_response <- function(url, args) {
-  resp <- canvas_query(url, args, "HEAD")
-  df <- get_pages(resp) %>%
-    purrr::map(canvas_query, args) %>%
+  resp <- canvas_query(url, args, "GET")
+  df <- paginate(resp) %>%
     purrr::map(httr::content, "text") %>%
     purrr::map(jsonlite::fromJSON, flatten = TRUE)
-  if(length(df) > 1) {
-    df <- df %>% dplyr::bind_rows()
+  df <- tryCatch({
+    df %>% purrr::map_df(purrr::flatten_df)
+  },
+  error = function(e) {
+    df %>% dplyr::bind_rows()
   }
-  df
+  )
+  return(df)
 }
 
 #' @title Get pages from Canvas API response
@@ -45,45 +48,41 @@ process_response <- function(url, args) {
 #' @examples
 #' \dontrun{resp <- canvas_query(url, args, "HEAD")
 #' get_pages(resp)}
-get_pages <- function(x) {
-  resp_headers <- httr::headers(x)
+paginate <- function(x) {
+  first_response <- list(x)
   stopifnot(httr::status_code(x) == 200) # OK status
-  pages <- resp_headers$link
-  # edge case of only 1 page
-  if (is.null(pages)) return(x$url)
-  # parse url's from link header
-  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
-  pages <- stringr::str_split(pages, ";")[[1]]
-  pages <- pages %>%
-    purrr::map_chr(stringr::str_extract, url_pattern) %>%
-    stringr::str_replace_all("[<>]", "")
-
-  pages <- unique(pages[!is.na(pages)])
-  base_url <- pages[1]
-  n_pages <- 1
+  pages <- httr::headers(x)$link
+  if (is.null(pages)) return(first_response)
   should_continue <- TRUE
-
+  inc <- 2
   if (has_rel(httr::headers(x)$link, "last")) {
-    n_pages <- readr::parse_number(stringr::str_extract(pages[length(pages)], "page=[0-9]{1,}"))
-  } else {
+    last_page <- get_page(x, "last")
+    n_pages <- readr::parse_number(stringr::str_extract(last_page, "page=[0-9]{1,}"))
+    if (n_pages == 1) return(first_response)
+    pages <- increment_pages(last_page, 2:n_pages)
+    responses <- pages %>%
+      purrr::map(canvas_query, args = list(access_token = check_token()))
+    responses <- c(first_response, responses)
+    return(responses)
+  } else if (has_rel(httr::headers(x)$link, "next")) {
     # edge case for if there is no 'last' header, see:
     # https://canvas.instructure.com/doc/api/file.pagination.html
     # https://github.com/daranzolin/rcanvas/issues/4
     while (should_continue) {
-      page_temp <- increment_pages(base_url, n_pages)
-      links_temp <- canvas_query(page_temp,
-                                 args = list(access_token = check_token()),
-                                 type = "HEAD")
-      if (has_rel(httr::headers(links_temp)$link, "next")) {
-        n_pages <- n_pages + 1
-      } else {
-        # we're done
+      page_temp <- get_page(x, "next")
+      pages[[inc]] <- page_temp
+      x <- canvas_query(page_temp,
+                        args = list(access_token = check_token()),
+                        type = "GET")
+      if (!has_rel(httr::headers(x)$link, "next")) {
         should_continue <- FALSE
+      } else {
+        inc <- inc + 1
       }
     }
+    responses <- pages %>%
+      purrr::map(canvas_query, args = list(access_token = check_token()))
   }
-  pages <- increment_pages(base_url, 1:n_pages)
-  return(pages)
 }
 
 increment_pages <- function(base_url, n_pages) {
@@ -95,4 +94,14 @@ increment_pages <- function(base_url, n_pages) {
 has_rel <- function(x, rel) {
   stopifnot(!is.null(rel))
   any(grepl(paste0("rel=\"", rel, "\""), x))
+}
+
+get_page <- function(resp, page) {
+  pages <- resp$headers$link
+  url_pattern <- "http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+"
+  pages <- stringr::str_split(pages, ",")[[1]]
+  url <- stringr::str_subset(pages, page)
+  url <- stringr::str_extract(url, url_pattern)
+  url <- stringr::str_replace_all(url, "[<>;]", "")
+  return(url)
 }
