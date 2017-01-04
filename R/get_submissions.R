@@ -17,5 +17,6 @@ get_submissions <- function(course_id, type, type_id) {
   url <- sprintf("%scourses/%s/%s/%s/submissions", canvas_url(), course_id, type, type_id)
   args <- list(access_token = check_token(),
                per_page = 100)
-  process_response(url, args)
+  process_response(url, args) %>%
+    dplyr::mutate(course_id = course_id)
 }
