@@ -23,7 +23,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
                user_id = user_id)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
-  dat <- process_response(url, args)
+  process_response(url, args)
   return(dat)
 }
 
@@ -93,6 +93,6 @@ get_course_items <- function(course_id, item, include = NULL) {
                per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
-  dat <- process_response(url, args)
-  dat
+  process_response(url, args) %>%
+    dplyr::mutate(course_id = course_id)
 }
