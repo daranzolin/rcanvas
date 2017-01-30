@@ -23,7 +23,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
                user_id = user_id)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
-  process_response(url, args)
+  dat <- process_response(url, args)
   return(dat)
 }
 
