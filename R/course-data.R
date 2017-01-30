@@ -96,3 +96,65 @@ get_course_items <- function(course_id, item, include = NULL) {
   dat <- process_response(url, args)
   dat
 }
+
+#' Get groups
+#'
+#' @param course_id which course
+#'
+#' @return returns group data for a given course
+#' @export
+#'
+#' @examples
+get_groups <- function(course_id) {
+  url <- paste0(canvas_url(), paste("courses", course_id, "groups", sep = "/"))
+  args <- list(access_token = check_token(),
+               per_page = 100)
+  include <- iter_args_list(NULL, "include[]")
+  args <- c(args, include)
+  dat <- process_response(url, args)
+  dat
+}
+
+#' Get group users
+#'
+#' @param course_id which course
+#' @param group_id which group
+#'
+#' @return users in a group
+#' @export
+#'
+#' @examples
+get_group_users <- function(course_id, group_id, group_name) {
+  url <- paste0(canvas_url(),
+                paste("groups", group_id, "users", sep = "/"))
+  args <- list(access_token = check_token(),
+               per_page = 100)
+  include <- iter_args_list(NULL, "include[]")
+  args <- c(args, include)
+  dat <- process_response(url, args)
+  dat %>% dplyr::mutate(group_id = group_id,
+                      group_name = group_name)
+}
+
+#' Get all users in a course and which group they are signed up for
+#'
+#' @param course_id which course
+#'
+#' @return dataframe with user name, user id, and group id
+#' @export
+#'
+#' @examples
+get_course_user_groups <- function(course_id) {
+  all_course_groups <- get_groups(course_id)
+  grouped_users <- purrr::pmap_df(list(course_id, all_course_groups$id,
+                                       all_course_groups$name), get_group_users)
+  all_users <- get_course_items(course_id, item = "students")
+
+  grouped_users <- grouped_users %>%
+    dplyr::select(id, group_id, group_name)
+  all_users <- all_users %>%
+    dplyr::select(id, sortable_name)
+  all_users %>%
+    dplyr::left_join(grouped_users, by = "id") %>%
+    unique
+}
