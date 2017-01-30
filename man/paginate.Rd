@@ -2,7 +2,7 @@
 % Please edit documentation in R/process_response.R
 \name{paginate}
 \alias{paginate}
-\title{Get pages from Canvas API response}
+\title{Get responses from Canvas API pages}
 \usage{
 paginate(x)
 }
@@ -10,7 +10,7 @@ paginate(x)
 \item{x}{a httr response object}
 }
 \value{
-pages to download
+unparsed responses
 }
 \description{
 The Canvas headers include a link object (usually), in form:
