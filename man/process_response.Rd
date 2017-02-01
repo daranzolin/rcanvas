@@ -21,4 +21,3 @@ process_response(url, args)
 \value{
 processed dataframe
 }
-

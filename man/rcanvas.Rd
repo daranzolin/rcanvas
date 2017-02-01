@@ -8,4 +8,3 @@
 \description{
 rcanvas: R client for Canvas API
 }
-

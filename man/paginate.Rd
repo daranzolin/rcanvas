@@ -28,4 +28,3 @@ requests, to figure out these page requirements.
 \dontrun{resp <- canvas_query(url, args, "HEAD")
 get_pages(resp)}
 }
-

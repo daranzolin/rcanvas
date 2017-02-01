@@ -25,4 +25,3 @@ returns a course object.
 #' get_course_items(course_id = 20, item = "enrollments")
 #' get_course_items(20, item = "users", include = "email")
 }
-

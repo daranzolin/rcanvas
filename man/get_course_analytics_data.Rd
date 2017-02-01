@@ -25,4 +25,3 @@ the function will return a list.
 #' get_course_analytics_data(course_id = 17, type = "activity")
 #' get_course_analytics_data(course_id = 17, type = "student_summaries", user_id = 366)
 }
-
