@@ -39,6 +39,7 @@ silently sends put request and updates
 \code{update_discussion_id}: Update discussion by id
 }
 \examples{
+get_discussions_context(4371405)
 get_discussion_id(4371405, 1350207)
 update_discussion_id(4371405, 1350207, newtext)
 }

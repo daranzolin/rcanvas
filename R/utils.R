@@ -63,3 +63,11 @@ iter_args_list <- function(x, label) {
 sc <- function(x) {
   Filter(Negate(is.null), x)
 }
+
+# get_announcements("1350207", start_date = convert_dates(days = -320))
+# get_announcements("1350207", start_date = "2017-02-01")
+
+convert_dates <- function(base_date = Sys.Date(), days) {
+  new_date <- base_date + lubridate::ddays(days)
+  format(new_date, "%Y-%m-%d")
+}

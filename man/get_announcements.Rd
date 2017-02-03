@@ -4,7 +4,7 @@
 \alias{get_announcements}
 \title{Get announcements for a course}
 \usage{
-get_announcements(course_id)
+get_announcements(course_id, start_date = NULL, end_date = NULL)
 }
 \arguments{
 \item{course_id}{numeric course id}
