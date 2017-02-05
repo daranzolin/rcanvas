@@ -19,4 +19,3 @@ environment variables so it can be found by rcanvas.
 \examples{
 set_canvas_domain("https://canvas.upenn.edu")
 }
-

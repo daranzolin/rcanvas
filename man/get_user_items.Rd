@@ -18,4 +18,3 @@ data frame
 
 get_user_items(365, "details")
 }
-

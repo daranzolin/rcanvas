@@ -19,4 +19,3 @@ data frame
 #' get_course_list(user_id = 366)
 #' get_course_list(include = c("teachers", "total_students"))
 }
-

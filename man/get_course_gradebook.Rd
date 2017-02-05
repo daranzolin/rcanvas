@@ -15,4 +15,3 @@ A gradebook
 \examples{
 get_course_gradebook(20)
 }
-

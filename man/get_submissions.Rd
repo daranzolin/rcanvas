@@ -20,4 +20,3 @@ Student submissions
 #'get_submissions(27, "quizzes", 2915)
 #'get_submissions(27, "assignments, 254)
 }
-
