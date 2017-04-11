@@ -24,7 +24,7 @@ get_course_list <- function(user_id = NULL, include = NULL) {
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
-  return(dat)
+  return(unique(dat))
 }
 
 #' @title Function to return course analytics data.

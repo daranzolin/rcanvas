@@ -9,6 +9,7 @@
 #' @export
 #'
 #' @examples
+#' get_groups_context(27)
 get_groups_context <- function(object_id, object_type = "courses") {
   stopifnot(object_type %in% c("courses", "accounts"))
   url <- paste0(canvas_url(), paste(object_type, object_id, "groups", sep = "/"))
@@ -28,6 +29,7 @@ get_groups_context <- function(object_id, object_type = "courses") {
 #' @export
 #'
 #' @examples
+#' get_group_users(27314)
 get_group_users <- function(group_id, group_name) {
   if(missing(group_name)) {
     group_name <- NA

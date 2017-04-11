@@ -14,7 +14,7 @@
 #' @examples
 get_announcements <- function(course_id, start_date = NULL, end_date = NULL,
                               active_only = FALSE) {
-  if(!grepl(pattern = "course", x = course_id)) {
+  if (!grepl(pattern = "course", x = course_id)) {
     course_id <- paste0("course_", course_id)
   }
   url <- paste0(canvas_url(), "announcements")

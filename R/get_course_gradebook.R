@@ -24,7 +24,9 @@ get_course_gradebook <- function(course_id) {
       jsonlite::fromJSON(flatten = TRUE)
   }
 
-  assignments <- purrr::map2_df(course_ids, course_assignment_ids, get_assignment_submissions)
-  students <- get_course_items(course_id, "enrollments") %>% dplyr::select(user.name, user_id, grades.final_score, course_id)
+  assignments <- purrr::map2_df(course_ids, course_assignment_ids,
+                                get_assignment_submissions)
+  students <- get_course_items(course_id, "enrollments") %>%
+    dplyr::select(user.name, user_id, grades.final_score, course_id)
   dplyr::left_join(assignments, students, by = "user_id")
 }
