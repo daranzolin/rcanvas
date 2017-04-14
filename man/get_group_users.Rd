@@ -15,3 +15,6 @@ users in a group
 \description{
 Get group users
 }
+\examples{
+get_group_users(27314)
+}

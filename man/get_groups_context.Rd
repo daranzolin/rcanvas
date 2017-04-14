@@ -17,3 +17,6 @@ returns groups available for a given course or account
 \description{
 Returns the list of active groups in the given context that are visible to user.
 }
+\examples{
+get_groups_context(27)
+}

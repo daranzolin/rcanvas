@@ -16,7 +16,3 @@ get_submissions(course_id, type, type_id)
 \value{
 Student submissions
 }
-\examples{
-#'get_submissions(27, "quizzes", 2915)
-#'get_submissions(27, "assignments, 254)
-}
