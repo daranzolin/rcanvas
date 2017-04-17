@@ -1,35 +1,30 @@
-#' @title Function to set Canvas API token
+#' Canvas API helpers
 #'
-#' @description Given a Canvas token string, this function adds it to R's
-#' environment variables so it can be found by rcanvas.
+#' These functinos set your Canvas API token, as well as the Canvas base URL.
+#' These functions are necessary for `rcanvas` to run.
 #'
+#' @name apihelpers
+#' @md
+
 #' @param token your API token
-#'
-#' @return nothing
 #' @export
-#'
+#' @rdname apihelpers
 #' @examples
 #' set_canvas_token("abc123")
 set_canvas_token <- function(token) {
   Sys.setenv(CANVAS_API_TOKEN = token)
 }
 
-#' @title Function to set Canvas domain url
-#'
-#' @description Given a Canvas domain url, this function adds it to R's
-#' environment variables so it can be found by rcanvas.
-#'
 #' @param domain Canvas domain
-#'
-#' @return nothing
 #' @export
-#'
+#' @rdname apihelpers
 #' @examples
 #' set_canvas_domain("https://canvas.upenn.edu")
 set_canvas_domain <- function(domain) {
   Sys.setenv(CANVAS_DOMAIN = domain)
 }
 
+#' @rdname apihelpers
 check_token <- function() {
   token <- Sys.getenv("CANVAS_API_TOKEN")
   if (identical(token, "")) {
@@ -63,9 +58,6 @@ iter_args_list <- function(x, label) {
 sc <- function(x) {
   Filter(Negate(is.null), x)
 }
-
-# get_announcements("1350207", start_date = convert_dates(days = -320))
-# get_announcements("1350207", start_date = "2017-02-01")
 
 convert_dates <- function(base_date = Sys.Date(), days) {
   new_date <- base_date + lubridate::ddays(days)

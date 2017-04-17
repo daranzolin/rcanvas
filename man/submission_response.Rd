@@ -28,17 +28,21 @@ grade_submission(course_id, assignment_id, user_id, grade)
 }
 \value{
 Invisibly performs the PUT call
-
-Invisibly performs the PUT call
 }
 \description{
-See https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.update
-This plays nicely with purrr::map2, so it's easy to assign comments or grades
+See \href{https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.update}{Canvas API Documentation}.
+
+\itemize{
+\item \code{comment_submission}: Comment on a submission
+}
+
+\itemize{
+\item \code{grade_submission}: Grade a submission
+}
+}
+\details{
+This plays nicely with \code{purrr::map2}, so it's easy to assign comments or grades
 en masse to students.
-
-`comment_submission`: Comment on a submission
-
-`grade_submission`: Grade a submission
 }
 \examples{
 \dontrun{comment_submission(1350207, 5681164, 4928217, "test")}

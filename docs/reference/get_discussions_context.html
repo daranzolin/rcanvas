@@ -56,6 +56,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -80,11 +83,13 @@
     </div>
 
     
-    <p><code>get_discussions_context</code>: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use <code>get_announcements</code> instead.
+    <p>A group of functions which deal with <a href = 'https://canvas.instructure.com/doc/api/discussion_topics.html'>discussion topics</a>.</p><ul>
+<li><p><code>get_discussion_id</code>: Get single discussion by id</p></li>
+</ul>
 
-    <code>get_discussion_id</code>: Get single discussion by id
-
-    <code>update_discussion_id</code>: Update discussion by id</p>
+    <ul>
+<li><p><code>update_discussion_id</code>: Update discussion by id</p></li>
+</ul>
     
 
     <pre class="usage"><span class='fu'>get_discussions_context</span>(<span class='no'>object_id</span>, <span class='kw'>object_type</span> <span class='kw'>=</span> <span class='st'>"courses"</span>, <span class='kw'>include</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
@@ -125,22 +130,15 @@
 <p>single discussion</p>
 <p>silently sends put request and updates</p>
     
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <ul>
+<li><p><code>get_discussions_context</code>: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use <code>get_announcements</code> instead.</p></li>
+</ul>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>get_discussions_context</span>(<span class='fl'>4371405</span>)</div><div class='output co'>#&gt; <span class='error'>Error in canvas_query(url, args, "GET"): Not Found (HTTP 404).</span></div><div class='input'><span class='fu'>get_discussion_id</span>(<span class='fl'>4371405</span>, <span class='fl'>1350207</span>)</div><div class='output co'>#&gt; # A tibble: 1 × 34
-#&gt;        id                                  title        last_reply_at
-#&gt;     &lt;int&gt;                                  &lt;chr&gt;                &lt;chr&gt;
-#&gt; 1 4214156 Logistics: homework, office hours, etc 2017-01-27T15:45:23Z
-#&gt; # ... with 31 more variables: posted_at &lt;chr&gt;, position &lt;int&gt;,
-#&gt; #   podcast_has_student_posts &lt;lgl&gt;, discussion_type &lt;chr&gt;, allow_rating &lt;lgl&gt;,
-#&gt; #   only_graders_can_rate &lt;lgl&gt;, sort_by_rating &lt;lgl&gt;, user_name &lt;chr&gt;,
-#&gt; #   discussion_subentry_count &lt;int&gt;, attach &lt;lgl&gt;, update &lt;lgl&gt;, reply &lt;lgl&gt;,
-#&gt; #   delete &lt;lgl&gt;, user_can_see_posts &lt;lgl&gt;, read_state &lt;chr&gt;,
-#&gt; #   unread_count &lt;int&gt;, subscribed &lt;lgl&gt;, published &lt;lgl&gt;, can_unpublish &lt;lgl&gt;,
-#&gt; #   locked &lt;lgl&gt;, can_lock &lt;lgl&gt;, comments_disabled &lt;lgl&gt;, display_name &lt;chr&gt;,
-#&gt; #   avatar_image_url &lt;chr&gt;, html_url &lt;chr&gt;, url &lt;chr&gt;, pinned &lt;lgl&gt;,
-#&gt; #   can_group &lt;lgl&gt;, locked_for_user &lt;lgl&gt;, message &lt;chr&gt;,
-#&gt; #   subscription_hold &lt;chr&gt;</div><div class='input'><span class='fu'>update_discussion_id</span>(<span class='fl'>4371405</span>, <span class='fl'>1350207</span>, <span class='no'>newtext</span>)</div><div class='output co'>#&gt; <span class='error'>Error in update_discussion_id(4371405, 1350207, newtext): object 'newtext' not found</span></div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>get_discussions_context</span>(<span class='fl'>4371405</span>)</div><div class='output co'>#&gt; <span class='error'>Error in canvas_query(url, args, "GET"): Unauthorized (HTTP 401).</span></div><div class='input'><span class='fu'>get_discussion_id</span>(<span class='fl'>4371405</span>, <span class='fl'>1350207</span>)</div><div class='output co'>#&gt; <span class='error'>Error in canvas_query(url, args, "GET"): Unauthorized (HTTP 401).</span></div><div class='input'><span class='fu'>update_discussion_id</span>(<span class='fl'>4371405</span>, <span class='fl'>1350207</span>, <span class='no'>newtext</span>)</div><div class='output co'>#&gt; <span class='error'>Error in update_discussion_id(4371405, 1350207, newtext): object 'newtext' not found</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -148,6 +146,8 @@
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Submissions — submissions • rcanvas</title>
+<title>Submission functions — submissions • rcanvas</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -56,6 +56,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -76,14 +79,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Submissions</h1>
+    <h1>Submission functions</h1>
     </div>
 
     
-    <p>Submissions
+    <p>Submission functions</p><ul>
+<li><p><code>get_submissions</code>: For given course and assignment/quiz, get submissions</p></li>
+</ul>
 
-    <code>get_submissions</code>: For given course and assignment/quiz, get submissions</p>
-<p>`get_submission_single`: Get a single submission, based on user id.</p>
+    <ul>
+<li><p><code>get_submission_single</code>: Get a single submission, based on user id.</p></li>
+</ul>
     
 
     <pre class="usage"><span class='fu'>get_submissions</span>(<span class='no'>course_id</span>, <span class='no'>type</span>, <span class='no'>type_id</span>)
@@ -119,7 +125,7 @@
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'>## Not run: get_submissions(27, "quizzes", 2915)</span>
 <span class='co'>## Not run: get_submissions(27, "assignments", 254)</span>
-<span class='fu'>get_submission_single</span>(<span class='fl'>1350207</span>, <span class='st'>"assignments"</span>, <span class='fl'>5681164</span>, <span class='fl'>4928217</span>)</div><div class='output co'>#&gt; <span class='error'>Error in canvas_query(url, args, "GET"): Unauthorized (HTTP 401).</span></div></pre>
+<span class='co'>## Not run: get_submission_single(1350207, "assignments", 5681164, 4928217)</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

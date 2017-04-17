@@ -2,14 +2,7 @@
 % Please edit documentation in R/process_response.R
 \name{process_response}
 \alias{process_response}
-\title{Process a Canvas API response
-
-Wrapper function for common tasks in going from Canvas url to dataframe. Most
-of the heavy lifting is done in \code{paginate}, which finds which pages to
-download. This function adds necessary arguments to those pages (e.g. the
-authentication token), downloads the content, converts from JSON into data
-frame format, and if there are multiple pages/dataframes, converts it into
-one final dataframe.}
+\title{Process a Canvas API response}
 \usage{
 process_response(url, args)
 }
@@ -20,4 +13,12 @@ process_response(url, args)
 }
 \value{
 processed dataframe
+}
+\description{
+Wrapper function for common tasks in going from Canvas url to dataframe. Most
+of the heavy lifting is done in \code{paginate}, which finds which pages to
+download. This function adds necessary arguments to those pages (e.g. the
+authentication token), downloads the content, converts from JSON into data
+frame format, and if there are multiple pages/dataframes, converts it into
+one final dataframe.
 }

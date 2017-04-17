@@ -56,6 +56,9 @@
 <li>
   <a href="../articles/index.html">Articles</a>
 </li>
+<li>
+  <a href="../news/index.html">News</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
@@ -80,11 +83,13 @@
     </div>
 
     
-    <p>See https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.update
-This plays nicely with purrr::map2, so it's easy to assign comments or grades
-en masse to students.</p>
-<p>`comment_submission`: Comment on a submission</p>
-<p>`grade_submission`: Grade a submission</p>
+    <p>See <a href = 'https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.update'>Canvas API Documentation</a>.</p><ul>
+<li><p><code>comment_submission</code>: Comment on a submission</p></li>
+</ul>
+
+    <ul>
+<li><p><code>grade_submission</code>: Grade a submission</p></li>
+</ul>
     
 
     <pre class="usage"><span class='fu'>comment_submission</span>(<span class='no'>course_id</span>, <span class='no'>assignment_id</span>, <span class='no'>user_id</span>, <span class='no'>comm</span>, <span class='kw'>to_group</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
@@ -128,7 +133,11 @@ en masse to students.</p>
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Invisibly performs the PUT call</p>
-<p>Invisibly performs the PUT call</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This plays nicely with <code>purrr::map2</code>, so it's easy to assign comments or grades
+en masse to students.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
@@ -141,6 +150,8 @@ en masse to students.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
