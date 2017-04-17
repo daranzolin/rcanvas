@@ -12,6 +12,9 @@ get_course_gradebook(course_id)
 \value{
 A gradebook
 }
+\description{
+Get a course gradebook
+}
 \examples{
 get_course_gradebook(20)
 }

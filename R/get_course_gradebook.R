@@ -1,7 +1,7 @@
+#' Get a course gradebook
+#'
 #' @importFrom magrittr %>%
 #' @importFrom magrittr %$%
-#'
-#' @title Get a course gradebook
 #'
 #' @param course_id A valid course id
 #'

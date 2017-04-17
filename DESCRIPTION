@@ -3,7 +3,7 @@ Title: R Client for Canvas API
 Version: 0.0.0.9000
 Authors@R: c(
     person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre")),
-    person("Chris", "Hua", email = "hua.christopher@gmail.com", role = "aut)
+    person("Chris", "Hua", email = "hua.christopher@gmail.com", role = "aut")
     )
 Description: A client for any individual instance of the Canvas API.
 Depends:
@@ -11,7 +11,7 @@ Depends:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.0.0
+RoxygenNote: 6.0.1
 Imports: httr,
     jsonlite,
     purrr,
