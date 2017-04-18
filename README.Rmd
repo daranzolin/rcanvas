@@ -8,7 +8,8 @@ output: github_document
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  fig.path = "README-"
+  fig.path = "README-",
+  eval = FALSE
 )
 ```
 
@@ -30,6 +31,10 @@ library(rcanvas)
 # Setup
 
 Some prep work is required before use. You must first stash two items in your `.Renviron` file: (1) your third-party access token, available through your Canvas LMS account settings; and (2) your institution's particular domain. (e.g. `"https://<your_domain>.instructure.com/"`) Name your token `CANVAS_API_TOKEN`, and your domain `CANVAS_DOMAIN`. For help on setting up your `.Renviron` (and all things R) see Jenny Bryan's [Stat545 page.](http://stat545.com/bit003_api-key-env-var.html)
+
+The process for getting your Canvas API token:
+
+`Canvas -> Account -> Settings -> Approved Integrations -> Add new token`
 
 We provide two helper functions to make this process easier.
 
@@ -86,6 +91,36 @@ Submissions are available for both quizzes and assignments, e.g.:
 ```{r eval = FALSE}
 get_submissions(course_id = 27, type = "assignments", type_id = 2248)
 get_submissions(27, "quizzes", 168)
+```
+
+You can also comment on assignments or assign them scores programatically.
+
+```{r eval = FALSE}
+comment_submission(course_id = 27, assignment_id = 2248, 
+                   user_id = 4227, comm = "Test comment!")
+grade_submission(course_id = 27, assignment_id = 2248, 
+                   user_id = 4227, grade = 95)
+```
+
+## Groups
+
+Students can belong to groups, which belong to a particular course object. The functions in `groups.R` deal with listing the users and groups in each course.
+
+```{r eval = FALSE}
+get_course_user_groups(course_id = 27)
+```
+
+## Announcements and Discussions
+
+Additionally, we have some functions that will collect the announcements or discussions from a particular course. 
+
+```{r}
+get_announcements(course_id = 27) 
+get_announcements(course_id = 27, start_date = "2017-02-01") 
+```
+
+```{r}
+get_discussions_context(4371405, object_type = "courses")
 ```
 
 

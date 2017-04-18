@@ -15,3 +15,6 @@ dataframe with user name, user id, and group id
 \description{
 Get all users in a course and which group they are signed up for
 }
+\examples{
+\dontrun{get_course_user_groups(27)}
+}

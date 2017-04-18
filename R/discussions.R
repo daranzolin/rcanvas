@@ -1,6 +1,8 @@
 #' Discussion functions
 #'
-#' `get_discussions_context`: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use `get_announcements` instead.
+#' A group of functions which deal with [discussion topics](https://canvas.instructure.com/doc/api/discussion_topics.html).
+#'
+#' * `get_discussions_context`: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use `get_announcements` instead.
 #'
 #' @param object_id course or group id
 #' @param object_type "courses" or "groups"
@@ -24,9 +26,8 @@ get_discussions_context <- function(object_id, object_type = "courses",
   dat
 }
 
-#' Get single discussion by id
 #'
-#' `get_discussion_id`: Get single discussion by id
+#' * `get_discussion_id`: Get single discussion by id
 #'
 #' @param discussion_id  specific id of discussion to get/update
 #' @rdname get_discussions_context
@@ -48,7 +49,7 @@ get_discussion_id <- function(discussion_id, object_id, object_type = "courses")
   dat
 }
 
-#' `update_discussion_id`: Update discussion by id
+#' * `update_discussion_id`: Update discussion by id
 #'
 #' @param message new body of discussion id
 #'

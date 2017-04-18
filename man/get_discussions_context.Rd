@@ -32,11 +32,20 @@ single discussion
 silently sends put request and updates
 }
 \description{
-\code{get_discussions_context}: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use \code{get_announcements} instead.
+A group of functions which deal with \href{https://canvas.instructure.com/doc/api/discussion_topics.html}{discussion topics}.
 
-\code{get_discussion_id}: Get single discussion by id
+\itemize{
+\item \code{get_discussion_id}: Get single discussion by id
+}
 
-\code{update_discussion_id}: Update discussion by id
+\itemize{
+\item \code{update_discussion_id}: Update discussion by id
+}
+}
+\details{
+\itemize{
+\item \code{get_discussions_context}: get all discussions belonging to a course or group. Note that theoretically this should include announcements, as they are technically discussions, but does not. Use \code{get_announcements} instead.
+}
 }
 \examples{
 get_discussions_context(4371405)

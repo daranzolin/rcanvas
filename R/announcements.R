@@ -12,6 +12,8 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{get_announcements(course_id = 27)}
+#' \dontrun{get_announcements(course_id = 27, start_date = "2017-02-01")}
 get_announcements <- function(course_id, start_date = NULL, end_date = NULL,
                               active_only = FALSE) {
   if (!grepl(pattern = "course", x = course_id)) {

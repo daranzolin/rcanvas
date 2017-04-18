@@ -9,6 +9,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
 The goal of rcanvas is to get student and course data as simply as possible. Towards that end,
 there are three core functions: (1) `get_course_list()`; (2) `get_course_items()`; and (3) `get_course_analytics_data()`.
 

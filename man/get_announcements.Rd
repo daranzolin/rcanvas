@@ -23,3 +23,7 @@ announcements for a given course
 We transform the course id from a numeric (e.g. 123) to a context id
 (e.g. course_123).
 }
+\examples{
+\dontrun{get_announcements(course_id = 27)}
+\dontrun{get_announcements(course_id = 27, start_date = "2017-02-01")}
+}
