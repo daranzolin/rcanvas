@@ -70,6 +70,40 @@ get_group_users <- function(group_id, group_name) {
                         group_name = group_name)
 }
 
+#' Add the user to the group
+#'
+#' @param group_id the group ID
+#' @param user_id the user ID
+#' @export
+#' @rdname groups
+#' @examples
+#' \dontrun{add_group_users(group_id=23, user_ids=327))}
+add_group_user <- function(group_id, user_id) {
+  url <- paste0(canvas_url(),
+                paste("groups", group_id, "memberships", sep="/"))
+  args <- list(access_token = check_token(),
+               user_id = user_id)
+
+  invisible(canvas_query(url, args, "POST"))
+}
+
+#' Add multiple users to one or more groups
+#'
+#' group_id can be a single group ID, in which case all users are added to
+#' that group. It can also be a vector of group IDs of the same length as
+#' user IDs, in which case each user will be added to the corresponding group
+#'
+#' @param group_id the group ID or IDs
+#' @param user_ids the users IDS to add to the group
+#' @export
+#' @rdname groups
+#' @examples
+#' \dontrun{add_multiple_group_users(group_id=23, user_ids=c(327, 328))}
+#' \dontrun{add_multiple_group_users(group_id=c(23, 24), user_ids=c(327, 328))}
+add_multiple_group_users <- function(group_id, user_ids) {
+  invisible(purrr::map2(group_id, user_ids, add_group_user))
+}
+
 #' Get all users in a course and which group they are signed up for
 #'
 #' @importFrom magrittr %>%
