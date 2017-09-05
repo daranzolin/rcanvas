@@ -15,8 +15,7 @@ NULL
 #' \dontrun{get_groups_self}
 get_groups_self <- function() {
   url <- paste0(canvas_url(), "users/self/groups", sep = "/")
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -35,8 +34,7 @@ get_groups_self <- function() {
 get_groups_context <- function(object_id, object_type = "courses") {
   stopifnot(object_type %in% c("courses", "accounts"))
   url <- paste0(canvas_url(), paste(object_type, object_id, "groups", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -64,8 +62,7 @@ get_group_users <- function(group_id, group_name) {
   }
   url <- paste0(canvas_url(),
                 paste("groups", group_id, "users", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
