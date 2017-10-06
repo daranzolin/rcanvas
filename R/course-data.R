@@ -54,7 +54,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
     stop("user_id must be specified for communication data")
   }
   args <- list(
-    per_page = 500,
+    per_page = 100,
     user_id = user_id
     )
   resp <- canvas_query(url, args)
