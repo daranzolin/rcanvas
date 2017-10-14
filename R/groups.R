@@ -23,18 +23,18 @@ get_groups_self <- function() {
   dat
 }
 
-#' `get_groups_context`: Returns the list of active groups in the given context that are visible to user.
+#' `get_groups`: Returns the list of active groups in the given context that are visible to user.
 #'
 #' @md
 #' @rdname groups
-#' @param object_id id for given type
-#' @param object_type course or account
+#' @param context_id id for given type
+#' @param context_type course or account
 #' @export
 #' @examples
 #' \dontrun{get_groups_context(27)}
-get_groups_context <- function(object_id, object_type = "courses") {
-  stopifnot(object_type %in% c("courses", "accounts"))
-  url <- paste0(canvas_url(), paste(object_type, object_id, "groups", sep = "/"))
+get_groups <- function(context_id, context_type = "courses") {
+  stopifnot(context_type %in% c("courses", "accounts"))
+  url <- paste0(canvas_url(), paste(context_type, context_id, "groups", sep = "/"))
   args <- list(access_token = check_token(),
                per_page = 100)
   include <- iter_args_list(NULL, "include[]")
@@ -93,4 +93,80 @@ get_course_user_groups <- function(course_id) {
   all_users %>%
     dplyr::left_join(grouped_users, by = "id") %>%
     unique
+}
+
+#' Group categories
+#'
+#' @param context_id
+#' @param context_type
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' get_group_categories(1350207)
+get_group_categories <- function(context_id, context_type = "courses") {
+  stopifnot(context_type %in% c("courses", "accounts"))
+  url <- paste0(canvas_url(), paste(context_type, context_id,
+                                    "group_categories", sep = "/"))
+  args <- list(access_token = check_token(),
+               per_page = 100)
+  include <- iter_args_list(NULL, "include[]")
+  args <- c(args, include)
+  dat <- process_response(url, args)
+  dat
+}
+
+#' Get a single group category
+#'
+#' @param group_category_id
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' get_group_category(52872)
+get_group_category <- function(group_category_id) {
+  url <- paste0(canvas_url(), paste("group_categories", group_category_id,
+                                    sep = "/"))
+  args <- list(access_token = check_token(),
+               per_page = 100)
+  include <- iter_args_list(NULL, "include[]")
+  args <- c(args, include)
+  dat <- process_response(url, args)
+  dat
+}
+
+#' Create a group category
+#'
+#' Does not work yet. Returns 422. Unclear how to fix.
+#'
+#' @param context_id
+#' @param context_type
+#' @param cat_name Name of the group category. Required.
+#' @param self_signup Allow students to sign up for a group themselves (Course Only). valid values are: “enabled”, allows students to self sign up for any group in course;  “restricted” allows students to self sign up only for groups in the same section null disallows self sign up
+#' @param auto_leader Assigns group leaders automatically when generating and allocating students to groups. Valid values are: “first” the first student to be allocated to a group is the leader; “random” a random student from all members is chosen as the leader
+#' @param group_limit Limit the maximum number of users in each group (Course Only). Requires self signup.
+#' @param create_group_count Create this number of groups (Course Only).
+#'
+#' @return
+#'
+#' @examples
+#' create_group_category(1350207, "courses", "FinalProjectGroup",
+#' "enabled", "first", 3, 48)
+create_group_category <- function(context_id, context_type = "courses",
+                                  cat_name, self_signup = NULL,
+                                  auto_leader = NULL, group_limit = NULL,
+                                  create_group_count= NULL) {
+  stopifnot(context_type %in% c("courses", "accounts"))
+  url <- paste0(canvas_url(), paste(context_type, context_id,
+                                    "group_categories", sep = "/"))
+  args <- list(access_token = check_token(),
+               name = cat_name,
+               self_signup = self_signup,
+               auto_leader = auto_leader,
+               group_limit = group_limit,
+               create_group_count = create_group_count)
+  sc(args)
+  canvas_query(url, args, "PUT")
 }

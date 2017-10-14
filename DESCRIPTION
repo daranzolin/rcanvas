@@ -24,5 +24,6 @@ BugReports: https://github.com/daranzolin/rcanvas/issues
 Suggests: testthat,
     knitr,
     rmarkdown,
-    lubridate
+    lubridate,
+    pkgdown
 VignetteBuilder: knitr
