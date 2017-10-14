@@ -19,10 +19,13 @@ create_group_category(context_id, context_type = "courses", cat_name,
 
 \item{create_group_count}{Create this number of groups (Course Only).}
 }
+\value{
+
+}
 \description{
-Create a group category
+Does not work yet. Returns 422. Unclear how to fix.
 }
 \examples{
-create_group_category(1350207, "courses", "Final Project Group",
+create_group_category(1350207, "courses", "FinalProjectGroup",
 "enabled", "first", 3, 48)
 }

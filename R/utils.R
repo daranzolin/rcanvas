@@ -41,6 +41,7 @@ canvas_query <- function(urlx, args, type = "GET") {
   args <- sc(args)
   resp <- fun(urlx,
               httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+              httr::add_headers(Authorization = paste("Bearer", check_token())),
               query = args)
   httr::stop_for_status(resp)
   return(resp)

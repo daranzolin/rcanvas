@@ -15,28 +15,26 @@ NULL
 #' \dontrun{get_groups_self}
 get_groups_self <- function() {
   url <- paste0(canvas_url(), "users/self/groups", sep = "/")
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
   dat
 }
 
-#' `get_groups`: Returns the list of active groups in the given context that are visible to user.
+#' `get_groups_context`: Returns the list of active groups in the given context that are visible to user.
 #'
 #' @md
 #' @rdname groups
-#' @param context_id id for given type
-#' @param context_type course or account
+#' @param object_id id for given type
+#' @param object_type course or account
 #' @export
 #' @examples
 #' \dontrun{get_groups_context(27)}
-get_groups <- function(context_id, context_type = "courses") {
-  stopifnot(context_type %in% c("courses", "accounts"))
-  url <- paste0(canvas_url(), paste(context_type, context_id, "groups", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+get_groups_context <- function(object_id, object_type = "courses") {
+  stopifnot(object_type %in% c("courses", "accounts"))
+  url <- paste0(canvas_url(), paste(object_type, object_id, "groups", sep = "/"))
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -64,8 +62,7 @@ get_group_users <- function(group_id, group_name) {
   }
   url <- paste0(canvas_url(),
                 paste("groups", group_id, "users", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -109,8 +106,7 @@ get_group_categories <- function(context_id, context_type = "courses") {
   stopifnot(context_type %in% c("courses", "accounts"))
   url <- paste0(canvas_url(), paste(context_type, context_id,
                                     "group_categories", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -161,8 +157,7 @@ create_group_category <- function(context_id, context_type = "courses",
   stopifnot(context_type %in% c("courses", "accounts"))
   url <- paste0(canvas_url(), paste(context_type, context_id,
                                     "group_categories", sep = "/"))
-  args <- list(access_token = check_token(),
-               name = cat_name,
+  args <- list(name = cat_name,
                self_signup = self_signup,
                auto_leader = auto_leader,
                group_limit = group_limit,

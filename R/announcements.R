@@ -20,8 +20,7 @@ get_announcements <- function(course_id, start_date = NULL, end_date = NULL,
     course_id <- paste0("course_", course_id)
   }
   url <- paste0(canvas_url(), "announcements")
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(course_id, "context_codes[]")
   include2 <- iter_args_list(start_date, "start_date")
   include3 <- iter_args_list(end_date, "end_date")

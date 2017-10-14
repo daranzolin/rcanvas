@@ -3,20 +3,20 @@
 \name{groups}
 \alias{groups}
 \alias{get_groups_self}
-\alias{get_groups}
+\alias{get_groups_context}
 \alias{get_group_users}
 \title{Groups}
 \usage{
 get_groups_self()
 
-get_groups(context_id, context_type = "courses")
+get_groups_context(object_id, object_type = "courses")
 
 get_group_users(group_id, group_name)
 }
 \arguments{
-\item{context_id}{id for given type}
+\item{object_id}{id for given type}
 
-\item{context_type}{course or account}
+\item{object_type}{course or account}
 
 \item{group_id}{which group}
 
@@ -35,7 +35,7 @@ Group memberships are the objects that tie users and groups together.
 
 \code{get_groups_self}: Returns groups which the current user (you) belongs to
 
-\code{get_groups}: Returns the list of active groups in the given context that are visible to user.
+\code{get_groups_context}: Returns the list of active groups in the given context that are visible to user.
 
 \code{get_group_users}: Get users which belong to a group
 }

@@ -19,7 +19,7 @@ get_course_gradebook <- function(course_id) {
     url <- sprintf("%s/courses/%s/assignments/%s/submissions",
                    canvas_url(), course_id, assignment_id)
     # process_response(url, args = list(access_token = check_token()))
-    httr::GET(url, query = list(access_token = check_token())) %>%
+    httr::GET(url, query = list(per_page = 100)) %>%
       httr::content("text") %>%
       jsonlite::fromJSON(flatten = TRUE)
   }

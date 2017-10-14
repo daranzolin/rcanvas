@@ -18,9 +18,10 @@ get_course_list <- function(user_id = NULL, include = NULL) {
   } else {
     url <- paste0(canvas_url(), "courses")
   }
-  args <- list(access_token = check_token(),
+  args <- list(
                per_page = 100,
-               user_id = user_id)
+               user_id = user_id
+               )
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -52,9 +53,10 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   if (type == "communication" & is.null(user_id)) {
     stop("user_id must be specified for communication data")
   }
-  args <- list(access_token = check_token(),
-               per_page = 500,
-               user_id = user_id)
+  args <- list(
+    per_page = 100,
+    user_id = user_id
+    )
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -89,8 +91,7 @@ get_course_items <- function(course_id, item, include = NULL) {
     #Omitting the item argument will return general information about the course
     url <- paste0(canvas_url(), paste("courses", course_id, sep = "/"))
   }
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   process_response(url, args) %>%

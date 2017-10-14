@@ -2,7 +2,7 @@
 % Please edit documentation in R/groups.R
 \name{get_group_category}
 \alias{get_group_category}
-\title{Title}
+\title{Get a single group category}
 \usage{
 get_group_category(group_category_id)
 }
@@ -10,7 +10,7 @@ get_group_category(group_category_id)
 \item{group_category_id}{}
 }
 \description{
-Title
+Get a single group category
 }
 \examples{
 get_group_category(52872)

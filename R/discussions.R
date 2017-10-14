@@ -18,8 +18,7 @@ get_discussions_context <- function(object_id, object_type = "courses",
                                     include = NULL) {
   stopifnot(object_type %in% c("courses", "groups"))
   url <- paste0(canvas_url(), paste(object_type, object_id, "discussion_topics", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -41,8 +40,7 @@ get_discussion_id <- function(discussion_id, object_id, object_type = "courses")
   stopifnot(object_type %in% c("courses", "groups"))
   url <- paste0(canvas_url(),
                 paste(object_type, object_id, "discussion_topics", discussion_id, sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
