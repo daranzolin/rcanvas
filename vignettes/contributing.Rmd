@@ -1,0 +1,36 @@
+---
+title: "Contributing to rcanvas"
+author: "Chris Hua"
+date: "April 18, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The [Canvas API](https://canvas.instructure.com/doc/api/index.html) is the main method of interfacing with the Canvas LMS system. The scale of the Canvas API is enormous, which makes a 1:1 coverage of the API unfeasible. A lot of work has been put into working with the core elements of the API, especially from the perspective of teachers and administrators.
+
+However, more elements will always be necessary. To that end, the following guide should explain how to contribute a new function.
+
+## Packages
+
+Read Hadley's [guide to package development](http://r-pkgs.had.co.nz/r.html). This project contains a `.Rproj` file to make it easy to load it into Rstudio. 
+
+The rest of this guide presumes familiarity with loading and editing the package.
+
+## Functions
+
+There are two main types of functions you are likely to create.
+
+## Final steps
+
+The `rcanvas` package requires two final 'hooks' before submitting. 
+
+First, update the `NEWS.md` file to reflect the changes you've made.
+
+Second, the documentation for this package is produced with `pkgdown`. Running `pkgdown::build_site()` from the base directory is all that is needed.
+
+Then, push your code and make a pull request!

@@ -36,10 +36,10 @@ check_token <- function() {
 
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
-canvas_query <- function(url, args, type = "GET") {
+canvas_query <- function(urlx, args, type = "GET") {
   fun <- getFromNamespace(type, "httr")
   args <- sc(args)
-  resp <- fun(url,
+  resp <- fun(urlx,
               httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
               httr::add_headers(Authorization = paste("Bearer", check_token())),
               query = args)
