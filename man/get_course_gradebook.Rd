@@ -10,11 +10,12 @@ get_course_gradebook(course_id)
 \item{course_id}{A valid course id}
 }
 \value{
-A gradebook
+A gradebook (in long format)
 }
 \description{
 Get a course gradebook
 }
 \examples{
 get_course_gradebook(20)
+
 }

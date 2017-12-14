@@ -1,15 +1,15 @@
 #' Get a course gradebook
 #'
 #' @importFrom magrittr %>%
-#' @importFrom magrittr %$%
 #'
 #' @param course_id A valid course id
 #'
-#' @return A gradebook
-#' @export
+#' @return A gradebook (in long format)
 #'
 #' @examples
 #' get_course_gradebook(20)
+#'
+#' @export
 get_course_gradebook <- function(course_id) {
   course_assignments <- get_course_items(course_id, "assignments")
   students <- get_course_items(course_id, "enrollments") %>%
