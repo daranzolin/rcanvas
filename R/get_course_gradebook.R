@@ -13,11 +13,11 @@
 get_course_gradebook <- function(course_id) {
   course_assignments <- get_course_items(course_id, "assignments")
 
-  assignments <- purrr::map2_df(course_id, course_assignments$id,
+  submissions <- purrr::map2_df(course_id, course_assignments$id,
                                 get_assignment_submissions)
   students <- get_course_items(course_id, "enrollments") %>%
     dplyr::select(user.name, user_id, grades.final_score, course_id)
-  dplyr::left_join(assignments, students, by = "user_id")
+  dplyr::left_join(submissions, students, by = "user_id")
 }
 
 get_assignment_submissions <- function(course_id, assignment_id) {
