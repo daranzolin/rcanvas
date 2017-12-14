@@ -18,7 +18,9 @@ get_course_gradebook <- function(course_id) {
                                 get_assignment_submissions)
 
   gradebook <- dplyr::left_join(submissions, students, by = "user_id") %>%
-    dplyr::left_join(course_assignments %>% dplyr::select(id, name), by = "id")
+    dplyr::left_join(course_assignments %>%
+                       dplyr::select(id, assignment_name = name),
+                     by = c("assignment_id" = "id"))
   return(gradebook)
 }
 
