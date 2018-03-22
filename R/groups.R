@@ -80,8 +80,7 @@ get_group_users <- function(group_id, group_name) {
 add_group_user <- function(group_id, user_id) {
   url <- paste0(canvas_url(),
                 paste("groups", group_id, "memberships", sep="/"))
-  args <- list(access_token = check_token(),
-               user_id = user_id)
+  args <- list(user_id = user_id)
 
   invisible(canvas_query(url, args, "POST"))
 }
@@ -159,8 +158,7 @@ get_group_categories <- function(context_id, context_type = "courses") {
 get_group_category <- function(group_category_id) {
   url <- paste0(canvas_url(), paste("group_categories", group_category_id,
                                     sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
   dat <- process_response(url, args)
@@ -211,8 +209,7 @@ create_group_category <- function(context_id, context_type = "courses",
 get_group_categories <- function(course_id) {
   url <- paste0(canvas_url(),
                 paste("courses", course_id, "group_categories", sep = "/"))
-  args <- list(access_token = check_token(),
-               per_page = 100)
+  args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   process_response(url, args)
 }
@@ -230,8 +227,7 @@ get_group_categories <- function(course_id) {
 add_group <- function(category, name, description, join_level) {
   url <- paste0(canvas_url(),
                 paste("group_categories", category, "groups", sep="/"))
-  args <- list(access_token = check_token(),
-               name=name, description=description, join_level=join_level)
+  args <- list(name=name, description=description, join_level=join_level)
   invisible(canvas_query(url, args, "POST"))
 }
 
