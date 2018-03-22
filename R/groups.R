@@ -199,3 +199,32 @@ create_group_category <- function(context_id, context_type = "courses",
   sc(args)
   canvas_query(url, args, "PUT")
 }
+
+#' Get the group categories (group sets) for the given course
+#'
+#' @export
+get_group_categories <- function(course_id) {
+  url <- paste0(canvas_url(),
+                paste("courses", course_id, "group_categories", sep = "/"))
+  args <- list(access_token = check_token(),
+               per_page = 100)
+  include <- iter_args_list(NULL, "include[]")
+  process_response(url, args)
+}
+
+
+#' Create a new group
+#' @export
+add_group <- function(category, name, description, join_level) {
+  url <- paste0(canvas_url(),
+                paste("group_categories", category, "groups", sep="/"))
+  args <- list(access_token = check_token(),
+               name=name, description=description, join_level=join_level)
+  invisible(canvas_query(url, args, "POST"))
+}
+
+#' Create multiple groups
+#' @export
+add_multiple_groups <- function(category, name, description, join_level) {
+  invisible(purrr::map2(category, name, add_group, description, join_level))
+}
