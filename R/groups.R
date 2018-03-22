@@ -74,7 +74,6 @@ get_group_users <- function(group_id, group_name) {
 #'
 #' @param group_id the group ID
 #' @param user_id the user ID
-#' @export
 #' @rdname groups
 #' @examples
 #' \dontrun{add_group_users(group_id=23, user_ids=327))}
@@ -87,8 +86,9 @@ add_group_user <- function(group_id, user_id) {
   invisible(canvas_query(url, args, "POST"))
 }
 
-#' Add multiple users to one or more groups
+#' Add user(s) to group(s)
 #'
+#' Add one or more users to a group (or multiple groups).
 #' group_id can be a single group ID, in which case all users are added to
 #' that group. It can also be a vector of group IDs of the same length as
 #' user IDs, in which case each user will be added to the corresponding group
@@ -100,7 +100,7 @@ add_group_user <- function(group_id, user_id) {
 #' @examples
 #' \dontrun{add_multiple_group_users(group_id=23, user_ids=c(327, 328))}
 #' \dontrun{add_multiple_group_users(group_id=c(23, 24), user_ids=c(327, 328))}
-add_multiple_group_users <- function(group_id, user_ids) {
+add_group_users <- function(group_id, user_ids) {
   invisible(purrr::map2(group_id, user_ids, add_group_user))
 }
 
@@ -202,7 +202,12 @@ create_group_category <- function(context_id, context_type = "courses",
 
 #' Get the group categories (group sets) for the given course
 #'
+#' @param course_id the Course ID to get the group sets for
+#' @return a tibble with one group set per row
+#' @rdname groups
 #' @export
+#' @examples
+#' \dontrun{get_group_categories(361)}
 get_group_categories <- function(course_id) {
   url <- paste0(canvas_url(),
                 paste("courses", course_id, "group_categories", sep = "/"))
@@ -214,7 +219,14 @@ get_group_categories <- function(course_id) {
 
 
 #' Create a new group
-#' @export
+#' @rdname groups
+#' @param category the ID of the group category (group set)
+#' @param name the name of the new group
+#' @param description Description of the new group
+#' @param join_level Join level of the new group (who can join the group)
+#' @examples
+#' \dontrun{add_group(category=128,name="group name", description="description", join_level="invitation_only")}
+#'
 add_group <- function(category, name, description, join_level) {
   url <- paste0(canvas_url(),
                 paste("group_categories", category, "groups", sep="/"))
@@ -223,8 +235,19 @@ add_group <- function(category, name, description, join_level) {
   invisible(canvas_query(url, args, "POST"))
 }
 
-#' Create multiple groups
+#' Create new group(s)
+#'
+#' Creates one or more new groups in an existing group set (category)
+#'
+#' @rdname groups
+#' @param category the ID of the group category (group set)
+#' @param name the name(s) of the new group
+#' @param description Description(s) of the new group
+#' @param join_level Join level of the new group (who can join the group)
 #' @export
-add_multiple_groups <- function(category, name, description, join_level) {
+#' @examples
+#' \dontrun{add_group(category=128,name=paste('group', 1:2), description="test groups", join_level="invitation_only")}
+add_groups <- function(category, name, description, join_level=c("parent_context_auto_join", "parent_context_request", "invitation_only")) {
+  join_level = match.arg(join_level)
   invisible(purrr::map2(category, name, add_group, description, join_level))
 }
