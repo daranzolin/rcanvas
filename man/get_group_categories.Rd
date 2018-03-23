@@ -4,7 +4,7 @@
 \alias{get_group_categories}
 \title{Group categories}
 \usage{
-get_group_categories(context_id, context_type = "courses")
+get_group_categories(course_id)
 }
 \arguments{
 \item{context_type}{}

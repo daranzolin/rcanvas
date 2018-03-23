@@ -5,6 +5,11 @@
 \alias{get_groups_self}
 \alias{get_groups_context}
 \alias{get_group_users}
+\alias{add_group_user}
+\alias{add_group_users}
+\alias{get_group_categories}
+\alias{add_group}
+\alias{add_groups}
 \title{Groups}
 \usage{
 get_groups_self()
@@ -12,6 +17,18 @@ get_groups_self()
 get_groups_context(object_id, object_type = "courses")
 
 get_group_users(group_id, group_name)
+
+add_group_user(group_id, user_id)
+
+add_group_users(group_id, user_ids)
+
+get_group_categories(course_id)
+
+add_group(category, name, description, join_level)
+
+add_groups(category, name, description,
+  join_level = c("parent_context_auto_join", "parent_context_request",
+  "invitation_only"))
 }
 \arguments{
 \item{object_id}{id for given type}
@@ -24,9 +41,37 @@ get_group_users(group_id, group_name)
 the name of the group to use. This is generally of form "Group 13", and is
 what is exposed to you via the Canvas UI. This is noticeably more
 user-friendly than the group ID number.}
+
+\item{user_id}{the user ID}
+
+\item{user_ids}{the users IDS to add to the group}
+
+\item{course_id}{the Course ID to get the group sets for}
+
+\item{category}{the ID of the group category (group set)}
+
+\item{name}{the name of the new group}
+
+\item{description}{Description of the new group}
+
+\item{join_level}{Join level of the new group (who can join the group)}
+
+\item{group_id}{the group ID}
+
+\item{group_id}{the group ID or IDs}
+
+\item{category}{the ID of the group category (group set)}
+
+\item{name}{the name(s) of the new group}
+
+\item{description}{Description(s) of the new group}
+
+\item{join_level}{Join level of the new group (who can join the group)}
 }
 \value{
 users in a group
+
+a tibble with one group set per row
 }
 \description{
 Groups serve as the data for a few different ideas in Canvas. The first is that they can be a community in the canvas network. The second is that they can be organized by students in a course, for study or communication (but not grading). The third is that they can be organized by teachers or account administrators for the purpose of projects, assignments, and grading. This last kind of group is always part of a group category, which adds the restriction that a user may only be a member of one group per category.
@@ -38,9 +83,29 @@ Group memberships are the objects that tie users and groups together.
 \code{get_groups_context}: Returns the list of active groups in the given context that are visible to user.
 
 \code{get_group_users}: Get users which belong to a group
+
+Add the user to the group
+
+Add one or more users to a group (or multiple groups).
+group_id can be a single group ID, in which case all users are added to
+that group. It can also be a vector of group IDs of the same length as
+user IDs, in which case each user will be added to the corresponding group
+
+Get the group categories (group sets) for the given course
+
+Create a new group
+
+Creates one or more new groups in an existing group set (category)
 }
 \examples{
 \dontrun{get_groups_self}
 \dontrun{get_groups_context(27)}
 \dontrun{get_group_users(27314)}
+\dontrun{add_group_users(group_id=23, user_ids=327))}
+\dontrun{add_multiple_group_users(group_id=23, user_ids=c(327, 328))}
+\dontrun{add_multiple_group_users(group_id=c(23, 24), user_ids=c(327, 328))}
+\dontrun{get_group_categories(361)}
+\dontrun{add_group(category=128,name="group name", description="description", join_level="invitation_only")}
+
+\dontrun{add_group(category=128,name=paste('group', 1:2), description="test groups", join_level="invitation_only")}
 }

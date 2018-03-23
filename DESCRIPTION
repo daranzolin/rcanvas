@@ -4,7 +4,8 @@ Version: 0.0.0.9001
 Authors@R: c(
     person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre")),
     person("Chris", "Hua", email = "hua.christopher@gmail.com", role = "aut"),
-    person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = "ctb")
+    person("Frederick", "Solt", email = "frederick-solt@uiowa.edu", role = "ctb"),
+    person("Wouter", "van Atteveldt", email = "wouter@vanatteveldt.com", role = "ctb")
     )
 Description: A client for any individual instance of the Canvas API.
 Depends:
