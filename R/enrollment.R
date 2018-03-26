@@ -9,7 +9,7 @@
 add_enrollment <- function(course_id, user_id, type, state, section=F, ...) {
   url <- paste0(canvas_url(),
                 paste(ifelse(section, "sections", "courses"), course_id, "enrollments", sep="/"))
-  args <- list("enrollment[user_id]" = user_id, "enrollent[type]"=type, "enrollment[enrollment_state]"=state, ...)
+  args <- list("enrollment[user_id]" = user_id, "enrollment[type]"=type, "enrollment[enrollment_state]"=state, ...)
   canvas_query(url, args, "POST")
 }
 
