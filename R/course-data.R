@@ -97,3 +97,32 @@ get_course_items <- function(course_id, item, include = NULL) {
   process_response(url, args) %>%
     dplyr::mutate(course_id = course_id)
 }
+
+#' @importFrom magrittr %>%
+#' @title Search all courses
+#'
+#' @description Returns a data.frame of all public courses (optoinally matching the search term)
+#'
+#' @param search optional search keyword
+#' @return data frame
+#' @export
+#'
+#' @examples
+#'   \dontrun{search_courses()}
+#'   \dontrun{search_courses(search="big data")}
+search_courses <- function(search=NULL) {
+  url <- paste0(canvas_url(), paste("search", "all_courses", sep = "/"))
+  args = list(per_page=100)
+  if (!is.null(search)) args["search"] = search
+  resp <- canvas_query(url, args, "GET")
+
+  resp = canvas_query(url, args, "GET") %>%
+    paginate() %>%
+    purrr::map(httr::content, "text") %>%
+    purrr::map(jsonlite::fromJSON, flatten = TRUE) %>%
+    (function(x) x[[1]])
+
+  return(if (is.null(nrow(resp))) data.frame() else resp)
+}
+
+
