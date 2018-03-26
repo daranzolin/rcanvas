@@ -4,10 +4,12 @@
 \alias{paginate}
 \title{Get responses from Canvas API pages}
 \usage{
-paginate(x)
+paginate(x, showProgress = T)
 }
 \arguments{
 \item{x}{a httr response object}
+
+\item{showProgress}{if TRUE (default), show a textual progress bar}
 }
 \value{
 unparsed responses
