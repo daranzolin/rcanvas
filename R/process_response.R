@@ -41,13 +41,14 @@ process_response <- function(url, args) {
 #' requests, to figure out these page requirements.
 #'
 #' @param x a httr response object
+#' @param showProgress if TRUE (default), show a textual progress bar
 #'
 #' @return unparsed responses
 #'
 #' @examples
 #' \dontrun{resp <- canvas_query(url, args, "HEAD")
 #' get_pages(resp)}
-paginate <- function(x) {
+paginate <- function(x, showProgress=T) {
   first_response <- list(x)
   stopifnot(httr::status_code(x) == 200) # OK status
   pages <- httr::headers(x)$link
@@ -59,8 +60,10 @@ paginate <- function(x) {
     n_pages <- readr::parse_number(stringr::str_extract(last_page, "page=[0-9]{1,}"))
     if (n_pages == 1) return(first_response)
     pages <- increment_pages(last_page, 2:n_pages)
+    if (showProgress) bar = txtProgressBar(max=n_pages, style = 3)
+    queryfunc = function(...) {if (showProgress) bar$up(bar$getVal()+1); canvas_query(...)}
     responses <- pages %>%
-      purrr::map(canvas_query, args = list(access_token = check_token()))
+      purrr::map(queryfunc, args = list(access_token = check_token()))
     responses <- c(first_response, responses)
     return(responses)
   } else if (has_rel(httr::headers(x)$link, "next")) {
