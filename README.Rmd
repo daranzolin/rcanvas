@@ -68,6 +68,7 @@ The following functions are implemented:
 * `get_submissions`: Get submissions for a given course and assignment
 * `get_user_items`: Get various user items, e.g. missing submissions, page_views, details, etc.
 * `grade_submission`: Grade a submission
+* `search_courses`: Search all public courses
 * `update_discussion_id`: Update a discussion by ID
 
 # Usage
