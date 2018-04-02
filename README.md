@@ -33,8 +33,8 @@ set_canvas_token("YOUR_TOKEN_HERE")
 set_canvas_domain("https://canvas.yourdomain.edu")
 ```
 
-Usage
-=====
+Functions
+=========
 
 The following functions are implemented:
 
@@ -61,8 +61,8 @@ The following functions are implemented:
 -   `grade_submission`: Grade a submission
 -   `update_discussion_id`: Update a discussion by ID
 
-Examples
-========
+Usage
+=====
 
 ``` r
 ### Get all courses:
