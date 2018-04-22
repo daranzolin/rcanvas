@@ -2,7 +2,7 @@
 % Please edit documentation in R/uploads.R
 \name{create_course_assigment}
 \alias{create_course_assigment}
-\title{Title}
+\title{Create a course assignment}
 \usage{
 create_course_assigment(course_id, name, position = NULL,
   submission_types = NULL, allowed_extensions = NULL,
@@ -25,62 +25,47 @@ create_course_assigment(course_id, name, position = NULL,
 
 \item{position}{integer - The position of this assignment in the group when displaying assignment lists.}
 
-\item{submission_types}{string - List of supported submission types for the assignment. Unless the assignment is allowing
-online submissions, the array should only have one element. Options: online_quiz, none, on_paper, discussion_topic,
-external_tool, online_upload, online_text_entry, online_url, media_recording}
+\item{submission_types}{string - List of supported submission types for the assignment. Unless the assignment is allowing online submissions, the array should only have one element. Options: online_quiz, none, on_paper, discussion_topic, external_tool, online_upload, online_text_entry, online_url, media_recording}
 
 \item{allowed_extensions}{Allowed extensions if submission_types includes “online_upload”. E.g. "docx", "png".}
 
-\item{turnitin_enabled}{boolean - Only applies when the Turnitin plugin is enabled for a course and the submission_types
-array includes “online_upload”. Toggles Turnitin submissions for the assignment. Will be ignored if Turnitin is not
-available for the course.}
+\item{turnitin_enabled}{boolean - Only applies when the Turnitin plugin is enabled for a course and the submission_types array includes “online_upload”. Toggles Turnitin submissions for the assignment. Will be ignored if Turnitin is not available for the course.}
 
-\item{vericite_enabled}{boolean - Only applies when the VeriCite plugin is enabled for a course and the submission_types
-array includes “online_upload”. Toggles VeriCite submissions for the assignment. Will be ignored if
-VeriCite is not available for the course.}
+\item{vericite_enabled}{boolean - Only applies when the VeriCite plugin is enabled for a course and the submission_types array includes “online_upload”. Toggles VeriCite submissions for the assignment. Will be ignored if VeriCite is not available for the course.}
 
 \item{turnitin_settings}{string -     Settings to send along to turnitin. See Assignment object definition for format.}
 
-\item{integration_data}{string - Data used for SIS integrations. Requires admin-level token with the “Manage SIS” permission.
-JSON string required.}
+\item{integration_data}{string - Data used for SIS integrations. Requires admin-level token with the “Manage SIS” permission. JSON string required.}
 
 \item{integration_id}{string - Unique ID from third party integrations}
 
-\item{peer_reviews}{boolean - If submission_types does not include external_tool,discussion_topic, online_quiz, or on_paper,
-determines whether or not peer reviews will be turned on for the assignment.}
+\item{peer_reviews}{boolean - If submission_types does not include external_tool,discussion_topic, online_quiz, or on_paper, determines whether or not peer reviews will be turned on for the assignment.}
 
-\item{automatic_peer_reviews}{boolean - Whether peer reviews will be assigned automatically by Canvas or if teachers must manually assign peer reviews.
-Does not apply if peer reviews are not enabled.}
+\item{automatic_peer_reviews}{boolean - Whether peer reviews will be assigned automatically by Canvas or if teachers must manually assign peer reviews. Does not apply if peer reviews are not enabled.}
 
 \item{notify_of_update}{boolean - If true, Canvas will send a notification to students in the class notifying them that the content has changed.}
 
 \item{group_category_id}{integer - If present, the assignment will become a group assignment assigned to the group.}
 
-\item{grade_group_students_individually}{boolean - If this is a group assignment, teachers have the options to grade students individually.
-If false, Canvas will apply the assignment's score to each member of the group. If true, the teacher can manually assign scores to each member of the group.}
+\item{grade_group_students_individually}{boolean - If this is a group assignment, teachers have the options to grade students individually. If false, Canvas will apply the assignment's score to each member of the group. If true, the teacher can manually assign scores to each member of the group.}
 
 \item{external_tool_tag_attributes}{string - Hash of external tool parameters if submission_types is external_tool. See Assignment object definition for format.}
 
 \item{points_possible}{number - The maximum points possible on the assignment.}
 
-\item{grading_type}{string - The strategy used for grading the assignment. The assignment defaults to “points” if this field is omitted.
-Options: pass_fail, percent, letter_grade, gpa_scale, points}
+\item{grading_type}{string - The strategy used for grading the assignment. The assignment defaults to “points” if this field is omitted. Options: pass_fail, percent, letter_grade, gpa_scale, points}
 
-\item{due_at}{datetime - The day/time the assignment is due. Must be between the lock dates if there are lock dates.
-Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
+\item{due_at}{datetime - The day/time the assignment is due. Must be between the lock dates if there are lock dates. Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
 
-\item{lock_at}{datetime - The day/time the assignment is locked after. Must be after the due date if there is a due date.
-Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
+\item{lock_at}{datetime - The day/time the assignment is locked after. Must be after the due date if there is a due date. Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
 
-\item{unlock_at}{datetime - The day/time the assignment is unlocked. Must be before the due date if there is a due date.
-Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
+\item{unlock_at}{datetime - The day/time the assignment is unlocked. Must be before the due date if there is a due date. Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.}
 
 \item{description}{string - The assignment's description, supports HTML.}
 
 \item{assignment_group_id}{number - The assignment group id to put the assignment in. Defaults to the top assignment group in the course.}
 
-\item{muted}{boolean - Whether this assignment is muted. A muted assignment does not send change notifications and hides grades from students.
-Defaults to false.}
+\item{muted}{boolean - Whether this assignment is muted. A muted assignment does not send change notifications and hides grades from students. Defaults to false.}
 
 \item{assignment_overrides}{List of overrides for the assignment.}
 
@@ -88,17 +73,14 @@ Defaults to false.}
 
 \item{published}{boolean - Whether this assignment is published. (Only useful if 'draft state' account setting is on) Unpublished assignments are not visible to students.}
 
-\item{grading_standard_id}{integer - The grading standard id to set for the course. If no value is provided for this
-argument the current grading_standard will be un-set from this course. This will update the grading_type for the course to
-'letter_grade' unless it is already 'gpa_scale'.}
+\item{grading_standard_id}{integer - The grading standard id to set for the course. If no value is provided for this argument the current grading_standard will be un-set from this course. This will update the grading_type for the course to letter_grade' unless it is already 'gpa_scale'.}
 
 \item{omit_from_final_grade}{boolean - Whether this assignment is counted towards a student's final grade.}
 
-\item{quiz_lti}{boolean - Whether this assignment should use the Quizzes 2 LTI tool. Sets the submission type to 'external_tool'
-and configures the external tool attributes to use the Quizzes 2 LTI tool configured for this course. Has no effect if no Quizzes 2 LTI tool is configured.}
+\item{quiz_lti}{boolean - Whether this assignment should use the Quizzes 2 LTI tool. Sets the submission type to 'external_tool' and configures the external tool attributes to use the Quizzes 2 LTI tool configured for this course. Has no effect if no Quizzes 2 LTI tool is configured.}
 }
 \description{
-Title
+Create a course assignment
 }
 \examples{
 create_course_assignment(course_id = 432432, name = "Challenging Assignment")
