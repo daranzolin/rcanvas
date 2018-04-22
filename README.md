@@ -42,6 +42,7 @@ The following functions are implemented:
 -   `add_group_users`: Add users to designated groups
 -   `add_groups`: Create groups
 -   `comment_submission`: comment on submitted content
+-   `create_course_folder`: create a folder within a course
 -   `get_announcements`: Get announcements for a course
 -   `get_course_analytics_data`: Get course analytics data for a course
 -   `get_course_gradebook`: Get the gradebook for a course
@@ -61,6 +62,7 @@ The following functions are implemented:
 -   `grade_submission`: Grade a submission
 -   `search_courses`: Search all public courses
 -   `update_discussion_id`: Update a discussion by ID
+-   `upload_course_file`: Upload a file to a course
 
 Usage
 =====
