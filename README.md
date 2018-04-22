@@ -43,6 +43,7 @@ The following functions are implemented:
 -   `add_groups`: Create groups
 -   `comment_submission`: comment on submitted content
 -   `create_course_folder`: create a folder within a course
+-   `create_course_assignment`: create an assignment within a course
 -   `get_announcements`: Get announcements for a course
 -   `get_course_analytics_data`: Get course analytics data for a course
 -   `get_course_gradebook`: Get the gradebook for a course
