@@ -28,6 +28,22 @@ get_course_list <- function(user_id = NULL, include = NULL) {
   return(unique(dat))
 }
 
+get_account_course_list <- function(acc_id = NULL, include = NULL) {
+  if (!is.null(acc_id)) {
+    url <- paste0(canvas_url(), paste("accounts", acc_id, "courses", sep = "/"))
+  } else {
+    url <- paste0(canvas_url(), "courses")
+  }
+  args <- list(
+    per_page = 100,
+    acc_id = acc_id
+  )
+  include <- iter_args_list(include, "include[]")
+  args <- c(args, include)
+  dat <- process_response(url, args)
+  return(unique(dat))
+}
+
 #' @title Function to return course analytics data.
 #'
 #' @description Returns a data.frame of course analytics data. Note: if an individual's user_id is specified,
