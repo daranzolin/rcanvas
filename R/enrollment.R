@@ -15,7 +15,7 @@ add_enrollment <- function(course_id, user_id, type, state, section=F, ...) {
 
 #' Enroll user(s) into a course (or multiple courses)
 #'
-#' Enrolls the given user(s) into the course. If multiple course_ids are given, if should be of the same length as user_id,
+#' Enrolls the given user(s) into the course. If multiple course_ids are given, it should be of the same length as user_id,
 #' and each user will be enrolled into the corresponding course.
 #'
 #' @param course_id ID of the course (or section, see below)
