@@ -139,27 +139,27 @@ create_wpage <- function(course_id, title, body, editing_roles = "teachers", pub
 #' @param body a string	The content for the new page.
 #' @param editing_roles a string.  Which user roles are allowed to edit this page. Any combination of these roles is allowed (separated by commas).  Allowed values: teachers, students, members, public
 #' @param published a boolean.	Whether the page is published (true) or draft state (false).
+#' @param notify a boolean. Whether participants should be notified when this page changes.
 #'
 #' @return empty
 #' @export
 #'
-update_wpage <- function(course_id, page_url, title, body, editing_roles = "teachers", published = FALSE){
+update_wpage <- function(course_id, page_url, title = NULL, body = NULL, editing_roles = "teachers", published = FALSE, notify = FALSE){
  # PUT /api/v1/courses/:course_id/pages/:url
-  # wiki_page[notify_of_update]	boolean	Whether participants should be notified when this page changes.
   # wiki_page[front_page]		    boolean	Set an unhidden page as the front page (if true)
   url <- paste0(canvas_url(), file.path("courses", course_id, "pages", page_url))
-  args <- sc(list(`wiki_page[title]` = title,
-                  `wiki_page[body]` = body,
-                  `wiki_page[editing_roles]` = editing_roles,
-                  `wiki_page[notify_of_update]` = FALSE,
-                  `wiki_page[published]` = published,
-                  `wiki_page[front_page]` = FALSE
-  ))
+  args_list <- list(`wiki_page[editing_roles]` = editing_roles,
+                    `wiki_page[published]` = published,
+                    `wiki_page[notify_of_update]` = notify,
+                    `wiki_page[front_page]` = FALSE)
+  if(!is.null(title)) args_list <- c(args_list, `wiki_page[title]` = title)
+  if(!is.null(body)) args_list <- c(args_list, `wiki_page[body]` = body)
+  args <- sc(args_list)
   # resp <- httr::POST(url = url,
   #                    httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
   #                    httr::add_headers(Authorization = paste("Bearer", rcanvas:::check_token())),
   #                    body = args)
-  resp <- canvas_query(url, args, "POST")
+  resp <- canvas_query(url, args, "PUT")
 
   httr::stop_for_status(resp)
   message(sprintf("Page '%s' created", title))
