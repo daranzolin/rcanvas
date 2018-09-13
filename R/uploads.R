@@ -102,7 +102,7 @@ create_course_folder <- function(course_id, name, parent_folder_id = NULL) {
 #' @examples
 #' create_course_assignment(course_id = 432432, name = "Challenging Assignment")
 #' create_course_assignment(course_id = 3432432, name = "R Packages, Review", peer_reviews = TRUE, points_possible = 100, omit_from_final_grade = TRUE)
-create_course_assigment <- function(course_id, name, position = NULL, submission_types = NULL, allowed_extensions = NULL, turnitin_enabled = NULL,
+create_course_assignment <- function(course_id, name, position = NULL, submission_types = NULL, allowed_extensions = NULL, turnitin_enabled = NULL,
                                     vericite_enabled = NULL, turnitin_settings = NULL, integration_data = NULL, integration_id = NULL, peer_reviews = NULL,
                                     automatic_peer_reviews = NULL, notify_of_update = NULL, group_category_id = NULL, grade_group_students_individually = NULL,
                                     external_tool_tag_attributes = NULL, points_possible = NULL, grading_type = NULL, due_at = NULL,
