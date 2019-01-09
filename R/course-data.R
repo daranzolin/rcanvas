@@ -157,4 +157,20 @@ search_courses <- function(search=NULL) {
   return(if (is.null(nrow(resp))) data.frame() else resp)
 }
 
+#' @title Function to return course outcomes.
+#'
+#' @description Returns a data.frame containing course outcomes.
+#'
+#' @param course_id A valid Canvas course id
+#' @return data frame
+#' @export
+#'
+#' @examples
+#' #' get_course_outcomes(course_id = 20)
+get_course_outcomes <- function(course_id) {
+  url <- paste0(canvas_url(), paste("courses", course_id, "outcome_results", sep = "/"))
+  args <- list(per_page = 100)
+  dat <- process_response(url, args)
 
+  return(unique(dat))
+}
