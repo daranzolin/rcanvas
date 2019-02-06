@@ -6,8 +6,8 @@
 \alias{grade_submission}
 \title{Respond to submission}
 \usage{
-comment_submission(course_id, assignment_id, user_id, comm, to_group = TRUE,
-  visible = TRUE)
+comment_submission(course_id, assignment_id, user_id, comm,
+  to_group = TRUE, visible = TRUE)
 
 grade_submission(course_id, assignment_id, user_id, grade)
 }
@@ -31,14 +31,6 @@ Invisibly performs the PUT call
 }
 \description{
 See \href{https://canvas.instructure.com/doc/api/submissions.html#method.submissions_api.update}{Canvas API Documentation}.
-
-\itemize{
-\item \code{comment_submission}: Comment on a submission
-}
-
-\itemize{
-\item \code{grade_submission}: Grade a submission
-}
 }
 \details{
 This plays nicely with \code{purrr::map2}, so it's easy to assign comments or grades

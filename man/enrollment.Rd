@@ -23,6 +23,6 @@ add_enrollments(course_id, user_ids, type = c("StudentEnrollment",
 \item{user_id}{ID of the user}
 }
 \description{
-Enrolls the given user(s) into the course. If multiple course_ids are given, if should be of the same length as user_id,
+Enrolls the given user(s) into the course. If multiple course_ids are given, it should be of the same length as user_id,
 and each user will be enrolled into the corresponding course.
 }

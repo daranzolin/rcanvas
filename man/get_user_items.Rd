@@ -14,6 +14,9 @@ get_user_items(user_id, item)
 \value{
 data frame
 }
+\description{
+Get various user items
+}
 \examples{
 
 get_user_items(365, "details")

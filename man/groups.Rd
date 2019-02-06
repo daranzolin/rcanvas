@@ -78,22 +78,10 @@ Groups serve as the data for a few different ideas in Canvas. The first is that 
 All of these types of groups function similarly, and can be the parent context for many other types of functionality and interaction, such as collections, discussions, wikis, and shared files.
 Group memberships are the objects that tie users and groups together.
 
-\code{get_groups_self}: Returns groups which the current user (you) belongs to
-
-\code{get_groups_context}: Returns the list of active groups in the given context that are visible to user.
-
-\code{get_group_users}: Get users which belong to a group
-
-Add the user to the group
-
 Add one or more users to a group (or multiple groups).
 group_id can be a single group ID, in which case all users are added to
 that group. It can also be a vector of group IDs of the same length as
 user IDs, in which case each user will be added to the corresponding group
-
-Get the group categories (group sets) for the given course
-
-Create a new group
 
 Creates one or more new groups in an existing group set (category)
 }

@@ -4,7 +4,8 @@
 \alias{get_course_analytics_data}
 \title{Function to return course analytics data.}
 \usage{
-get_course_analytics_data(course_id, type = "assignments", user_id = NULL)
+get_course_analytics_data(course_id, type = "assignments",
+  user_id = NULL)
 }
 \arguments{
 \item{course_id}{A valid Canvas course id}

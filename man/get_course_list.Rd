@@ -14,6 +14,9 @@ get_course_list(user_id = NULL, include = NULL)
 \value{
 data frame
 }
+\description{
+Function to list all courses.
+}
 \examples{
 #' get_course_list()
 #' get_course_list(user_id = 366)

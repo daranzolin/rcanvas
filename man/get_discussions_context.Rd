@@ -6,7 +6,8 @@
 \alias{update_discussion_id}
 \title{Discussion functions}
 \usage{
-get_discussions_context(object_id, object_type = "courses", include = NULL)
+get_discussions_context(object_id, object_type = "courses",
+  include = NULL)
 
 get_discussion_id(discussion_id, object_id, object_type = "courses")
 
@@ -33,14 +34,6 @@ silently sends put request and updates
 }
 \description{
 A group of functions which deal with \href{https://canvas.instructure.com/doc/api/discussion_topics.html}{discussion topics}.
-
-\itemize{
-\item \code{get_discussion_id}: Get single discussion by id
-}
-
-\itemize{
-\item \code{update_discussion_id}: Update discussion by id
-}
 }
 \details{
 \itemize{

@@ -12,11 +12,12 @@ create_course_assignment(course_id, name, position = NULL,
   automatic_peer_reviews = NULL, notify_of_update = NULL,
   group_category_id = NULL, grade_group_students_individually = NULL,
   external_tool_tag_attributes = NULL, points_possible = NULL,
-  grading_type = NULL, due_at = NULL, lock_at = NULL, unlock_at = NULL,
-  description = NULL, assignment_group_id = NULL, muted = NULL,
-  assignment_overrides = NULL, only_visible_to_overrides = NULL,
-  published = NULL, grading_standard_id = NULL,
-  omit_from_final_grade = NULL, quiz_lti = NULL)
+  grading_type = NULL, due_at = NULL, lock_at = NULL,
+  unlock_at = NULL, description = NULL, assignment_group_id = NULL,
+  muted = NULL, assignment_overrides = NULL,
+  only_visible_to_overrides = NULL, published = NULL,
+  grading_standard_id = NULL, omit_from_final_grade = NULL,
+  quiz_lti = NULL)
 }
 \arguments{
 \item{course_id}{a valid course id}
