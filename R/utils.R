@@ -69,7 +69,7 @@ convert_dates <- function(base_date = Sys.Date(), days) {
 #'
 #' This function allows you to call methods which are not specifically exposed by this API yet
 #'
-#' @param endpoint the API endpoint to call, without the canvas domain
+#' @param endpoint the API endpoint to call, with or without the canvas domain. You can give a vector of parts which will be joined with slashes.
 #' @param args a list of arguments for the call
 #' @param method GET or POST
 #' @param process_response if TRUE (default for GET requests), paginate results and return a data frame
@@ -81,13 +81,14 @@ convert_dates <- function(base_date = Sys.Date(), days) {
 #' do_query("announcements", list(`context_codes[]`="course_1234"))
 #'
 #' # A post request to the group membership endpoint (replicating add_group_user):
-#' do_query("groups/123/memberships", list(user_id=1), method = "POST")
-do_query <- function(endpoint, args, method="GET", process_response=(method == "GET")) {
-  url <- paste0(canvas_url(), endpoint)
+#' do_query(c("groups", 123, "memberships"), list(user_id=1), method = "POST")
+do_query <- function(endpoint, args=NULL, method="GET", process_response=(method == "GET")) {
+  endpoint = paste(endpoint, collapse="/")
+  if (!grepl("^https?://", endpoint)) endpoint = paste0(canvas_url(), endpoint)
   if (process_response) {
     if (method != "GET") stop("Process_response can only be used on GET requests")
-    process_response(url, args)
+    process_response(endpoint, args)
   } else {
-    invisible(canvas_query(url, args, method))
+    invisible(canvas_query(endpoint, args, method))
   }
 }
