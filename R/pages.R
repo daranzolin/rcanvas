@@ -178,7 +178,7 @@ update_wpage <- function(course_id, page_url, title = NULL, body = NULL, editing
 delete_wpage <- function(course_id, page_url){
   # DELETE /api/v1/courses/:course_id/pages/:url
   url <- paste0(canvas_url(), file.path("courses", course_id, "pages", page_url))
-  resp <- canvas_query(url, args, "DELETE")
+  resp <- canvas_query(url, type = "DELETE")
 
   httr::stop_for_status(resp)
   message(sprintf("Page '%s' deleted", page_url))

@@ -36,7 +36,7 @@ check_token <- function() {
 
 canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 
-canvas_query <- function(urlx, args, type = "GET") {
+canvas_query <- function(urlx, args = NULL, type = "GET") {
   fun <- getFromNamespace(type, "httr")
   args <- sc(args)
   resp <- fun(urlx,
