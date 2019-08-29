@@ -39,10 +39,17 @@ canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
 canvas_query <- function(urlx, args = NULL, type = "GET") {
   fun <- getFromNamespace(type, "httr")
   args <- sc(args)
-  resp <- fun(urlx,
-              httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-              httr::add_headers(Authorization = paste("Bearer", check_token())),
-              query = args)
+  if (type %in% c("POST", "PUT")) {
+    resp <- fun(urlx,
+                httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+                httr::add_headers(Authorization = paste("Bearer", check_token())),
+                body = args)
+  } else {
+    resp <- fun(urlx,
+                httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+                httr::add_headers(Authorization = paste("Bearer", check_token())),
+                query = args)
+  }
   httr::stop_for_status(resp)
   return(resp)
 }
