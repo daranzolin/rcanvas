@@ -4,9 +4,15 @@
 \alias{create_group_category}
 \title{Create a group category}
 \usage{
-create_group_category(context_id, context_type = "courses", cat_name,
-  self_signup = NULL, auto_leader = NULL, group_limit = NULL,
-  create_group_count = NULL)
+create_group_category(
+  context_id,
+  context_type = "courses",
+  cat_name,
+  self_signup = NULL,
+  auto_leader = NULL,
+  group_limit = NULL,
+  create_group_count = NULL
+)
 }
 \arguments{
 \item{cat_name}{Name of the group category. Required.}

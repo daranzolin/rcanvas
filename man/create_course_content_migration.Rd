@@ -4,13 +4,24 @@
 \alias{create_course_content_migration}
 \title{Create a course content migration}
 \usage{
-create_course_content_migration(course_id,
-  migration_type = "course_copy_importer", name = NULL,
-  file_url = NULL, source_course_id = NULL, folder_id = NULL,
-  overwrite_quizzes = NULL, question_bank_id = NULL,
-  question_bank_name = NULL, shift_dates = NULL,
-  old_start_date = NULL, old_end_date = NULL, new_start_date = NULL,
-  new_end_date = NULL, day_substitutions = NULL, remove_dates = NULL)
+create_course_content_migration(
+  course_id,
+  migration_type = "course_copy_importer",
+  name = NULL,
+  file_url = NULL,
+  source_course_id = NULL,
+  folder_id = NULL,
+  overwrite_quizzes = NULL,
+  question_bank_id = NULL,
+  question_bank_name = NULL,
+  shift_dates = NULL,
+  old_start_date = NULL,
+  old_end_date = NULL,
+  new_start_date = NULL,
+  new_end_date = NULL,
+  day_substitutions = NULL,
+  remove_dates = NULL
+)
 }
 \arguments{
 \item{course_id}{a valid course id (the course to copy content into)}

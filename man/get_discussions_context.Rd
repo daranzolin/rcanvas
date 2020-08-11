@@ -6,13 +6,16 @@
 \alias{update_discussion_id}
 \title{Discussion functions}
 \usage{
-get_discussions_context(object_id, object_type = "courses",
-  include = NULL)
+get_discussions_context(object_id, object_type = "courses", include = NULL)
 
 get_discussion_id(discussion_id, object_id, object_type = "courses")
 
-update_discussion_id(discussion_id, object_id, message,
-  object_type = "courses")
+update_discussion_id(
+  discussion_id,
+  object_id,
+  message,
+  object_type = "courses"
+)
 }
 \arguments{
 \item{object_id}{course or group id}

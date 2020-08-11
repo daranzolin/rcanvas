@@ -17,7 +17,7 @@
 get_discussions_context <- function(object_id, object_type = "courses",
                                     include = NULL) {
   stopifnot(object_type %in% c("courses", "groups"))
-  url <- paste0(canvas_url(), paste(object_type, object_id, "discussion_topics", sep = "/"))
+  url <- make_canvas_url(object_type, object_id, "discussion_topics")
   args <- list(per_page = 100)
   include <- iter_args_list(include, "include[]")
   args <- c(args, include)
@@ -38,8 +38,7 @@ get_discussions_context <- function(object_id, object_type = "courses",
 #' get_discussion_id(4371405, 1350207)
 get_discussion_id <- function(discussion_id, object_id, object_type = "courses") {
   stopifnot(object_type %in% c("courses", "groups"))
-  url <- paste0(canvas_url(),
-                paste(object_type, object_id, "discussion_topics", discussion_id, sep = "/"))
+  url <- make_canvas_url(object_type, object_id, "discussion_topics", discussion_id)
   args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
@@ -61,8 +60,7 @@ get_discussion_id <- function(discussion_id, object_id, object_type = "courses")
 update_discussion_id <- function(discussion_id, object_id, message,
                                  object_type = "courses") {
   stopifnot(object_type %in% c("courses", "groups"))
-  url <- paste0(canvas_url(),
-                paste(object_type, object_id, "discussion_topics", discussion_id, sep = "/"))
+  url <- make_canvas_url(object_type, object_id, "discussion_topics", discussion_id)
   args <- list(access_token = check_token(),
                message = message,
                per_page = 100)

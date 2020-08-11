@@ -26,16 +26,20 @@ get_group_categories(course_id)
 
 add_group(category, name, description, join_level)
 
-add_groups(category, name, description,
+add_groups(
+  category,
+  name,
+  description,
   join_level = c("parent_context_auto_join", "parent_context_request",
-  "invitation_only"))
+    "invitation_only")
+)
 }
 \arguments{
 \item{object_id}{id for given type}
 
 \item{object_type}{course or account}
 
-\item{group_id}{which group}
+\item{group_id}{the group ID or IDs}
 
 \item{group_name}{Optional, a name for the group. To be used when you know
 the name of the group to use. This is generally of form "Group 13", and is
@@ -47,18 +51,6 @@ user-friendly than the group ID number.}
 \item{user_ids}{the users IDS to add to the group}
 
 \item{course_id}{the Course ID to get the group sets for}
-
-\item{category}{the ID of the group category (group set)}
-
-\item{name}{the name of the new group}
-
-\item{description}{Description of the new group}
-
-\item{join_level}{Join level of the new group (who can join the group)}
-
-\item{group_id}{the group ID}
-
-\item{group_id}{the group ID or IDs}
 
 \item{category}{the ID of the group category (group set)}
 

@@ -24,8 +24,7 @@
 upload_course_file <- function(course_id, file_name, parent_folder_id = NULL, parent_folder_path = "/", on_duplicate = "overwrite") {
   if (!is.null(parent_folder_id) && !is.null(parent_folder_path)) stop("Do not specify both parent folder id and parent folder path.")
   file_size <- file.info(file_name)$size
-  url <- paste0(canvas_url(),
-                paste("courses", course_id, "files", sep = "/"))
+  url <- make_canvas_url("courses", course_id, "files")
   args <- sc(list(name = file_name,
                   size = file_size,
                   parent_folder_id = parent_folder_id,
@@ -37,9 +36,9 @@ upload_course_file <- function(course_id, file_name, parent_folder_id = NULL, pa
   upload_params <- upload_content$upload_params
   upload_params[[length(upload_params) + 1]] <- httr::upload_file(file_name)
   names(upload_params)[[length(upload_params)]] <- "file"
+  message(sprintf("File %s uploaded", file_name))
   invisible(httr::POST(url = upload_url,
              body = upload_params))
-  message(sprintf("File %s uploaded", file_name))
 }
 
 #' Create a course folder

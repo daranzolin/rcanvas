@@ -19,7 +19,7 @@ check_token()
 \item{domain}{Canvas domain}
 }
 \description{
-These functinos set your Canvas API token, as well as the Canvas base URL.
+These functions set your Canvas API token, as well as the Canvas base URL.
 These functions are necessary for \code{rcanvas} to run.
 }
 \examples{

@@ -1,33 +1,33 @@
 #' Process a Canvas API response
 #'
-#' Wrapper function for common tasks in going from Canvas url to dataframe. Most
+#' Wrapper function for common tasks in going from Canvas URL to data.frame. Most
 #' of the heavy lifting is done in \code{paginate}, which finds which pages to
 #' download. This function adds necessary arguments to those pages (e.g. the
-#' authentication token), downloads the content, converts from JSON into data
-#' frame format, and if there are multiple pages/dataframes, converts it into
-#' one final dataframe.
+#' authentication token), downloads the content, converts from JSON into
+#' data.frame format, and if there are multiple pages/data.frames, converts it
+#' into one final data.frame if able.
 #'
 #' @param url url to query
 #' @param args query arguments to be passed to \code{httr}, e.g. auth token
 #'
-#' @return processed dataframe
-#'
+#' @return processed dataframe or list if unable to simplify
+#' @importFrom magrittr `%>%`
 process_response <- function(url, args) {
+
   resp <- canvas_query(url, args, "GET")
-  df <- paginate(resp) %>%
+
+  paginate(resp) %>%
     purrr::map(httr::content, "text") %>%
-    purrr::map(jsonlite::fromJSON, flatten = TRUE)
-  df <- tryCatch({
-    df %>% purrr::map_df(purrr::flatten_df)
-  },
-  error = function(e) {
-    df %>% dplyr::bind_rows()
-  }
-  )
-  return(df)
+    purrr::map(jsonlite::fromJSON, flatten = TRUE) ->
+    d
+
+  # flatten to data.frame if able, otherwise return as is
+  d <- tryCatch(purrr::map_df(d, purrr::flatten_df),
+                error = function(e) d)
+  d
 }
 
-#' @title Get responses from Canvas API pages
+#' Get responses from Canvas API pages
 #'
 #' @description The Canvas headers include a link object (usually), in form:
 #' \code{Link:

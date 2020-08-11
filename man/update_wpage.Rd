@@ -4,8 +4,15 @@
 \alias{update_wpage}
 \title{Update/Create page in course}
 \usage{
-update_wpage(course_id, page_url, title = NULL, body = NULL,
-  editing_roles = "teachers", published = FALSE, notify = FALSE)
+update_wpage(
+  course_id,
+  page_url,
+  title = NULL,
+  body = NULL,
+  editing_roles = "teachers",
+  published = FALSE,
+  notify = FALSE
+)
 }
 \arguments{
 \item{course_id}{a valid course id}

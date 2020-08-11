@@ -4,9 +4,13 @@
 \alias{get_wpages_list}
 \title{Get data frame of pages in course}
 \usage{
-get_wpages_list(course_id, sort_type = c("title", "created_at",
-  "updated_at")[1], order_type = "asc", search = NULL,
-  published = NULL)
+get_wpages_list(
+  course_id,
+  sort_type = c("title", "created_at", "updated_at")[1],
+  order_type = "asc",
+  search = NULL,
+  published = NULL
+)
 }
 \arguments{
 \item{course_id}{a valid course id}

@@ -14,9 +14,9 @@
 #' #' get_course_list(include = c("teachers", "total_students"))
 get_course_list <- function(user_id = NULL, include = NULL) {
   if (!is.null(user_id)) {
-    url <- paste0(canvas_url(), paste("users", user_id, "courses", sep = "/"))
+    url <- make_canvas_url("users", user_id, "courses")
   } else {
-    url <- paste0(canvas_url(), "courses")
+    url <- make_canvas_url("courses")
   }
   args <- list(
                per_page = 100,
@@ -30,9 +30,9 @@ get_course_list <- function(user_id = NULL, include = NULL) {
 
 get_account_course_list <- function(acc_id = NULL, include = NULL) {
   if (!is.null(acc_id)) {
-    url <- paste0(canvas_url(), paste("accounts", acc_id, "courses", sep = "/"))
+    url <- make_canvas_url("accounts", acc_id, "courses")
   } else {
-    url <- paste0(canvas_url(), "courses")
+    url <- make_canvas_url("courses")
   }
   args <- list(
     per_page = 100,
@@ -78,9 +78,9 @@ get_term_course_list <- function(term_id = NULL, acc_id = NULL, include = NULL) 
 #' #' get_course_analytics_data(course_id = 17, type = "student_summaries", user_id = 366)
 get_course_analytics_data <- function(course_id, type = "assignments", user_id = NULL) {
   if (!is.null(user_id)) {
-    url <- paste0(canvas_url(), paste("courses", course_id, "analytics/users", user_id, type, sep = "/"))
+    url <- make_canvas_url("courses", course_id, "analytics/users", user_id, type)
   } else {
-    url <- paste0(canvas_url(), paste("courses", course_id, "analytics", type, sep = "/"))
+    url <- make_canvas_url("courses", course_id, "analytics", type)
   }
   if (type == "communication" & is.null(user_id)) {
     stop("user_id must be specified for communication data")
@@ -88,7 +88,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
   args <- list(
     per_page = 100,
     user_id = user_id
-    )
+  )
   resp <- canvas_query(url, args)
   json <- httr::content(resp, "text")
   if (json == "[]") stop("Nothing available for this course.")
@@ -118,10 +118,10 @@ get_course_items <- function(course_id, item, include = NULL) {
     stop(paste("item argument must be one of:", paste(valid_items, collapse = ", ")))
   }
   if (!missing(item)) {
-    url <- paste0(canvas_url(), paste("courses", course_id, item, sep = "/"))
+    url <- make_canvas_url("courses", course_id, item)
   } else {
     #Omitting the item argument will return general information about the course
-    url <- paste0(canvas_url(), paste("courses", course_id, sep = "/"))
+    url <- make_canvas_url("courses", course_id)
   }
   args <- list(per_page = 100)
   include <- iter_args_list(include, "include[]")

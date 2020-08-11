@@ -4,8 +4,13 @@
 \alias{upload_course_file}
 \title{Upload a file to a course}
 \usage{
-upload_course_file(course_id, file_name, parent_folder_id = NULL,
-  parent_folder_path = "/", on_duplicate = "overwrite")
+upload_course_file(
+  course_id,
+  file_name,
+  parent_folder_id = NULL,
+  parent_folder_path = "/",
+  on_duplicate = "overwrite"
+)
 }
 \arguments{
 \item{course_id}{valid course id}

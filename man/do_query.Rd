@@ -2,13 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{do_query}
 \alias{do_query}
-\title{Exectute a query on the remove API}
+\title{Execute a query on the remove API}
 \usage{
-do_query(endpoint, args, method = "GET", process_response = (method ==
-  "GET"))
+do_query(
+  endpoint,
+  args = NULL,
+  method = "GET",
+  process_response = (method == "GET")
+)
 }
 \arguments{
-\item{endpoint}{the API endpoint to call, without the canvas domain}
+\item{endpoint}{the API endpoint to call, with or without the canvas domain. You can give a vector of parts which will be joined with slashes.}
 
 \item{args}{a list of arguments for the call}
 
@@ -27,5 +31,5 @@ This function allows you to call methods which are not specifically exposed by t
 do_query("announcements", list(`context_codes[]`="course_1234"))
 
 # A post request to the group membership endpoint (replicating add_group_user):
-do_query("groups/123/memberships", list(user_id=1), method = "POST")
+do_query(c("groups", 123, "memberships"), list(user_id=1), method = "POST")
 }

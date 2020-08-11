@@ -4,10 +4,15 @@
 \alias{add_enrollments}
 \title{Enroll user(s) into a course (or multiple courses)}
 \usage{
-add_enrollments(course_id, user_ids, type = c("StudentEnrollment",
-  "TeacherEnrollment", "TaEnrollment", "ObserverEnrollment",
-  "DesignerEnrollment"), state = c("invited", "active", "inactive"),
-  section = F, ...)
+add_enrollments(
+  course_id,
+  user_ids,
+  type = c("StudentEnrollment", "TeacherEnrollment", "TaEnrollment",
+    "ObserverEnrollment", "DesignerEnrollment"),
+  state = c("invited", "active", "inactive"),
+  section = F,
+  ...
+)
 }
 \arguments{
 \item{course_id}{ID of the course (or section, see below)}

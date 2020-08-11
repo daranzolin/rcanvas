@@ -4,19 +4,38 @@
 \alias{create_canvas_course}
 \title{Create a course}
 \usage{
-create_canvas_course(account_id, name = NULL, course_code = NULL,
-  start_at = NULL, end_at = NULL, license = NULL, is_public = NULL,
-  is_public_to_auth_users = NULL, public_syllabus = NULL,
-  public_syllabus_to_auth = NULL, public_description = NULL,
-  allow_student_wiki_edits = NULL, allow_wiki_comments = NULL,
-  allow_student_forum_attachments = NULL, open_enrollment = NULL,
-  self_enrollment = NULL, restrict_enrollments_to_course_dates = NULL,
-  term_id = NULL, sis_course_id = NULL, integration_id = NULL,
-  hide_final_grades = NULL, apply_assignment_group_weights = NULL,
-  time_zone = NULL, offer = NULL, enroll_me = NULL,
-  default_view = NULL, syllabus_body = NULL,
-  grading_standard_id = NULL, course_format = NULL,
-  enable_sis_activation = NULL)
+create_canvas_course(
+  account_id,
+  name = NULL,
+  course_code = NULL,
+  start_at = NULL,
+  end_at = NULL,
+  license = NULL,
+  is_public = NULL,
+  is_public_to_auth_users = NULL,
+  public_syllabus = NULL,
+  public_syllabus_to_auth = NULL,
+  public_description = NULL,
+  allow_student_wiki_edits = NULL,
+  allow_wiki_comments = NULL,
+  allow_student_forum_attachments = NULL,
+  open_enrollment = NULL,
+  self_enrollment = NULL,
+  restrict_enrollments_to_course_dates = NULL,
+  term_id = NULL,
+  sis_course_id = NULL,
+  integration_id = NULL,
+  hide_final_grades = NULL,
+  apply_assignment_group_weights = NULL,
+  time_zone = NULL,
+  offer = NULL,
+  enroll_me = NULL,
+  default_view = NULL,
+  syllabus_body = NULL,
+  grading_standard_id = NULL,
+  course_format = NULL,
+  enable_sis_activation = NULL
+)
 }
 \arguments{
 \item{account_id}{a valid account id}

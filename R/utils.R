@@ -1,6 +1,6 @@
 #' Canvas API helpers
 #'
-#' These functinos set your Canvas API token, as well as the Canvas base URL.
+#' These functions set your Canvas API token, as well as the Canvas base URL.
 #' These functions are necessary for `rcanvas` to run.
 #'
 #' @name apihelpers
@@ -12,7 +12,7 @@
 #' @examples
 #' set_canvas_token("abc123")
 set_canvas_token <- function(token) {
-  Sys.setenv(CANVAS_API_TOKEN = token)
+  keyring::key_set_with_value("rcanvas_CANVAS_API_TOKEN", NULL, token)
 }
 
 #' @param domain Canvas domain
@@ -21,37 +21,41 @@ set_canvas_token <- function(token) {
 #' @examples
 #' set_canvas_domain("https://canvas.upenn.edu")
 set_canvas_domain <- function(domain) {
-  Sys.setenv(CANVAS_DOMAIN = domain)
+  keyring::key_set_with_value("rcanvas_CANVAS_DOMAIN", NULL, domain)
 }
 
 #' @rdname apihelpers
 check_token <- function() {
-  token <- Sys.getenv("CANVAS_API_TOKEN")
+  token <- keyring::key_get("rcanvas_CANVAS_API_TOKEN")
   if (identical(token, "")) {
-    stop("Please set env var CANVAS_API_TOKEN to your access token.",
+    stop("Please set your Canvas API token with set_canvas_token.",
          call. = FALSE)
   }
   token
 }
 
-canvas_url <- function() paste0(Sys.getenv("CANVAS_DOMAIN"), "/api/v1/")
+canvas_url <- function() paste0(keyring::key_get("rcanvas_CANVAS_DOMAIN"), "/api/v1")
 
+make_canvas_url <- function(...) paste(canvas_url(), ..., sep = "/")
+
+#' @importFrom httr GET POST PUT
 canvas_query <- function(urlx, args = NULL, type = "GET") {
-  fun <- getFromNamespace(type, "httr")
+
   args <- sc(args)
-  if (type %in% c("POST", "PUT")) {
-    resp <- fun(urlx,
-                httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-                httr::add_headers(Authorization = paste("Bearer", check_token())),
-                body = args)
-  } else {
-    resp <- fun(urlx,
-                httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
-                httr::add_headers(Authorization = paste("Bearer", check_token())),
-                query = args)
-  }
+  resp_fun_args <- list(url = urlx,
+                        httr::user_agent("rcanvas - https://github.com/daranzolin/rcanvas"),
+                        httr::add_headers(Authorization = paste("Bearer", check_token())))
+
+  if (type %in% c("POST", "PUT"))
+    resp_fun_args$body = args
+  else
+    resp_fun_args$query = args
+
+  resp <- do.call(type, resp_fun_args)
+
   httr::stop_for_status(resp)
-  return(resp)
+  resp
+
 }
 
 iter_args_list <- function(x, label) {
@@ -64,7 +68,7 @@ iter_args_list <- function(x, label) {
 }
 
 sc <- function(x) {
-  Filter(Negate(is.null), x)
+  purrr::discard(x, is.null)
 }
 
 convert_dates <- function(base_date = Sys.Date(), days) {
@@ -72,7 +76,7 @@ convert_dates <- function(base_date = Sys.Date(), days) {
   format(new_date, "%Y-%m-%d")
 }
 
-#' Exectute a query on the remove API
+#' Execute a query on the remove API
 #'
 #' This function allows you to call methods which are not specifically exposed by this API yet
 #'

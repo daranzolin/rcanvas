@@ -6,8 +6,14 @@
 \alias{grade_submission}
 \title{Respond to submission}
 \usage{
-comment_submission(course_id, assignment_id, user_id, comm,
-  to_group = TRUE, visible = TRUE)
+comment_submission(
+  course_id,
+  assignment_id,
+  user_id,
+  comm,
+  to_group = TRUE,
+  visible = TRUE
+)
 
 grade_submission(course_id, assignment_id, user_id, grade)
 }

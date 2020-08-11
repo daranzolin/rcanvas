@@ -4,20 +4,38 @@
 \alias{create_course_assignment}
 \title{Create a course assignment}
 \usage{
-create_course_assignment(course_id, name, position = NULL,
-  submission_types = NULL, allowed_extensions = NULL,
-  turnitin_enabled = NULL, vericite_enabled = NULL,
-  turnitin_settings = NULL, integration_data = NULL,
-  integration_id = NULL, peer_reviews = NULL,
-  automatic_peer_reviews = NULL, notify_of_update = NULL,
-  group_category_id = NULL, grade_group_students_individually = NULL,
-  external_tool_tag_attributes = NULL, points_possible = NULL,
-  grading_type = NULL, due_at = NULL, lock_at = NULL,
-  unlock_at = NULL, description = NULL, assignment_group_id = NULL,
-  muted = NULL, assignment_overrides = NULL,
-  only_visible_to_overrides = NULL, published = NULL,
-  grading_standard_id = NULL, omit_from_final_grade = NULL,
-  quiz_lti = NULL)
+create_course_assignment(
+  course_id,
+  name,
+  position = NULL,
+  submission_types = NULL,
+  allowed_extensions = NULL,
+  turnitin_enabled = NULL,
+  vericite_enabled = NULL,
+  turnitin_settings = NULL,
+  integration_data = NULL,
+  integration_id = NULL,
+  peer_reviews = NULL,
+  automatic_peer_reviews = NULL,
+  notify_of_update = NULL,
+  group_category_id = NULL,
+  grade_group_students_individually = NULL,
+  external_tool_tag_attributes = NULL,
+  points_possible = NULL,
+  grading_type = NULL,
+  due_at = NULL,
+  lock_at = NULL,
+  unlock_at = NULL,
+  description = NULL,
+  assignment_group_id = NULL,
+  muted = NULL,
+  assignment_overrides = NULL,
+  only_visible_to_overrides = NULL,
+  published = NULL,
+  grading_standard_id = NULL,
+  omit_from_final_grade = NULL,
+  quiz_lti = NULL
+)
 }
 \arguments{
 \item{course_id}{a valid course id}
@@ -79,6 +97,9 @@ create_course_assignment(course_id, name, position = NULL,
 \item{omit_from_final_grade}{boolean - Whether this assignment is counted towards a student's final grade.}
 
 \item{quiz_lti}{boolean - Whether this assignment should use the Quizzes 2 LTI tool. Sets the submission type to 'external_tool' and configures the external tool attributes to use the Quizzes 2 LTI tool configured for this course. Has no effect if no Quizzes 2 LTI tool is configured.}
+}
+\value{
+
 }
 \description{
 Create a course assignment

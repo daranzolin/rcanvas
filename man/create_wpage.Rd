@@ -4,8 +4,13 @@
 \alias{create_wpage}
 \title{Create page in course}
 \usage{
-create_wpage(course_id, title, body, editing_roles = "teachers",
-  published = FALSE)
+create_wpage(
+  course_id,
+  title,
+  body,
+  editing_roles = "teachers",
+  published = FALSE
+)
 }
 \arguments{
 \item{course_id}{a valid course id}
