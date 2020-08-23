@@ -15,13 +15,16 @@ set_canvas_token <- function(token) {
   keyring::key_set_with_value("rcanvas_CANVAS_API_TOKEN", NULL, token)
 }
 
+# env for the Canvas domain
+cdenv <- new.env()
+
 #' @param domain Canvas domain
 #' @export
 #' @rdname apihelpers
 #' @examples
 #' set_canvas_domain("https://canvas.upenn.edu")
 set_canvas_domain <- function(domain) {
-  keyring::key_set_with_value("rcanvas_CANVAS_DOMAIN", NULL, domain)
+  assign("rcanvas_CANVAS_DOMAIN", domain, envir = cdenv)
 }
 
 #' @rdname apihelpers
@@ -34,7 +37,7 @@ check_token <- function() {
   token
 }
 
-canvas_url <- function() paste0(keyring::key_get("rcanvas_CANVAS_DOMAIN"), "/api/v1")
+canvas_url <- function() paste0(get("rcanvas_CANVAS_DOMAIN", envir = cdenv), "/api/v1")
 
 make_canvas_url <- function(...) paste(canvas_url(), ..., sep = "/")
 

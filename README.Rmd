@@ -30,16 +30,26 @@ library(rcanvas)
 
 # Setup
 
-Some prep work is required before use. You must first stash two items in your `.Renviron` file: (1) your third-party access token, available through your Canvas LMS account settings; and (2) your institution's particular domain. (e.g. `"https://<your_domain>.instructure.com/"`) Name your token `CANVAS_API_TOKEN`, and your domain `CANVAS_DOMAIN`. For help on setting up your `.Renviron` (and all things R) see Jenny Bryan's [Stat545 page.](http://stat545.com/bit003_api-key-env-var.html)
+Some prep work is required before use. You must first safely stash your Canvas
+API token into your operating system's keyring.  This only needs to be done once.
 
-The process for getting your Canvas API token:
+To obtain the Canvas API token follow this trail in Canvas:
 
 `Canvas -> Account -> Settings -> Approved Integrations -> Add new token`
 
-We provide two helper functions to make this process easier.
+You then need to run the following once in the R console:
 
 ```{r eval = FALSE}
 set_canvas_token("YOUR_TOKEN_HERE")
+```
+
+Do not save your token or the code above in an `.R` file because it could
+compromise the security of your token. 
+
+Each time you run load the `rcanvas` library you need to set your domain like
+this:
+
+```{r eval = FALSE}
 set_canvas_domain("https://canvas.yourdomain.edu")
 ```
 

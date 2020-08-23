@@ -12,13 +12,13 @@ process_response(url, args)
 \item{args}{query arguments to be passed to \code{httr}, e.g. auth token}
 }
 \value{
-processed dataframe
+processed dataframe or list if unable to simplify
 }
 \description{
-Wrapper function for common tasks in going from Canvas url to dataframe. Most
+Wrapper function for common tasks in going from Canvas URL to data.frame. Most
 of the heavy lifting is done in \code{paginate}, which finds which pages to
 download. This function adds necessary arguments to those pages (e.g. the
-authentication token), downloads the content, converts from JSON into data
-frame format, and if there are multiple pages/dataframes, converts it into
-one final dataframe.
+authentication token), downloads the content, converts from JSON into
+data.frame format, and if there are multiple pages/data.frames, converts it
+into one final data.frame if able.
 }
