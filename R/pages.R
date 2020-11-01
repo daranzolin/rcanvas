@@ -147,7 +147,7 @@ create_wpage <- function(course_id, title, body, editing_roles = "teachers", pub
 update_wpage <- function(course_id, page_url, title = NULL, body = NULL, editing_roles = "teachers", published = FALSE, notify = FALSE){
  # PUT /api/v1/courses/:course_id/pages/:url
   # wiki_page[front_page]		    boolean	Set an unhidden page as the front page (if true)
-  url <- paste0(canvas_url(), file.path("courses", course_id, "pages", page_url))
+  url <- file.path(canvas_url(), file.path("courses", course_id, "pages", page_url))
   args_list <- list(`wiki_page[editing_roles]` = editing_roles,
                     `wiki_page[published]` = published,
                     `wiki_page[notify_of_update]` = notify,
