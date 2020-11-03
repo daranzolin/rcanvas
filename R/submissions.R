@@ -100,7 +100,7 @@ comment_submission <- function(course_id, assignment_id, user_id, comm,
 #' @examples
 #' \dontrun{grade_submission(1350207, 5681164, 4928217, 80)}
 grade_submission <- function(course_id, assignment_id, user_id, grade) {
-  url <- paste0(canvas_url(),
+  url <- file.path(canvas_url(),
                 paste("courses", course_id, "assignments", assignment_id,
                       "submissions", user_id, sep = "/"))
   args <- list(access_token = check_token(),
