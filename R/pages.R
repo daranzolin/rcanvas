@@ -186,4 +186,20 @@ delete_wpage <- function(course_id, page_url){
 
 }
 
+#' Update syllabus body
+#'
+#' @param course_id a valid course id
+#'
+#' @return invisible
+#' @export
+#'
+update_syllabus_body <- function(course_id, body) {
+  url <- file.path(canvas_url(), file.path("courses", course_id))
+  args <- sc(list(`course[syllabus_body]` = body))
+  resp <- canvas_query(url, args, "PUT")
+
+  httr::stop_for_status(resp)
+  message("Syllabus body updated")
+  return(resp)
+}
 
