@@ -65,20 +65,51 @@ upload_file <- function(url, file_name, parent_folder_id = NULL, parent_folder_p
 #' @param course_id a valid course id
 #' @param name name of the folder (required)
 #' @param parent_folder_id The id of the folder to store the file in. If this and parent_folder_path
-#' are sent an error will be returned. If neither is given, a default folder will be used.
+#'   are sent an error will be returned. If neither is given, a default folder will be used.
+#' @param parent_folder_path The path of the folder to store the new folder in. If this and
+#'   parent_folder_id are sent an error will be returned. If neither is given, a default folder will be used.
 #'
 #' @return invisible
 #' @export
 #'
 #' @examples
 #' create_course_folder(34232, name = "activities")
-create_course_folder <- function(course_id, name, parent_folder_id = NULL) {
-  url <- paste0(canvas_url(),
+create_course_folder <- function(course_id, name, parent_folder_id = NULL, parent_folder_path = "") {
+  url <- file.path(canvas_url(),
                 paste("courses", course_id, "folders", sep = "/"))
-  args <- sc(list(name = name,
-                  parent_folder_id = parent_folder_id))
+
+  if (length(parent_folder_id) == 0) {
+    url_check <- rcanvas:::make_canvas_url("courses", course_id, file.path("folders/by_path", parent_folder_path)) %>%
+      file.path(name)
+    check <- try(process_response(url_check, NULL), silent = TRUE)
+    if (!inherits(check, "try-error")) {
+      message(sprintf("Folder %s already exists", name))
+      return(invisible())
+    }
+    args <- sc(list(name = name,
+               parent_folder_path = parent_folder_path))
+  } else {
+    args <- sc(list(name = name,
+               parent_folder_id = parent_folder_id))
+  }
+
   invisible(canvas_query(url, args, "POST"))
   message(sprintf("Folder %s created", name))
+}
+
+#' Function to list all folders.
+#'
+#' @param course_id Course ID
+#'
+#' @return data frame
+#' @export
+#'
+#' @examples
+#' get_folder_list(1234)
+get_folder_list <- function(course_id) {
+  url <- make_canvas_url("courses", course_id, "folders")
+  args <- list(per_page = 100)
+  process_response(url, args)
 }
 
 #' Create a course assignment

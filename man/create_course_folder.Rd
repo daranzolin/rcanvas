@@ -4,7 +4,12 @@
 \alias{create_course_folder}
 \title{Create a course folder}
 \usage{
-create_course_folder(course_id, name, parent_folder_id = NULL)
+create_course_folder(
+  course_id,
+  name,
+  parent_folder_id = NULL,
+  parent_folder_path = ""
+)
 }
 \arguments{
 \item{course_id}{a valid course id}
@@ -13,6 +18,9 @@ create_course_folder(course_id, name, parent_folder_id = NULL)
 
 \item{parent_folder_id}{The id of the folder to store the file in. If this and parent_folder_path
 are sent an error will be returned. If neither is given, a default folder will be used.}
+
+\item{parent_folder_path}{The path of the folder to store the new folder in. If this and
+parent_folder_id are sent an error will be returned. If neither is given, a default folder will be used.}
 }
 \value{
 invisible
