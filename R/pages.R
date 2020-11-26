@@ -70,7 +70,7 @@ create_wpage_front <- function(){
 get_wpages_list <- function(course_id, sort_type = c("title", "created_at", "updated_at")[1],
                            order_type = "asc", search = NULL, published = NULL){
   # GET /api/v1/courses/:course_id/pages
-  url <- paste0(canvas_url(), file.path("courses", course_id, "pages"))
+  url <- file.path(canvas_url(), file.path("courses", course_id, "pages"))
   args_list <- list(sort = sort_type, order = order_type)
   if(!is.null(search)) args_list <- c(args_list, search_term = search)
   if(!is.null(published)) args_list <- c(args_list, published = published)
