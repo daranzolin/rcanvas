@@ -70,7 +70,7 @@ create_wpage_front <- function(){
 get_wpages_list <- function(course_id, sort_type = c("title", "created_at", "updated_at")[1],
                            order_type = "asc", search = NULL, published = NULL){
   # GET /api/v1/courses/:course_id/pages
-  url <- paste0(canvas_url(), file.path("courses", course_id, "pages"))
+  url <- file.path(canvas_url(), file.path("courses", course_id, "pages"))
   args_list <- list(sort = sort_type, order = order_type)
   if(!is.null(search)) args_list <- c(args_list, search_term = search)
   if(!is.null(published)) args_list <- c(args_list, published = published)
@@ -147,7 +147,7 @@ create_wpage <- function(course_id, title, body, editing_roles = "teachers", pub
 update_wpage <- function(course_id, page_url, title = NULL, body = NULL, editing_roles = "teachers", published = FALSE, notify = FALSE){
  # PUT /api/v1/courses/:course_id/pages/:url
   # wiki_page[front_page]		    boolean	Set an unhidden page as the front page (if true)
-  url <- paste0(canvas_url(), file.path("courses", course_id, "pages", page_url))
+  url <- file.path(canvas_url(), file.path("courses", course_id, "pages", page_url))
   args_list <- list(`wiki_page[editing_roles]` = editing_roles,
                     `wiki_page[published]` = published,
                     `wiki_page[notify_of_update]` = notify,
@@ -186,4 +186,20 @@ delete_wpage <- function(course_id, page_url){
 
 }
 
+#' Update syllabus body
+#'
+#' @param course_id a valid course id
+#'
+#' @return invisible
+#' @export
+#'
+update_syllabus_body <- function(course_id, body) {
+  url <- file.path(canvas_url(), file.path("courses", course_id))
+  args <- sc(list(`course[syllabus_body]` = body))
+  resp <- canvas_query(url, args, "PUT")
+
+  httr::stop_for_status(resp)
+  message("Syllabus body updated")
+  return(resp)
+}
 
