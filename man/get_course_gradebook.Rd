@@ -4,10 +4,12 @@
 \alias{get_course_gradebook}
 \title{Get a course gradebook}
 \usage{
-get_course_gradebook(course_id)
+get_course_gradebook(course_id, progress = FALSE)
 }
 \arguments{
 \item{course_id}{A valid course id}
+
+\item{progress}{logical; print page numbers as we go? (Defaults to FALSE)}
 }
 \value{
 A gradebook (in long format)
