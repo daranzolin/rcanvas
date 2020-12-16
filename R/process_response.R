@@ -16,15 +16,14 @@ process_response <- function(url, args) {
 
   resp <- canvas_query(url, args, "GET")
 
-  paginate(resp) %>%
+  d <- paginate(resp) %>%
     purrr::map(httr::content, "text") %>%
-    purrr::map(jsonlite::fromJSON, flatten = TRUE) ->
-    d
+    purrr::map(jsonlite::fromJSON, flatten = TRUE)
 
   # flatten to data.frame if able, otherwise return as is
-  d <- tryCatch(purrr::map_df(d, purrr::flatten_df),
-                error = function(e) d)
-  d
+  #d <- tryCatch(purrr::map_df(d, purrr::flatten_df),
+  #              error = function(e) d)
+  dplyr::bind_rows(d)
 }
 
 #' Get responses from Canvas API pages
@@ -52,38 +51,56 @@ paginate <- function(x, showProgress=T) {
   first_response <- list(x)
   stopifnot(httr::status_code(x) == 200) # OK status
   pages <- httr::headers(x)$link
+
   if (is.null(pages)) return(first_response)
+
   should_continue <- TRUE
-  inc <- 2
+
   if (has_rel(pages, "last")) {
     last_page <- get_page(x, "last")
     n_pages <- readr::parse_number(stringr::str_extract(last_page, "page=[0-9]{1,}"))
-    if (n_pages == 1) return(first_response)
+
+    if (n_pages == 1){
+      return(first_response)
+    }
+
     pages <- increment_pages(last_page, 2:n_pages)
-    if (showProgress) bar = txtProgressBar(max=n_pages, style = 3)
+    if (showProgress){
+      bar = txtProgressBar(max=n_pages, style = 3)
+    }
+
     queryfunc = function(...) {if (showProgress) bar$up(bar$getVal()+1); canvas_query(...)}
     responses <- pages %>%
       purrr::map(queryfunc, args = list(access_token = check_token()))
     responses <- c(first_response, responses)
+
     return(responses)
-  } else if (has_rel(httr::headers(x)$link, "next")) {
-    # edge case for if there is no 'last' header, see:
-    # https://canvas.instructure.com/doc/api/file.pagination.html
-    # https://github.com/daranzolin/rcanvas/issues/4
-    while (should_continue) {
-      page_temp <- get_page(x, "next")
-      pages[[inc]] <- page_temp
-      x <- canvas_query(page_temp,
-                        args = list(access_token = check_token()),
-                        type = "HEAD")
-      if (!has_rel(httr::headers(x)$link, "next")) {
-        should_continue <- FALSE
-      } else {
-        inc <- inc + 1
+  } else {
+    if (has_rel(httr::headers(x)$link, "next")) {
+      pages[[1]] <- get_page(x, "current")
+
+      inc <- 2
+
+      # edge case for if there is no 'last' header, see:
+      # https://canvas.instructure.com/doc/api/file.pagination.html
+      # https://github.com/daranzolin/rcanvas/issues/4
+      while (should_continue) {
+        page_temp <- get_page(x, "next")
+        pages[[inc]] <- page_temp
+        x <- canvas_query(page_temp,
+                          args = list(access_token = check_token()),
+                          type = "HEAD")
+        if (!has_rel(httr::headers(x)$link, "next")) {
+          should_continue <- FALSE
+        } else {
+          inc <- inc + 1
+        }
       }
+
+
+      responses <- pages %>%
+        purrr::map(canvas_query, args = list(access_token = check_token()))
     }
-    responses <- pages %>%
-      purrr::map(canvas_query, args = list(access_token = check_token()))
   }
 }
 
