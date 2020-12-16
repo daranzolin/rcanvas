@@ -41,7 +41,7 @@ canvas_url <- function() paste0(get("rcanvas_CANVAS_DOMAIN", envir = cdenv), "/a
 
 make_canvas_url <- function(...) paste(canvas_url(), ..., sep = "/")
 
-#' @importFrom httr GET POST PUT
+#' @importFrom httr GET POST PUT HEAD
 canvas_query <- function(urlx, args = NULL, type = "GET") {
 
   args <- sc(args)
