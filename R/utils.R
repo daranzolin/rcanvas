@@ -39,7 +39,13 @@ check_token <- function() {
 
 canvas_url <- function() paste0(get("rcanvas_CANVAS_DOMAIN", envir = cdenv), "/api/v1")
 
-make_canvas_url <- function(...) paste(canvas_url(), ..., sep = "/")
+make_canvas_url <- function(...) {
+  url = paste(canvas_url(), ..., sep = "/")
+  if (getOption('.rcanvas.show.url', default = FALSE)) {
+    message(url)
+  }
+  return(url)
+}
 
 #' @importFrom httr GET POST PUT
 canvas_query <- function(urlx, args = NULL, type = "GET") {

@@ -19,7 +19,8 @@ NULL
 get_submissions <- function(course_id, type, type_id) {
   if (!type %in% c("quizzes", "assignments"))
     stop("type must be 'quizzes' or 'assignments'")
-  url <- make_canvas_url('courses', course_id, type, type_id)
+  url <- make_canvas_url('courses', course_id, type, type_id,
+                         'submissions')
   args <- list(access_token = check_token(),
                per_page = 100)
   process_response(url, args) %>%
