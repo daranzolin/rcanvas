@@ -19,8 +19,7 @@ NULL
 get_submissions <- function(course_id, type, type_id) {
   if (!type %in% c("quizzes", "assignments"))
     stop("type must be 'quizzes' or 'assignments'")
-  url <- sprintf("%scourses/%s/%s/%s/submissions", canvas_url(),
-                 course_id, type, type_id)
+  url <- make_canvas_url('courses', course_id, type, type_id)
   args <- list(access_token = check_token(),
                per_page = 100)
   process_response(url, args) %>%
@@ -39,8 +38,8 @@ get_submissions <- function(course_id, type, type_id) {
 get_submission_single <- function(course_id, type, type_id, user_id) {
   if (!type %in% c("quizzes", "assignments"))
     stop("type must be 'quizzes' or 'assignments'")
-  url <- sprintf("%scourses/%s/%s/%s/submissions/%s",
-                 canvas_url(), course_id, type, type_id, user_id)
+  url <- make_canvas_url('courses', course_id, type, type_id,
+                         'submissions', user_id)
   args <- list(access_token = check_token(),
                per_page = 100)
   resp <- canvas_query(url, args, "GET")
@@ -77,9 +76,8 @@ NULL
 #' \dontrun{comment_submission(1350207, 5681164, 4928217, "test")}
 comment_submission <- function(course_id, assignment_id, user_id, comm,
                              to_group = TRUE, visible = TRUE) {
-  url <- paste0(canvas_url(),
-                paste("courses", course_id, "assignments", assignment_id,
-                      "submissions", user_id, sep = "/"))
+  url <- make_canvas_url("courses", course_id, "assignments",
+                         assignment_id, "submissions", user_id)
   args <- list(access_token = check_token(),
                `comment[text_comment]` = comm,
                `comment[group_comment]` = to_group,
@@ -100,9 +98,8 @@ comment_submission <- function(course_id, assignment_id, user_id, comm,
 #' @examples
 #' \dontrun{grade_submission(1350207, 5681164, 4928217, 80)}
 grade_submission <- function(course_id, assignment_id, user_id, grade) {
-  url <- paste0(canvas_url(),
-                paste("courses", course_id, "assignments", assignment_id,
-                      "submissions", user_id, sep = "/"))
+  url <- make_canvas_url("courses", course_id, "assignments",
+                         assignment_id, "submissions", user_id)
   args <- list(access_token = check_token(),
                `submission[posted_grade]` = grade,
                per_page = 100)
