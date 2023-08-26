@@ -196,4 +196,39 @@ create_canvas_module <- function(course_id, name,
   message(sprintf("Modules %s created.", name))
 }
 
-
+#' Create a module item
+#'
+#' @param course_id a valid course id
+#' @param module_id a valid module id
+#' @param type string - type of module item (must be one of: File, Page, Discussion, Assignment, Quiz, SubHeader, ExternalUrl, ExternalTool)
+#' @param content_id integer - The id of the content to link to the module item. Required, except for ‘ExternalUrl’, ‘Page’, and ‘SubHeader’ types.
+#' @param title integer - The name of the module item and associated content
+#' @param position integer - The position of this item in the module
+#' @param indent integer - 0-based indent level; module items may be indented to show a hierarchy
+#' @param page_url string - Suffix for the linked wiki page (e.g. ‘front-page’). Required for ‘Page’ type.
+#' @param external_url string - External url that the item points to. (Required for ‘ExternalUrl’ and ‘ExternalTool’ types)
+#' @param new_tab boolean - Whether the external tool opens in a new tab. Only applies to ‘ExternalTool’ type.
+#'
+#' @return invisible
+#' @export
+#'
+#' @examples
+#' create_canvas_module_item(
+#'   course_id = 432432,
+#'   module_id = 1,
+#'   type = "SubHeader",
+#'   title = "Before Class")
+create_cavnas_module_item <- function(course_id, module_id, type,
+                                      content_id = NULL,
+                                      title = NULL,
+                                      position = NULL,
+                                      indent = NULL,
+                                      page_url = NULL,
+                                      external_url = NULL,
+                                      new_tab = NULL) {
+  url <- make_canvas_url(rcanvas:::canvas_url(), "courses", course_id, "modules", module_id, "items")
+  args <- rcanvas:::sc(list(type = type, content_id = content_id, title = title, position = position, indent = indent, page_url = page_url, external_url = external_url, new_tab = new_tab))
+  names(args) <- sprintf("module_item[%s]", names(args))
+  invisible(rcanvas:::canvas_query(url, args, "POST"))
+  message(sprintf("Modules %s updated", module_id))
+}
