@@ -113,19 +113,19 @@ create_course_folder <- function(course_id, name, parent_folder_id = NULL) {
 #' @param omit_from_final_grade boolean - Whether this assignment is counted towards a student's final grade.
 #' @param quiz_lti boolean - Whether this assignment should use the Quizzes 2 LTI tool. Sets the submission type to 'external_tool' and configures the external tool attributes to use the Quizzes 2 LTI tool configured for this course. Has no effect if no Quizzes 2 LTI tool is configured.
 #'
-#' @return
+#' @return invisible
 #' @export
 #'
 #' @examples
 #' create_course_assignment(course_id = 432432, name = "Challenging Assignment")
 #' create_course_assignment(course_id = 3432432, name = "R Packages, Review", peer_reviews = TRUE, points_possible = 100, omit_from_final_grade = TRUE)
 create_course_assignment <- function(course_id, name, position = NULL, submission_types = NULL, allowed_extensions = NULL, turnitin_enabled = NULL,
-                                    vericite_enabled = NULL, turnitin_settings = NULL, integration_data = NULL, integration_id = NULL, peer_reviews = NULL,
-                                    automatic_peer_reviews = NULL, notify_of_update = NULL, group_category_id = NULL, grade_group_students_individually = NULL,
-                                    external_tool_tag_attributes = NULL, points_possible = NULL, grading_type = NULL, due_at = NULL,
-                                    lock_at = NULL, unlock_at = NULL, description = NULL, assignment_group_id = NULL, muted = NULL,
-                                    assignment_overrides = NULL, only_visible_to_overrides = NULL, published = NULL, grading_standard_id = NULL,
-                                    omit_from_final_grade = NULL, quiz_lti = NULL) {
+                                     vericite_enabled = NULL, turnitin_settings = NULL, integration_data = NULL, integration_id = NULL, peer_reviews = NULL,
+                                     automatic_peer_reviews = NULL, notify_of_update = NULL, group_category_id = NULL, grade_group_students_individually = NULL,
+                                     external_tool_tag_attributes = NULL, points_possible = NULL, grading_type = NULL, due_at = NULL,
+                                     lock_at = NULL, unlock_at = NULL, description = NULL, assignment_group_id = NULL, muted = NULL,
+                                     assignment_overrides = NULL, only_visible_to_overrides = NULL, published = NULL, grading_standard_id = NULL,
+                                     omit_from_final_grade = NULL, quiz_lti = NULL) {
   url <- make_canvas_url(canvas_url(), "courses", course_id, "assignments")
   args <- sc(list(name = name,
                   position = position,
@@ -160,3 +160,40 @@ create_course_assignment <- function(course_id, name, position = NULL, submissio
   invisible(canvas_query(url, args, "POST"))
   message(sprintf("Assignment %s created.", name))
 }
+
+#' Create a course module
+#'
+#' @param course_id a valid course id
+#' @param name the module name (only parameter required)
+#' @param unlock_at datetime - The day/time the module is unlocked. Accepts times in ISO 8601 format, e.g. 2014-10-21T18:48:00Z.
+#' @param position integer - The position of this module.
+#' @param require_sequential_progress boolean
+#' @param prerequisite_module_ids integer
+#' @param publish_final_grade boolean - whether the final grade should be published upon completion
+#'
+#' @return invisible
+#' @export
+#'
+#' @examples
+#' create_canvas_module(course_id = 432432, name = "Module 1")
+#'
+create_canvas_module <- function(course_id, name,
+                                 unlock_at = NULL,
+                                 position = NULL,
+                                 require_sequential_progress = NULL,
+                                 prerequisite_module_ids = NULL,
+                                 publish_final_grade = NULL) {
+  url <- make_canvas_url(canvas_url(), "courses", course_id, "modules")
+  args <- rcanvas:::sc(
+    list(name = name,
+         unlock_at = unlock_at,
+         position = position,
+         require_sequential_progress = require_sequential_progress,
+         prerequisite_module_ids = prerequisite_module_ids,
+         publish_final_grade = publish_final_grade))
+  names(args) <- sprintf("module[%s]", names(args))
+  invisible(rcanvas:::canvas_query(url, args, "POST"))
+  message(sprintf("Modules %s created.", name))
+}
+
+
