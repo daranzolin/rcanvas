@@ -1,6 +1,6 @@
 Package: rcanvas
 Title: R Client for Canvas API
-Version: 0.0.0.9002
+Version: 0.9.3
 Authors@R: c(
     person("David", "Ranzolin", email = "daranzolin@gmail.com", role = c("aut", "cre")),
     person("Chris", "Hua", email = "hua.christopher@gmail.com", role = "aut"),

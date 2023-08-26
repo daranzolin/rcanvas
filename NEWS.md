@@ -1,3 +1,11 @@
+# rcanvas 0.9.3
+
+* Added the following functions:
+  * `create_canvas_module()`
+  * `create_canvas_module_item()`
+  * `get_module_list()`
+* Fixed bug in `create_course_assignment()` and `create_course_folder()`
+
 # rcanvas 0.9.2
 
 * Added two function, `get_term_course_list()` and `get_account_course_list()`.
