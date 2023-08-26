@@ -218,7 +218,7 @@ create_canvas_module <- function(course_id, name,
 #'   module_id = 1,
 #'   type = "SubHeader",
 #'   title = "Before Class")
-create_cavnas_module_item <- function(course_id, module_id, type,
+create_canvas_module_item <- function(course_id, module_id, type,
                                       content_id = NULL,
                                       title = NULL,
                                       position = NULL,
