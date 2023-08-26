@@ -9,9 +9,6 @@ get_group_category(group_category_id)
 \arguments{
 \item{group_category_id}{}
 }
-\value{
-
-}
 \description{
 Get a single group category
 }

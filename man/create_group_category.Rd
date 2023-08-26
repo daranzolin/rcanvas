@@ -25,9 +25,6 @@ create_group_category(
 
 \item{create_group_count}{Create this number of groups (Course Only).}
 }
-\value{
-
-}
 \description{
 Does not work yet. Returns 422. Unclear how to fix.
 }

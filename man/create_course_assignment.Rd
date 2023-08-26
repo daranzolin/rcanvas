@@ -98,9 +98,6 @@ create_course_assignment(
 
 \item{quiz_lti}{boolean - Whether this assignment should use the Quizzes 2 LTI tool. Sets the submission type to 'external_tool' and configures the external tool attributes to use the Quizzes 2 LTI tool configured for this course. Has no effect if no Quizzes 2 LTI tool is configured.}
 }
-\value{
-
-}
 \description{
 Create a course assignment
 }

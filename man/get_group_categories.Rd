@@ -9,9 +9,6 @@ get_group_categories(course_id)
 \arguments{
 \item{context_type}{}
 }
-\value{
-
-}
 \description{
 Group categories
 }
