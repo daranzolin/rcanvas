@@ -15,6 +15,10 @@ create_group_category(
 )
 }
 \arguments{
+\item{context_id}{Context id}
+
+\item{context_type}{Context type}
+
 \item{cat_name}{Name of the group category. Required.}
 
 \item{self_signup}{Allow students to sign up for a group themselves (Course Only). valid values are: “enabled”, allows students to self sign up for any group in course;  “restricted” allows students to self sign up only for groups in the same section null disallows self sign up}
@@ -26,7 +30,7 @@ create_group_category(
 \item{create_group_count}{Create this number of groups (Course Only).}
 }
 \value{
-
+invisible
 }
 \description{
 Does not work yet. Returns 422. Unclear how to fix.

@@ -7,10 +7,12 @@
 get_group_categories(course_id)
 }
 \arguments{
-\item{context_type}{}
+\item{context_id}{context id}
+
+\item{context_type}{context type}
 }
 \value{
-
+data frame
 }
 \description{
 Group categories

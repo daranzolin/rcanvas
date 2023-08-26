@@ -127,10 +127,10 @@ get_course_user_groups <- function(course_id) {
 
 #' Group categories
 #'
-#' @param context_id
-#' @param context_type
+#' @param context_id context id
+#' @param context_type context type
 #'
-#' @return
+#' @return data frame
 #' @export
 #'
 #' @examples
@@ -150,7 +150,7 @@ get_group_categories <- function(context_id, context_type = "courses") {
 #'
 #' @param group_category_id
 #'
-#' @return
+#' @return data frame
 #' @export
 #'
 #' @examples
@@ -169,15 +169,15 @@ get_group_category <- function(group_category_id) {
 #'
 #' Does not work yet. Returns 422. Unclear how to fix.
 #'
-#' @param context_id
-#' @param context_type
+#' @param context_id Context id
+#' @param context_type Context type
 #' @param cat_name Name of the group category. Required.
 #' @param self_signup Allow students to sign up for a group themselves (Course Only). valid values are: “enabled”, allows students to self sign up for any group in course;  “restricted” allows students to self sign up only for groups in the same section null disallows self sign up
 #' @param auto_leader Assigns group leaders automatically when generating and allocating students to groups. Valid values are: “first” the first student to be allocated to a group is the leader; “random” a random student from all members is chosen as the leader
 #' @param group_limit Limit the maximum number of users in each group (Course Only). Requires self signup.
 #' @param create_group_count Create this number of groups (Course Only).
 #'
-#' @return
+#' @return invisible
 #'
 #' @examples
 #' create_group_category(1350207, "courses", "FinalProjectGroup",

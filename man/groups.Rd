@@ -30,8 +30,7 @@ add_groups(
   category,
   name,
   description,
-  join_level = c("parent_context_auto_join", "parent_context_request",
-    "invitation_only")
+  join_level = c("parent_context_auto_join", "parent_context_request", "invitation_only")
 )
 }
 \arguments{

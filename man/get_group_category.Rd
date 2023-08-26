@@ -10,7 +10,7 @@ get_group_category(group_category_id)
 \item{group_category_id}{}
 }
 \value{
-
+data frame
 }
 \description{
 Get a single group category
