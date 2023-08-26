@@ -184,7 +184,7 @@ create_canvas_module <- function(course_id, name,
                                  prerequisite_module_ids = NULL,
                                  publish_final_grade = NULL) {
   url <- make_canvas_url(canvas_url(), "courses", course_id, "modules")
-  args <- rcanvas:::sc(
+  args <- sc(
     list(name = name,
          unlock_at = unlock_at,
          position = position,
@@ -192,7 +192,7 @@ create_canvas_module <- function(course_id, name,
          prerequisite_module_ids = prerequisite_module_ids,
          publish_final_grade = publish_final_grade))
   names(args) <- sprintf("module[%s]", names(args))
-  invisible(rcanvas:::canvas_query(url, args, "POST"))
+  invisible(canvas_query(url, args, "POST"))
   message(sprintf("Modules %s created.", name))
 }
 
@@ -226,9 +226,9 @@ create_cavnas_module_item <- function(course_id, module_id, type,
                                       page_url = NULL,
                                       external_url = NULL,
                                       new_tab = NULL) {
-  url <- make_canvas_url(rcanvas:::canvas_url(), "courses", course_id, "modules", module_id, "items")
-  args <- rcanvas:::sc(list(type = type, content_id = content_id, title = title, position = position, indent = indent, page_url = page_url, external_url = external_url, new_tab = new_tab))
+  url <- make_canvas_url(canvas_url(), "courses", course_id, "modules", module_id, "items")
+  args <- sc(list(type = type, content_id = content_id, title = title, position = position, indent = indent, page_url = page_url, external_url = external_url, new_tab = new_tab))
   names(args) <- sprintf("module_item[%s]", names(args))
-  invisible(rcanvas:::canvas_query(url, args, "POST"))
+  invisible(canvas_query(url, args, "POST"))
   message(sprintf("Modules %s updated", module_id))
 }
