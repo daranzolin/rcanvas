@@ -2,6 +2,7 @@
 #' @param course_id A valid canvas course id
 #' @param type Either "quizzes" or "assignments"
 #' @param type_id A valid quiz or assignment id
+#' @param include A character vector. Options are submission_history, submission_comments, rubric_assessment, assignment, visibility, course, user, group, or read_status.
 #' @name submissions
 NULL
 
@@ -16,11 +17,18 @@ NULL
 #' @examples
 #' \dontrun{get_submissions(27, "quizzes", 2915)}
 #' \dontrun{get_submissions(27, "assignments", 254)}
-get_submissions <- function(course_id, type, type_id) {
+get_submissions <- function(course_id, type, type_id, include=NULL) {
   if (!type %in% c("quizzes", "assignments"))
     stop("type must be 'quizzes' or 'assignments'")
   url <- make_canvas_url('courses', course_id, type, type_id,
                          'submissions')
+  if(!is.null(include)){
+		iopt<-c("submission_history", "submission_comments", "rubric_assessment", "assignment", "visibility", "course", "user", "group", "read_status")
+		if(!all(include%in%iopt)) stop(sprintf("include must be any of: %s",paste0(iopt,collapse=", ")))
+		inc<-paste0("include[]=",include)
+		inc<-paste0(inc,collapse="&")
+		url<-paste(url,inc,sep="?")
+	}
   args <- list(access_token = check_token(),
                per_page = 100)
   process_response(url, args) %>%
@@ -36,11 +44,18 @@ get_submissions <- function(course_id, type, type_id) {
 #' @md
 #' @examples
 #' \dontrun{get_submission_single(1350207, "assignments", 5681164, 4928217)}
-get_submission_single <- function(course_id, type, type_id, user_id) {
+get_submission_single <- function(course_id, type, type_id, user_id, include=NULL) {
   if (!type %in% c("quizzes", "assignments"))
     stop("type must be 'quizzes' or 'assignments'")
   url <- make_canvas_url('courses', course_id, type, type_id,
                          'submissions', user_id)
+  if(!is.null(include)){
+		iopt<-c("submission_history", "submission_comments", "rubric_assessment", "assignment", "visibility", "course", "user", "group", "read_status")
+		if(!all(include%in%iopt)) stop(sprintf("include must be any of: %s",paste0(iopt,collapse=", ")))
+		inc<-paste0("include[]=",include)
+		inc<-paste0(inc,collapse="&")
+		url<-paste(url,inc,sep="?")
+	}
   args <- list(access_token = check_token(),
                per_page = 100)
   resp <- canvas_query(url, args, "GET")
