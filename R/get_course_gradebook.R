@@ -12,28 +12,58 @@
 #'
 #' @export
 get_course_gradebook <- function(course_id, progress = FALSE) {
+  # Retrieve assignments and enrolled students
   course_assignments <- get_course_items(course_id, "assignments")
-
   students <- get_course_items(course_id, "enrollments") %>%
     dplyr::filter(role == "StudentEnrollment", user.name != "Test Student") %>%
     dplyr::select(user.name, user_id, grades.final_score, course_id) %>%
     unique()
-
-  n_pages <- ceiling(nrow(students)/100)
-
-  gradebook <- purrr::map_df(seq_len(n_pages), function(page) {
-    if(progress)
-      cat(page, "of", n_pages, "\n")
-
-    submissions <- purrr::pmap_dfr(list(course_id, course_assignments$id, page),
-                                   get_assignment_submissions)
-    gradebook_page <- dplyr::left_join(submissions, students, by = "user_id") %>%
-      dplyr::left_join(course_assignments %>%
-                         dplyr::select(id, assignment_name = name),
-                       by = c("assignment_id" = "id"))
-    return(gradebook_page)
-  })
-
+  
+  # Initialize list to collect submissions
+  all_submissions <- list()
+  
+  # Loop over each assignment
+  for (assignment_id in course_assignments$id) {
+    page <- 1
+    repeat {
+      if (progress) cat(sprintf("Assignment %s, page %d\n", assignment_id, page))
+      
+      # Retrieve submissions with error handling and ensure tibble output
+      subs <- tryCatch({
+        res <- get_assignment_submissions(course_id, assignment_id, page)
+        if (!inherits(res, "data.frame")) res <- tibble::as_tibble(res)
+        res
+      }, error = function(e) {
+        warning(sprintf("Error retrieving assignment %s, page %d: %s", assignment_id, page, e$message))
+        tibble::tibble()
+      })
+      
+      # Exit the loop if no submissions are returned
+      if (nrow(subs) == 0) break
+      
+      # Ensure required join columns exist; warn and add dummy values if missing
+      if (!"user_id" %in% names(subs)) {
+        warning(sprintf("Column 'user_id' missing for assignment %s, page %d. Adding dummy column.", assignment_id, page))
+        subs$user_id <- NA_integer_
+      }
+      if (!"assignment_id" %in% names(subs)) {
+        warning(sprintf("Column 'assignment_id' missing for assignment %s, page %d. Inserting assignment_id.", assignment_id, page))
+        subs$assignment_id <- assignment_id
+      }
+      
+      # Append the current page's submissions to the list
+      all_submissions[[length(all_submissions) + 1]] <- subs
+      page <- page + 1
+    }
+  }
+  
+  # Combine all submissions and join with student and assignment data
+  submissions_all <- dplyr::bind_rows(all_submissions)
+  gradebook <- submissions_all %>%
+    dplyr::left_join(students, by = "user_id") %>%
+    dplyr::left_join(course_assignments %>% dplyr::select(id, assignment_name = name),
+                     by = c("assignment_id" = "id"))
+  
   return(gradebook)
 }
 
