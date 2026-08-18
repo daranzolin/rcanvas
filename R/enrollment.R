@@ -9,7 +9,6 @@
 add_enrollment <- function(course_id, user_id, type, state, section=F, ...) {
   url <- make_canvas_url(ifelse(section, "sections", "courses"), course_id, "enrollments")
   args <- list("enrollment[user_id]" = user_id, "enrollment[type]"=type, "enrollment[enrollment_state]"=state, ...)
-  message(url)
   canvas_query(url, args, "POST")
 }
 
@@ -32,5 +31,4 @@ add_enrollments <- function(course_id, user_ids, type=c("StudentEnrollment", "Te
   state <- match.arg(state)
   invisible(purrr::map2(course_id, user_ids, add_enrollment, type=type, state=state, section=section, ...))
 }
-
 

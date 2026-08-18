@@ -33,7 +33,7 @@ get_groups_self <- function() {
 #' \dontrun{get_groups_context(27)}
 get_groups_context <- function(object_id, object_type = "courses") {
   stopifnot(object_type %in% c("courses", "accounts"))
-  url <- make_canvas_url(object_type, course_id, "groups")
+  url <- make_canvas_url(object_type, object_id, "groups")
   args <- list(per_page = 100)
   include <- iter_args_list(NULL, "include[]")
   args <- c(args, include)
