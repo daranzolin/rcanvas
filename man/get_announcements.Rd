@@ -2,7 +2,7 @@
 % Please edit documentation in R/announcements.R
 \name{get_announcements}
 \alias{get_announcements}
-\title{Get announcements for a course}
+\title{Get announcements for one or more courses}
 \usage{
 get_announcements(
   course_id,
@@ -12,20 +12,24 @@ get_announcements(
 )
 }
 \arguments{
-\item{course_id}{numeric course id}
+\item{course_id}{One or more numeric course ids or Canvas course context codes.}
 
-\item{start_date}{Only return announcements posted since the start_date (inclusive). Defaults to 14 days ago. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ.}
+\item{start_date}{Only return announcements posted since this date (inclusive).
+Use yyyy-mm-dd or an ISO 8601 timestamp.}
 
-\item{end_date}{Only return announcements posted before the end_date (inclusive). Defaults to 28 days from start_date. The value should be formatted as: yyyy-mm-dd or ISO 8601 YYYY-MM-DDTHH:MM:SSZ. Announcements scheduled for future posting will only be returned to course administrators.}
+\item{end_date}{Only return announcements posted before this date (inclusive).
+Use yyyy-mm-dd or an ISO 8601 timestamp. Future announcements are returned
+only to users who can administer the course.}
 
-\item{active_only}{Only return active announcements that have been published. Applies only to requesting users that have permission to view unpublished items. Defaults to false for users with access to view unpublished items, otherwise true and unmodifiable.}
+\item{active_only}{Only return active announcements that have been published.
+Applies only to users with permission to view unpublished announcements.}
 }
 \value{
-announcements for a given course
+A data frame of announcements.
 }
 \description{
-We transform the course id from a numeric (e.g. 123) to a context id
-(e.g. course_123).
+Course ids are transformed from numeric ids (for example, 123) to Canvas
+context codes (for example, \code{course_123}).
 }
 \examples{
 \dontrun{get_announcements(course_id = 27)}
