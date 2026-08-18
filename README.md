@@ -57,7 +57,10 @@ The following functions are implemented:
   - `create_course_content_migration`: migrate content from one course
     to another
   - `create_course_assignment`: create an assignment within a course
-  - `get_announcements`: Get announcements for a course
+  - `create_announcement`: Create an announcement as a draft, immediate
+    post, or scheduled post
+  - `delete_announcement`: Delete an announcement
+  - `get_announcements`: Get announcements for one or more courses
   - `get_course_analytics_data`: Get course analytics data for a course
   - `get_course_gradebook`: Get the gradebook for a course
   - `get_course_items`: Get various course items, e.g. files, modules,
@@ -80,6 +83,7 @@ The following functions are implemented:
     page\_views, details, etc.
   - `grade_submission`: Grade a submission
   - `search_courses`: Search all public courses
+  - `update_announcement`: Update an announcement
   - `update_discussion_id`: Update a discussion by ID
   - `upload_course_file`: Upload a file to a course
 
@@ -116,6 +120,9 @@ grade_submission(course_id = 27, assignment_id = 2248,
 ### Get announcements and discussions
 get_announcements(course_id = 27) 
 get_announcements(course_id = 27, start_date = "2017-02-01") 
+create_announcement(27, "Welcome", "<p>Welcome to the course.</p>")
+update_announcement(27, 12345, published = TRUE)
+delete_announcement(27, 12345)
 get_discussions_context(4371405, object_type = "courses")
 ```
 
