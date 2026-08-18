@@ -113,7 +113,7 @@ get_course_analytics_data <- function(course_id, type = "assignments", user_id =
 get_course_items <- function(course_id, item, include = NULL) {
   valid_items <- c("settings", "discussion_topics", "todo", "enrollments", "users", "students",
                    "features", "assignments", "files", "modules", "front_page", "pages", "quizzes",
-                   "folders", "assignment_groups")
+                   "folders", "assignment_groups", "sections")
   if (!missing(item) && !item %in% valid_items) {
     stop(paste("item argument must be one of:", paste(valid_items, collapse = ", ")))
   }
