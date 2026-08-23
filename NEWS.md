@@ -1,5 +1,7 @@
 # rcanvas 0.9.3
 
+* Added helpers to list, create, update, and delete questions in classic quizzes.
+
 * Added the following functions:
   * `create_canvas_module()`
   * `create_canvas_module_item()`
