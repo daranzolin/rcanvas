@@ -1,3 +1,8 @@
+# rcanvas 0.9.4
+
+* Added `update_group()` and `update_group_category()` to rename or edit existing
+  groups and group categories (group sets).
+
 # rcanvas 0.9.3
 
 * Added helpers to list, create, update, delete, and reorder content in classic quizzes.

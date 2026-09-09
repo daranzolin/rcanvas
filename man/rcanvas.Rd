@@ -2,5 +2,35 @@
 % Please edit documentation in R/rcanvas-package.r
 \docType{package}
 \name{rcanvas}
+\alias{rcanvas-package}
 \alias{rcanvas}
 \title{rcanvas: R client for Canvas API}
+\description{
+A client for any individual instance of the Canvas API.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/daranzolin/rcanvas}
+  \item Report bugs at \url{https://github.com/daranzolin/rcanvas/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: David Ranzolin \email{daranzolin@gmail.com}
+
+Authors:
+\itemize{
+  \item David Ranzolin \email{daranzolin@gmail.com}
+  \item Chris Hua \email{hua.christopher@gmail.com}
+  \item J. Hathaway \email{hathawayj@byui.edu}
+  \item Lucy D'Agostino McGowan \email{lucydagostino@gmail.com} (\href{https://orcid.org/0000-0002-6983-2759}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Frederick Solt \email{frederick-solt@uiowa.edu} [contributor]
+  \item Wouter van Atteveldt \email{wouter@vanatteveldt.com} [contributor]
+}
+
+}

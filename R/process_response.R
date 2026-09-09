@@ -11,7 +11,7 @@
 #' @param args query arguments to be passed to \code{httr}, e.g. auth token
 #'
 #' @return processed dataframe or list if unable to simplify
-#' @importFrom magrittr `%>%`
+#' @importFrom magrittr %>%
 process_response <- function(url, args) {
 
   resp <- canvas_query(url, args, "GET")

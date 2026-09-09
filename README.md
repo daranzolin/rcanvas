@@ -85,6 +85,9 @@ The following functions are implemented:
   - `search_courses`: Search all public courses
   - `update_announcement`: Update an announcement
   - `update_discussion_id`: Update a discussion by ID
+  - `update_group`: Rename or edit an existing group
+  - `update_group_category`: Rename or edit an existing group category
+    (group set)
   - `upload_course_file`: Upload a file to a course
 
 # Usage
