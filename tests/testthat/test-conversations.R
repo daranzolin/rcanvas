@@ -70,6 +70,40 @@ test_that("get_conversation does not mark messages read by default", {
   expect_identical(request$args$auto_mark_as_read, FALSE)
 })
 
+test_that("update_conversation sends only requested fields", {
+  request <- new.env(parent = emptyenv())
+  response <- structure(list(status_code = 200), class = "response")
+  local_mocked_bindings(
+    make_canvas_url = function(...) {
+      request$url_parts <- list(...)
+      "https://canvas.example.edu/api/v1/conversations/123"
+    },
+    canvas_query = function(url, args = NULL, type = "GET") {
+      request$url <- url
+      request$args <- args
+      request$type <- type
+      response
+    },
+    .package = "rcanvas"
+  )
+
+  result <- update_conversation(123, workflow_state = "unread", starred = TRUE)
+
+  expect_identical(result, response)
+  expect_equal(request$url_parts, list("conversations", 123))
+  expect_identical(request$type, "PUT")
+  expect_named(request$args,
+               c("conversation[workflow_state]", "conversation[starred]"))
+  expect_identical(request$args[["conversation[workflow_state]"]], "unread")
+  expect_identical(request$args[["conversation[starred]"]], TRUE)
+})
+
+test_that("update_conversation validates changes", {
+  expect_error(update_conversation(123), "at least one")
+  expect_error(update_conversation(123, workflow_state = "inbox"),
+               "workflow_state")
+})
+
 test_that("create_conversation repeats recipient parameters", {
   request <- new.env(parent = emptyenv())
   response <- structure(list(status_code = 201), class = "response")

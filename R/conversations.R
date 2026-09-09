@@ -104,6 +104,52 @@ get_conversation <- function(conversation_id, auto_mark_as_read = FALSE,
   parse_canvas_json(response)
 }
 
+#' Update a Canvas Inbox conversation
+#'
+#' Change the read/archive state, subscription, or starred status of a
+#' conversation. Only non-`NULL` fields are sent.
+#'
+#' @param conversation_id A Canvas conversation id.
+#' @param workflow_state Optional state: `"read"`, `"unread"`, or
+#' `"archived"`.
+#' @param subscribed Optional logical subscription status.
+#' @param starred Optional logical starred status.
+#'
+#' @return The Canvas API response, invisibly.
+#' @md
+#' @export
+#'
+#' @examples
+#' \dontrun{update_conversation(12345, workflow_state = "unread")}
+update_conversation <- function(conversation_id, workflow_state = NULL,
+                                subscribed = NULL, starred = NULL) {
+  stopifnot(length(conversation_id) == 1)
+  if (!is.null(workflow_state) &&
+      (length(workflow_state) != 1 ||
+       !workflow_state %in% c("read", "unread", "archived"))) {
+    stop("`workflow_state` must be one of: read, unread, archived.",
+         call. = FALSE)
+  }
+
+  values <- list(
+    workflow_state = workflow_state,
+    subscribed = subscribed,
+    starred = starred
+  ) %>%
+    purrr::discard(is.null)
+  if (length(values) == 0) {
+    stop("Provide at least one conversation field to update.", call. = FALSE)
+  }
+  names(values) <- stringr::str_c("conversation[", names(values), "]")
+
+  response <- canvas_query(
+    make_canvas_url("conversations", conversation_id),
+    values,
+    "PUT"
+  )
+  invisible(response)
+}
+
 #' Create a Canvas Inbox conversation
 #'
 #' @param recipient_ids One or more Canvas user ids, UUIDs prefixed with
