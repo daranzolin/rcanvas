@@ -1,6 +1,7 @@
 # rcanvas 0.9.3
 
 * Added helpers to list, create, update, delete, and reorder content in classic quizzes.
+* Add helpers to list, read, create, and reply to Canvas Inbox conversations.
 
 * Added the following functions:
   * `create_canvas_module()`
