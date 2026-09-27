@@ -160,19 +160,33 @@ update_conversation <- function(conversation_id, workflow_state = NULL,
 #' @param course_id Optional course id used as the conversation context.
 #' @param group_conversation Whether recipients share one group conversation.
 #' The safer default, `FALSE`, creates separate private conversations when
-#' there is more than one recipient.
+#' there is more than one recipient. Use `TRUE` to keep everyone in a single
+#' thread, for example a reply to a student that copies a teaching assistant.
 #' @param force_new Whether to create a new private conversation even when a
 #' conversation with the same recipients already exists.
 #' @param mode Whether Canvas sends a bulk private message synchronously or
 #' asynchronously.
+#' @param verify Whether to confirm that every numeric user id in
+#' `recipient_ids` is in the created conversation's audience. Canvas can
+#' return a successful response while silently leaving a recipient out.
+#' Verification is skipped for `mode = "async"`, which returns no
+#' conversation, and does not apply to UUID or context-code recipients.
+#' @param repair Whether a group conversation that is missing recipients should
+#' have them added to the same conversation with
+#' [add_conversation_recipients()], rather than leaving them out. Private
+#' conversations cannot be repaired this way; missing recipients produce a
+#' warning.
 #'
-#' @return The Canvas API response, invisibly.
+#' @return The created conversation or conversations, parsed from the Canvas
+#' JSON response, invisibly. After a repair, the refreshed group
+#' conversation is returned. A warning names any recipients still missing.
 #' @md
 #' @export
 #'
 #' @examples
 #' \dontrun{
 #' create_conversation(17, "Welcome", "Welcome to the course", course_id = 20)
+#' # One thread shared by a student (17) and their teaching assistant (18)
 #' create_conversation(
 #'   c(17, 18), "Welcome", "Welcome to the course", course_id = 20,
 #'   group_conversation = TRUE
@@ -182,7 +196,9 @@ create_conversation <- function(recipient_ids, subject = NULL, body,
                                 course_id = NULL,
                                 group_conversation = FALSE,
                                 force_new = FALSE,
-                                mode = "sync") {
+                                mode = "sync",
+                                verify = TRUE,
+                                repair = TRUE) {
   if (length(recipient_ids) == 0) {
     stop("Provide at least one recipient id.", call. = FALSE)
   }
@@ -207,7 +223,78 @@ create_conversation <- function(recipient_ids, subject = NULL, body,
     )
   )
   response <- canvas_query(make_canvas_url("conversations"), args, "POST")
-  invisible(response)
+  conversations <- parse_canvas_json(response)
+  if (!isTRUE(verify) || identical(mode, "async")) {
+    return(invisible(conversations))
+  }
+
+  expected <- as.character(recipient_ids)
+  expected <- unique(expected[stringr::str_detect(expected, "^[0-9]+$")])
+  missing <- missing_recipients(conversations, expected)
+  if (length(missing) == 0) return(invisible(conversations))
+
+  if (isTRUE(group_conversation) && isTRUE(repair) &&
+      length(conversations) == 1) {
+    conversation_id <- conversations[[1]]$id
+    message(stringr::str_c(
+      "Canvas left recipient(s) ", stringr::str_c(missing, collapse = ", "),
+      " out of conversation ", conversation_id, "; adding them to it."
+    ))
+    add_conversation_recipients(conversation_id, missing)
+    conversations <- list(get_conversation(conversation_id))
+    missing <- missing_recipients(conversations, expected)
+  }
+  if (length(missing) > 0) {
+    warning(stringr::str_c(
+      "Canvas did not include recipient(s) ",
+      stringr::str_c(missing, collapse = ", "),
+      " in the conversation."
+    ), call. = FALSE)
+  }
+  invisible(conversations)
+}
+
+#' Add recipients to a Canvas Inbox conversation
+#'
+#' Adds people to an existing group conversation, keeping the exchange in one
+#' thread. Canvas shows them the conversation's earlier messages.
+#'
+#' @param conversation_id A Canvas conversation id.
+#' @param recipient_ids One or more Canvas user ids, UUIDs prefixed with
+#' `"uuid:"`, or course/group context codes.
+#'
+#' @return The updated conversation, parsed from the Canvas JSON response,
+#' invisibly.
+#' @md
+#' @export
+#'
+#' @examples
+#' \dontrun{add_conversation_recipients(12345, 17)}
+add_conversation_recipients <- function(conversation_id, recipient_ids) {
+  stopifnot(length(conversation_id) == 1)
+  if (length(recipient_ids) == 0) {
+    stop("Provide at least one recipient id.", call. = FALSE)
+  }
+
+  response <- canvas_query(
+    make_canvas_url("conversations", conversation_id, "add_recipients"),
+    iter_args_list(as.character(recipient_ids), "recipients[]"),
+    "POST"
+  )
+  invisible(parse_canvas_json(response))
+}
+
+# Canvas omits the sender from `audience`, so a message addressed to oneself
+# would look like a dropped recipient; `participants` includes the sender.
+missing_recipients <- function(conversations, expected) {
+  present <- conversations %>%
+    purrr::map(function(conversation) {
+      c(unlist(conversation$audience),
+        purrr::map(conversation$participants, "id") %>% unlist())
+    }) %>%
+    unlist(use.names = FALSE) %>%
+    as.character()
+  setdiff(expected, present)
 }
 
 #' Reply to a Canvas Inbox conversation

@@ -11,7 +11,9 @@ create_conversation(
   course_id = NULL,
   group_conversation = FALSE,
   force_new = FALSE,
-  mode = "sync"
+  mode = "sync",
+  verify = TRUE,
+  repair = TRUE
 )
 }
 \arguments{
@@ -27,16 +29,31 @@ characters.}
 
 \item{group_conversation}{Whether recipients share one group conversation.
 The safer default, \code{FALSE}, creates separate private conversations when
-there is more than one recipient.}
+there is more than one recipient. Use \code{TRUE} to keep everyone in a single
+thread, for example a reply to a student that copies a teaching assistant.}
 
 \item{force_new}{Whether to create a new private conversation even when a
 conversation with the same recipients already exists.}
 
 \item{mode}{Whether Canvas sends a bulk private message synchronously or
 asynchronously.}
+
+\item{verify}{Whether to confirm that every numeric user id in
+\code{recipient_ids} is in the created conversation's audience. Canvas can
+return a successful response while silently leaving a recipient out.
+Verification is skipped for \code{mode = "async"}, which returns no
+conversation, and does not apply to UUID or context-code recipients.}
+
+\item{repair}{Whether a group conversation that is missing recipients should
+have them added to the same conversation with
+\code{\link[=add_conversation_recipients]{add_conversation_recipients()}}, rather than leaving them out. Private
+conversations cannot be repaired this way; missing recipients produce a
+warning.}
 }
 \value{
-The Canvas API response, invisibly.
+The created conversation or conversations, parsed from the Canvas
+JSON response, invisibly. After a repair, the refreshed group
+conversation is returned. A warning names any recipients still missing.
 }
 \description{
 Create a Canvas Inbox conversation
@@ -44,6 +61,7 @@ Create a Canvas Inbox conversation
 \examples{
 \dontrun{
 create_conversation(17, "Welcome", "Welcome to the course", course_id = 20)
+# One thread shared by a student (17) and their teaching assistant (18)
 create_conversation(
   c(17, 18), "Welcome", "Welcome to the course", course_id = 20,
   group_conversation = TRUE

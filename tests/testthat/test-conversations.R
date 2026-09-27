@@ -118,6 +118,7 @@ test_that("create_conversation repeats recipient parameters", {
       request$type <- type
       response
     },
+    parse_canvas_json = function(x) list(list(id = 5, audience = list(17, 18))),
     .package = "rcanvas"
   )
 
@@ -126,7 +127,7 @@ test_that("create_conversation repeats recipient parameters", {
     group_conversation = TRUE
   )
 
-  expect_identical(result, response)
+  expect_identical(result, list(list(id = 5, audience = list(17, 18))))
   expect_equal(request$url_parts, list("conversations"))
   expect_identical(request$type, "POST")
   recipients <- request$args[names(request$args) == "recipients[]"] %>%
@@ -168,4 +169,141 @@ test_that("conversation helpers validate arguments", {
   expect_error(get_conversations(scope = "all"), "scope")
   expect_error(create_conversation(character(), body = "Hello"), "recipient")
   expect_error(create_conversation(1, body = "Hello", mode = "later"), "mode")
+})
+
+# Canvas can answer 201 yet leave a recipient out of the conversation
+# (observed 2026-09-27 with an actively enrolled, messageable student).
+mock_conversation_api <- function(request, created, refreshed = NULL) {
+  request$calls <- list()
+  list(
+    make_canvas_url = function(...) {
+      stringr::str_c(c("https://canvas.example.edu/api/v1", ...),
+                     collapse = "/")
+    },
+    canvas_query = function(url, args = NULL, type = "GET") {
+      request$calls[[length(request$calls) + 1]] <-
+        list(url = url, args = args, type = type)
+      structure(list(url = url), class = "response")
+    },
+    parse_canvas_json = function(x) {
+      if (grepl("add_recipients$", x$url)) return(refreshed)
+      if (grepl("conversations/[0-9]+$", x$url)) return(refreshed)
+      created
+    }
+  )
+}
+
+test_that("create_conversation makes no extra calls when all recipients arrive", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(17, 18)))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created), .package = "rcanvas"))
+
+  result <- create_conversation(c(17, 18), "Hi", "Hello",
+                                group_conversation = TRUE)
+
+  expect_identical(result, created)
+  expect_length(request$calls, 1)
+})
+
+test_that("create_conversation adds a dropped recipient to the same thread", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(18)))
+  refreshed <- list(id = 5, audience = list(18, 17))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created, refreshed),
+            .package = "rcanvas"))
+
+  expect_message(
+    result <- create_conversation(c(17, 18), "Hi", "Hello",
+                                  group_conversation = TRUE),
+    "left recipient\\(s\\) 17 out of conversation 5"
+  )
+
+  expect_identical(result, list(refreshed))
+  expect_length(request$calls, 3)
+  repair <- request$calls[[2]]
+  expect_identical(repair$type, "POST")
+  expect_match(repair$url, "conversations/5/add_recipients$")
+  expect_equal(unlist(repair$args[names(repair$args) == "recipients[]"],
+                      use.names = FALSE), "17")
+  expect_match(request$calls[[3]]$url, "conversations/5$")
+  expect_identical(request$calls[[3]]$type, "GET")
+})
+
+test_that("create_conversation warns when a repair does not take", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(18)))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created,
+                                  list(id = 5, audience = list(18))),
+            .package = "rcanvas"))
+
+  expect_warning(
+    suppressMessages(create_conversation(c(17, 18), "Hi", "Hello",
+                                         group_conversation = TRUE)),
+    "did not include recipient\\(s\\) 17"
+  )
+})
+
+test_that("create_conversation warns instead of repairing private conversations", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(18)))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created), .package = "rcanvas"))
+
+  expect_warning(create_conversation(c(17, 18), "Hi", "Hello"),
+                 "did not include recipient\\(s\\) 17")
+  expect_length(request$calls, 1)
+})
+
+test_that("create_conversation skips verification when asked or async", {
+  request <- new.env(parent = emptyenv())
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, list()), .package = "rcanvas"))
+
+  expect_silent(create_conversation(c(17, 18), "Hi", "Hello", mode = "async"))
+  expect_silent(create_conversation(c(17, 18), "Hi", "Hello",
+                                    group_conversation = TRUE, verify = FALSE))
+  expect_length(request$calls, 2)
+})
+
+test_that("create_conversation only verifies numeric user ids", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(18)))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created), .package = "rcanvas"))
+
+  expect_silent(create_conversation(c("course_20_students", 18), "Hi",
+                                    "Hello", group_conversation = TRUE))
+})
+
+test_that("add_conversation_recipients posts repeated recipient parameters", {
+  request <- new.env(parent = emptyenv())
+  refreshed <- list(id = 5, audience = list(17, 18, 19))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, NULL, refreshed),
+            .package = "rcanvas"))
+
+  result <- add_conversation_recipients(5, c(17, 19))
+
+  expect_identical(result, refreshed)
+  call <- request$calls[[1]]
+  expect_identical(call$type, "POST")
+  expect_match(call$url, "conversations/5/add_recipients$")
+  expect_equal(unlist(call$args[names(call$args) == "recipients[]"],
+                      use.names = FALSE), c("17", "19"))
+  expect_error(add_conversation_recipients(5, integer()), "recipient")
+})
+
+test_that("create_conversation counts the sender, whom Canvas omits from audience", {
+  request <- new.env(parent = emptyenv())
+  created <- list(list(id = 5, audience = list(),
+                       participants = list(list(id = 60912, name = "Me"))))
+  do.call(local_mocked_bindings,
+          c(mock_conversation_api(request, created), .package = "rcanvas"))
+
+  expect_silent(create_conversation(60912, "Hi", "Hello",
+                                    group_conversation = TRUE))
+  expect_length(request$calls, 1)
 })

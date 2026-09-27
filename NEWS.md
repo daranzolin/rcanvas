@@ -2,7 +2,10 @@
 
 * Added helpers to list, create, update, delete, and reorder content in classic quizzes.
 * Add helpers to list, read, create, reply to, and update Canvas Inbox
-  conversations.
+  conversations, and `add_conversation_recipients()` to add people to an
+  existing thread. `create_conversation()` verifies that every recipient
+  was included, since Canvas can return success while silently leaving one
+  out; group conversations are repaired in place (closes #66).
 
 * Added the following functions:
   * `create_canvas_module()`
