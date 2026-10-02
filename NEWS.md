@@ -1,5 +1,14 @@
 # rcanvas 0.9.3
 
+* Add `get_course_submissions()` with course-wide paging, assignment/student
+  filters, and submitted/graded-since timestamps. `get_course_gradebook()` now
+  supports incremental refresh from a saved snapshot, with separate submission
+  and regrade queries, overlap, and cached enrollment metadata. Full imports
+  use grouped course-wide requests. **Behavior change:** unpublished assignments
+  are excluded by default; set `include_unpublished = TRUE` to include them.
+  Assignment publishing changes are checked on every refresh. API errors now
+  fail rather than silently producing a partial gradebook.
+
 * Added helpers to list, create, update, delete, and reorder content in classic quizzes.
 * Add helpers to list, read, create, reply to, and update Canvas Inbox
   conversations, and `add_conversation_recipients()` to add people to an
