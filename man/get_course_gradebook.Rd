@@ -4,20 +4,66 @@
 \alias{get_course_gradebook}
 \title{Get a course gradebook}
 \usage{
-get_course_gradebook(course_id, progress = FALSE)
+get_course_gradebook(
+  course_id,
+  progress = FALSE,
+  previous = NULL,
+  since = NULL,
+  overlap = 60,
+  refresh_metadata = FALSE,
+  include_unpublished = FALSE
+)
 }
 \arguments{
-\item{course_id}{A valid course id}
+\item{course_id}{A valid course id.}
 
-\item{progress}{logical; print page numbers as we go? (Defaults to FALSE)}
+\item{progress}{Print concise page progress (default FALSE).}
+
+\item{previous}{A previous gradebook from this function. NULL performs a full
+import. A legacy snapshot can be supplied with an explicit `since`.}
+
+\item{since}{UTC ISO 8601 timestamp or POSIXt value. Defaults to the start time
+stored on `previous`; required for legacy snapshots without a sync timestamp.}
+
+\item{overlap}{Non-negative seconds to look back before `since` (default 60).}
+
+\item{refresh_metadata}{Refresh enrollment metadata during incremental
+updates? Default FALSE reuses the cached roster where available.
+Assignment metadata is always refreshed to detect publishing changes.
+Full imports always fetch both.}
+
+\item{include_unpublished}{Include unpublished assignments? Default FALSE.
+When TRUE, these are fetched individually on both full and incremental
+imports because Canvas's bulk endpoint excludes them. This can be slower.}
 }
 \value{
-A gradebook (in long format)
+A gradebook in long format, with sync and metadata cache attributes.
+  API failures raise errors rather than returning a partial gradebook.
 }
 \description{
-Get a course gradebook
+Download a full gradebook or incrementally update a previous snapshot.
+Includes published assignments by default, using the course-wide endpoint.
+Unpublished assignment rows are removed from legacy caches unless requested.
+Only reads Canvas; never uploads grades.
+}
+\details{
+Incremental updates independently request newly submitted and newly
+  graded work and replace cached rows by assignment/user id. Regrades are
+  included. The watermark is the request start, not completion time.
+  Save with `saveRDS()` or `save()` to retain cache attributes.
+  `canvas_full_synced_at` records the last full import separately from the
+  incremental watermark, allowing callers to schedule full reconciliation.
+
+  Timestamp filters cannot capture every change (resets to unsubmitted,
+  deletions, enrollment changes, or some status-only edits). Run periodic full
+  imports and a full import before final grading. `refresh_metadata = TRUE`
+  updates labels/roster metadata but does not replace full reconciliation.
+  Snapshots must belong to the same course and Canvas instance.
 }
 \examples{
-get_course_gradebook(20)
-
+\dontrun{
+grades <- get_course_gradebook(20)
+grades <- get_course_gradebook(20, previous = grades)
+saveRDS(grades, "gradebook.rds")
+}
 }

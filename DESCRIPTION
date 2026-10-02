@@ -22,7 +22,7 @@ Imports: httr,
     purrr,
     stringr,
     magrittr,
-    dplyr,
+    dplyr (>= 1.0.0),
     readr
 URL: https://github.com/daranzolin/rcanvas
 BugReports: https://github.com/daranzolin/rcanvas/issues
