@@ -13,7 +13,8 @@ update_grades(
   wait = TRUE,
   poll_interval = 2,
   timeout = 300,
-  verify = TRUE
+  verify = TRUE,
+  retry_429 = 3
 )
 }
 \arguments{
@@ -25,7 +26,7 @@ update_grades(
 
 \item{grade}{Grades, parallel to \code{user_id}. Numbers are sent as points.}
 
-\item{chunk_size}{Students per request.}
+\item{chunk_size}{Students per request (a positive whole number).}
 
 \item{wait}{If \code{FALSE}, return the Progress objects without waiting or
 verifying.}
@@ -36,12 +37,15 @@ verifying.}
 
 \item{verify}{Re-read the submissions after the jobs complete and report
 whether each grade matches.}
+
+\item{retry_429}{How many times to retry a request Canvas throttles (429).}
 }
 \value{
 Invisibly, a data frame with \code{user_id}, \code{grade} (as sent), and, when
-\code{verify = TRUE}, \code{score} and \code{entered_grade} as Canvas now reports them and
-a logical \code{verified}. A warning names how many grades did not verify. With
-\code{wait = FALSE}, a list of Progress objects.
+\code{verify = TRUE}, \code{expected_points}, \code{entered_score}, \code{score},
+\code{entered_grade} as Canvas now reports them, and a logical \code{verified}. A
+warning names how many grades did not verify. With \code{wait = FALSE}, a list
+of Progress objects.
 }
 \description{
 Posts grades through Canvas's bulk endpoint
@@ -52,11 +56,33 @@ report \code{"completed"} while skipping individual students, so verification is
 on by default.
 }
 \details{
-Grades are sent in chunks of \code{chunk_size} students per request. Each value
-is passed as \code{posted_grade}, so it may be points (\code{"13.5"}), a percentage
-(\code{"40\%"}), or a letter grade, exactly as in the Canvas gradebook. Canvas
-does not grade unpublished assignments in the gradebook; publish the
-assignment first.
+Grades are sent in chunks of \code{chunk_size} students, one request at a time.
+Each value is passed to Canvas as \code{posted_grade}, so it may be points
+(\code{88.5}), a percentage (\code{"40\%"}), or a letter grade, exactly as typed in the
+gradebook. Numbers are always sent with a \code{.} decimal mark.
+
+\strong{Publishing and visibility.} Canvas rejects grades for an unpublished
+assignment, so \code{update_grades()} checks first and stops; it never publishes.
+It also never posts or releases grades. Under a \emph{manual} posting policy the
+new grades stay hidden from students until you post them; under an
+\emph{automatic} policy they are visible as soon as Canvas saves them.
+
+\strong{Verification} compares what Canvas recorded as entered (\code{entered_score},
+before any late-policy deduction) with what was sent: numbers as points,
+percentages converted to points using the assignment's \code{points_possible},
+within 0.005. Other grades (letters, complete/incomplete) are compared with
+\code{entered_grade}. \code{score} is returned too and can be lower than
+\code{entered_score} when a late policy applies.
+
+\strong{Failures part-way through.} Earlier chunks are not rolled back. If a
+request or Progress job fails, \code{update_grades()} signals an error of class
+\code{rcanvas_update_grades_error} whose fields record what happened:
+\code{chunks} (each chunk's job id and status), \code{completed_user_ids},
+\code{uncertain_user_ids} (the chunk that failed, which Canvas may or may not
+have applied), \code{unsent_user_ids}, and \code{results} (a best-effort verification
+of the completed chunks, or \code{NULL}). Requests Canvas refuses with HTTP 429
+(throttling) are retried up to \code{retry_429} times, honouring \code{Retry-After};
+nothing else is retried.
 }
 \examples{
 \dontrun{
