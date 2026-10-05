@@ -48,7 +48,7 @@ make_canvas_url <- function(...) {
 }
 
 #' @importFrom httr GET POST PUT HEAD DELETE
-canvas_query <- function(urlx, args = NULL, type = "GET") {
+canvas_query <- function(urlx, args = NULL, type = "GET", retry_429 = 0) {
 
   args <- sc(args)
   resp_fun_args <- list(url = urlx,
@@ -60,12 +60,21 @@ canvas_query <- function(urlx, args = NULL, type = "GET") {
   else
     resp_fun_args$query = args
 
-  resp <- do.call(type, resp_fun_args)
+  # Canvas answers an over-quota request with 429 and does not process it, so
+  # repeating that request is safe. Other failures are not retried.
+  for (attempt in seq_len(retry_429 + 1)) {
+    resp <- do.call(type, resp_fun_args)
+    if (httr::status_code(resp) != 429 || attempt > retry_429) break
+    wait <- suppressWarnings(as.numeric(httr::headers(resp)[["retry-after"]]))
+    .rcanvas_sleep(if (length(wait) == 1 && is.finite(wait) && wait >= 0) wait else 2^attempt)
+  }
 
   httr::stop_for_status(resp)
   resp
 
 }
+
+.rcanvas_sleep <- function(seconds) Sys.sleep(seconds)
 
 iter_args_list <- function(x, label) {
   ln <- list()
