@@ -48,7 +48,7 @@ make_canvas_url <- function(...) {
 }
 
 #' @importFrom httr GET POST PUT HEAD DELETE
-canvas_query <- function(urlx, args = NULL, type = "GET", retry_429 = 0) {
+canvas_query <- function(urlx, args = NULL, type = "GET", retry_429 = 0, encode = NULL) {
 
   args <- sc(args)
   resp_fun_args <- list(url = urlx,
@@ -59,6 +59,8 @@ canvas_query <- function(urlx, args = NULL, type = "GET", retry_429 = 0) {
     resp_fun_args$body = args
   else
     resp_fun_args$query = args
+
+  if (!is.null(encode)) resp_fun_args$encode <- encode
 
   # Canvas answers an over-quota request with 429 and does not process it, so
   # repeating that request is safe. Other failures are not retried.
